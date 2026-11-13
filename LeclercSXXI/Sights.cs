@@ -51,7 +51,8 @@ namespace LeclercSXXI
 			internal UsableOptic CommanderDay, CommanderThermal;
 			internal CameraSlot ObserveDay, ObserveThermal;
 			internal UsableOptic Secours;
-			internal override IEnumerable<CameraSlot> Sights => CommanderDay != null ? new[] { CommanderDay.slot } : Array.Empty<CameraSlot>();
+			// A view added after spawn is in Cycle View only if it is listed here.
+			internal override IEnumerable<CameraSlot> Sights => new[] { CommanderDay?.slot, Secours?.slot }.Where(s => s != null);
 		}
 
 		static ReticleSO _dayMarks, _thermalMarks, _thermalWideMarks;
@@ -208,6 +209,8 @@ namespace LeclercSXXI
 
 			try { FitSecours(v, turret, st, day, night); }
 			catch (Exception e) { MelonLogger.Error($"{Tag}: HL 120 emergency view failed: {e}"); }
+			try { RemoteMg.LateSetup(v); }
+			catch (Exception e) { MelonLogger.Error($"{Tag}: HL 120 emergency view not added to Cycle View: {e}"); }
 			day.name = "HL 130 day";
 			ConfigureDay(day, DayWide, DayNarrow, GunnerDayReticle.Fit(v, day, _dayMarks));
 			GunnerFcs.Apply(day, FcsSettings);

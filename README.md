@@ -17,7 +17,7 @@ It's a separate mod from my other tanks, you don't need any of them for it, and 
   <img src="docs/images/leclerc_firing.jpg" width="49%" alt="The Leclerc SXXI firing its 120 mm gun">
 </p>
 
-This README describes **version 0.1.0**. No other mod needed, just MelonLoader.
+This README describes **version 0.1.1**. No other mod needed, just MelonLoader.
 
 ## Installing it
 
@@ -90,7 +90,8 @@ happens when a round hits, was built for GHPC with GHPC's own rules.
 - **It's built on the vanilla T-80B**, like my T-80UM2: its running gear, hull internals and the gun and sight systems
   underneath, with the Leclerc's values and looks on top. Where you see or hear it, a NATO tank gets NATO parts: the
   rounds are the game's Leopard 2 rounds reshaped and repainted, the gun sound and the engine are the Leopard 2's (with
-  a turbine whine under the diesel), the gunner's reticle is the M1 / Leopard 2 one and the crew talk like Americans.
+  a turbine whine under the diesel), the autoloader sound is put together from the T-72, T-80, Abrams and Leopard
+  reloads, the gunner's reticle is the M1 / Leopard 2 one and the crew talk like Americans.
 - **The inside works like a vanilla tank.** Crew, the bustle rack, the hull drum and the fuel tanks sit where they are in
   a Leclerc. Engine, transmission, cooling, the breech, both drives, the power system, the fire control, the HL 130,
   the HL 120 head and the rammer are damageable modules wired into the game's own systems, so knocking one out does what
