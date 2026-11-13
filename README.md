@@ -47,8 +47,6 @@ To remove it, delete `Mods\LeclercSXXI.dll` and the `Mods\LeclercSXXI` folder.
 - **The 12.7 mm M2HB coax** and **14 GALIX tubes**.
 - **The V8X diesel**, 1500 hp, 72 km/h forward and 40 km/h in reverse.
 
-AI Leclercs use the autoloader, the sights and the ammo the same way you do.
-
 ## A bit of history
 
 The SXXI (Série XXI, also called the third series) is the last batch of Leclercs built for the French Army, tranches
@@ -59,23 +57,24 @@ the tranche 11 standard from 2007.
 
 The tank in this mod is an SXXI as it served before the XLR upgrade, in the three-tone Centre-Europe camouflage.
 
-## The Leclerc next to the game's own tanks
+## The Leclerc next to the game's tanks and my T-90A
 
 GHPC's newest NATO tanks are the Leopard 2A3 and the M1IP, both 20 years older than an SXXI, so it's stronger than both,
 as it should be. Against my T-90A it's a fair match: neither gets through the other's turret front.
 
 | | Leopard 2A3 (vanilla) | M1IP (vanilla) | **Leclerc SXXI (this mod)** | [T-90A](https://github.com/marsattackk/GHPC-T90A) (my mod) |
 |---|---|---|---|---|
-| Turret front (vs APFSDS / HEAT) | 403 / 771 | 516 / 999 | **700 / 1100** | 693 / 822, plus Kontakt-5 |
-| Upper glacis (vs APFSDS / HEAT) | 317 / 661 | 348 / 361 | **500 / 800** | 549 / 749 |
-| Best dart | DM23, 520 mm | M833, 480 mm | **OFL 120 F2, 800 mm** | 3BM60, 693 mm |
-| Reload | loader | loader | **6 s, 8 s on a type change** | about 7 s |
-| Rounds | 42 | 55 | **40** (22 ready) | 43 |
+| Turret front (vs APFSDS / HEAT) | 403 / 771 | 516 / 999 | **700 / 1100** | 690 / 819, plus Kontakt-5 (about +140 / +550) |
+| Upper glacis (vs APFSDS / HEAT) | 317 / 661 | 348 / 361 | **500 / 800** | 549 / 748 |
+| Best dart | DM23, 520 mm | M833, 480 mm | **OFL 120 F2, 800 mm** | 3BM60, about 690 mm |
+| Reload | loader | loader | **6 s, 8 s on a type change** | 6.5 s |
+| Rounds | 42 | 55 | **40** (22 ready) | 42 (22 ready) |
 | Mass, power | 55.3 t, 1400 hp | 55.3 t, 1519 hp | **57.7 t, 1500 hp** | 46.5 t, 1000 hp |
-| Top speed, reverse | 75 / 40 km/h | 72 / 40 km/h | **72 / 40 km/h** | 60 / 4 km/h |
+| Top speed, reverse | 75 / 40 km/h | 72 / 40 km/h | **72 / 40 km/h** | 60 / 4.2 km/h |
 
-The right cheek is a lot stronger than the left (about 1150 / 1780), because it has a second pack beside the gunner.
-The weak spot from the front is the seam round the gunner's sight block.
+The armour figures are what a round meets coming straight from the front. The Leclerc's 700 / 1100 is its left cheek,
+the right one is a lot stronger (about 1150 / 1780) because it has a second pack beside the gunner. The weak spot from
+the front is the seam round the gunner's sight block.
 
 ## "It's a War Thunder model, does it even work in GHPC?"
 
@@ -86,16 +85,16 @@ happens when a round hits, was built for GHPC with GHPC's own rules.
 <details>
 <summary><b>How it's built for GHPC</b></summary>
 
-- **The armour values are mine, not War Thunder's.** The front packs are set to what the SXXI was designed to stop,
-  the rest from French sources or, where nothing was published, the closest real equivalent, marked as a guess in my
-  notes.
-- **It's built on the vanilla T-80B** for the running gear and the hull's insides, the same way my other tanks are. The
-  sights, the gun, the rounds, the engine sound and the crew voices come from the game's Leopard 2 and Abrams, a NATO
-  tank gets NATO parts.
+- **The armour values are mine, not War Thunder's.** The front packs are set to what the SXXI was designed to stop.
+  The rest are my estimates from French sources and tanks of the same period, marked as guesses in my notes.
+- **It's built on the vanilla T-80B**, like my T-80UM2: its running gear, hull internals and the gun and sight systems
+  underneath, with the Leclerc's values and looks on top. Where you see or hear it, a NATO tank gets NATO parts: the
+  rounds are the game's Leopard 2 rounds reshaped and repainted, the gun sound and the engine are the Leopard 2's (with
+  a turbine whine under the diesel), the gunner's reticle is the M1 / Leopard 2 one and the crew talk like Americans.
 - **The inside works like a vanilla tank.** Crew, the bustle rack, the hull drum and the fuel tanks sit where they are in
-  a Leclerc. Engine, transmission, cooling, the breech, both drives, the power system, the fire control, both sights and
-  the rammer are damageable modules wired into the game's own systems, so knocking one out does what it does on a
-  vanilla tank.
+  a Leclerc. Engine, transmission, cooling, the breech, both drives, the power system, the fire control, the HL 130,
+  the HL 120 head and the rammer are damageable modules wired into the game's own systems, so knocking one out does what
+  it does on a vanilla tank.
 - **The bustle is its own compartment.** A hit that sets the rack off blows the two roof panels and the crew in front
   of the bulkhead lives.
 
@@ -106,8 +105,8 @@ happens when a round hits, was built for GHPC with GHPC's own rules.
   <img src="docs/images/xray_top.jpg" width="49%" alt="Hit x-ray from above: crew, ammo and modules">
 </p>
 
-*Left: the turret, the HL 130 windows in front of the gunner's hatch and the HL 120 head on the commander's side. Right:
-the hit x-ray from above.*
+*Left: the turret front from the commander's side, the HL 120 head on top. Right: the hit x-ray from above, the crew
+light blue, the 22-round bustle rack at the back of the turret.*
 
 ## The autoloader
 
@@ -132,8 +131,8 @@ waits while the gun loads and then carries on.
 - **HL 120 secours**: the commander's HL 120 head slaved to the gun with an emergency reticle, one range scale per
   round, no laser and no computer, you set the range. It's in the gunner's view cycle, and it's where you end up when
   the HL 130 gets knocked out. The real tank has no backup gunner's sight, the commander takes over through his.
-- **The commander** uses the game's usual commander views for now. The HL 120 head is on the turret and can be knocked
-  out, but it isn't a sight of its own yet, apart from the secours view.
+- **The commander** has the free-look view and night-vision goggles for now, like the game's Leopard and Abrams. The
+  HL 120 head is on the turret and can be knocked out, but it isn't a sight of its own yet, apart from the secours view.
 
 <p align="center">
   <img src="docs/images/sight_hl120_secours.jpg" width="49%" alt="HL 120 secours emergency reticle">
@@ -150,7 +149,7 @@ it and the GALIX tubes along the side.*
 | OFL 120 F2 | APFSDS (default) | 1740 m/s | about 800 mm |
 | OFL 120 F1 | APFSDS | 1790 m/s | about 700 mm |
 | OECC 120 F1 | HEAT-MP | 1100 m/s | 560 mm |
-| 120 EXPL F1 | HE | 1050 m/s | 3.5 kg of explosive |
+| 120 EXPL F1 | HE | 1050 m/s | 3.5 kg of TNT equivalent |
 
 18 darts, 14 HEAT and 8 HE. The mission's ammo menu picks which dart you carry. The EXPL's fuze is in the vehicle menu
 ("120 EXPL F1 fuze"): impact, or a burst about 3 m over the lased range, set when the round loads.
@@ -175,7 +174,9 @@ The coax is a 12.7 mm M2HB with 950 rounds in belts of 140.
 - **The round mix**, 18 / 14 / 8. Nobody publishes it.
 - **The gunner's reticle**: the game's M1 / Leopard 2 one, I haven't found a picture of the HL 130's. The secours
   reticle is my own layout from a description.
-- **The x20 thermal field**, the laser's range, the glacis value, the skirts, the welded plates and the mantlet.
+- **The x20 thermal field**, the laser's range, the glacis value, the skirts, the welded plates and the plates round the
+  gun.
+- **The EXPL's explosive**: 3 kg of Comp B worked up to TNT the way the game does it for its own rounds.
 - **The conveyor's cells, door and rammer timings**, from photos, and the restock time.
 - **The inside**: where the modules, fuel tanks and bulkhead go.
 
@@ -183,9 +184,8 @@ If you've got a real source on any of that, I'd genuinely love to see it.
 
 ## Known limits
 
-- The game has no French army, so the crew and voices are the US Army's.
+- The game has no French army, so it fights on the US side with American voices.
 - The commander's HL 120 isn't a working sight of its own yet, only the secours view uses it.
-- The driver has no view of his own.
 - All 14 GALIX tubes fire in one volley, and GHPC has no smoke restock, so you get one screen per tank.
 
 ## Bugs and suggestions
@@ -223,7 +223,7 @@ Layout: `LeclercSXXI\` the mod, `Common\` the helpers it's built with, `Resource
 
 The 3D model, its textures and the shapes of its armour plates are War Thunder's Leclerc SXXI, taken from War Thunder's
 game files. They belong to Gaijin Entertainment and they're not covered by this repository's license. Everything else
-(the armour values, the autoloader, the sights and their reticles, the fire control, the ammo, the interior) was built
-for GHPC, from French sources and, where those ran out, my own best guesses.
+(the armour values, the autoloader, the sights, the secours reticle, the ammo, the interior) was built for GHPC, from
+French sources and, where those ran out, my own best guesses.
 
 The source code in this repository is under the [GNU General Public License v3.0](LICENSE).
