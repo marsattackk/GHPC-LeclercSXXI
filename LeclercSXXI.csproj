@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>LeclercSXXI</AssemblyName>
+    <RootNamespace>LeclercSXXI</RootNamespace>
+    <Nullable>disable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Gunner HEAT PC\Bin</GameDir>
+    <NoWarn>$(NoWarn);MSB3277;CS0618</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\hl130_day.jsonc" LogicalName="hl130_day.jsonc" />
+    <EmbeddedResource Include="Resources\hl120_secours.jsonc" LogicalName="hl120_secours.jsonc" />
+    <EmbeddedResource Include="Resources\modules_built.json" LogicalName="modules_built.json" />
+    <EmbeddedResource Include="Resources\interior_map.txt" LogicalName="interior_map.txt" />
+    <EmbeddedResource Include="Resources\gun_depression.txt" LogicalName="gun_depression.txt" />
+    <EmbeddedResource Include="Resources\smoke_directions.txt" LogicalName="smoke_directions.txt" />
+    <EmbeddedResource Include="Resources\reload_6_interior.wav" LogicalName="reload_6_interior.wav" />
+    <EmbeddedResource Include="Resources\reload_6_exterior.wav" LogicalName="reload_6_exterior.wav" />
+    <EmbeddedResource Include="Resources\reload_8_interior.wav" LogicalName="reload_8_interior.wav" />
+    <EmbeddedResource Include="Resources\reload_8_exterior.wav" LogicalName="reload_8_exterior.wav" />
+    <EmbeddedResource Include="Resources\round_oflf1_co.png" LogicalName="round_oflf1_co.png" />
+    <EmbeddedResource Include="Resources\round_oflf2_co.png" LogicalName="round_oflf2_co.png" />
+    <EmbeddedResource Include="Resources\round_oecc_co.png" LogicalName="round_oecc_co.png" />
+    <EmbeddedResource Include="Resources\round_expl_co.png" LogicalName="round_expl_co.png" />
+    <EmbeddedResource Include="Resources\round_meshes.txt" LogicalName="round_meshes.txt" />
+    <EmbeddedResource Include="Resources\round_mesh_ofl_rod.mesh" LogicalName="round_mesh_ofl_rod.mesh" />
+    <EmbeddedResource Include="Resources\round_mesh_expl_shell.mesh" LogicalName="round_mesh_expl_shell.mesh" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MelonLoader" HintPath="$(GameDir)\MelonLoader\net35\MelonLoader.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(GameDir)\MelonLoader\net35\0Harmony.dll" Private="false" />
+    <Reference Include="$(GameDir)\GHPC_Data\Managed\*.dll" Exclude="$(GameDir)\GHPC_Data\Managed\mscorlib.dll;$(GameDir)\GHPC_Data\Managed\netstandard.dll;$(GameDir)\GHPC_Data\Managed\System*.dll;$(GameDir)\GHPC_Data\Managed\Mono*.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Build stamp (BuildStamp.targets, beside this file): AssemblyInformationalVersion "<version>+<commit>.public", logged on
+       load. The commit is the one this source was cleaned from when the release build passes it (-p:GitCommit=...), else "unknown". -->
+  <PropertyGroup>
+    <BuildFlavour Condition="'$(BuildFlavour)' == ''">public</BuildFlavour>
+    <StampAskGit>false</StampAskGit>
+  </PropertyGroup>
+  <Import Project="BuildStamp.targets" Condition="Exists('BuildStamp.targets')" />
+  <!-- A mod with a native half: its build and embedding (Native.targets, beside this file, when the mod has one). -->
+  <Import Project="Native.targets" Condition="Exists('Native.targets')" />
+
+</Project>

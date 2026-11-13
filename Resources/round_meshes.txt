@@ -1,0 +1,4 @@
+mesh|OFL|penetrator_dm23|round_mesh_ofl_rod.mesh|307|273|ffa5e1173caf5fb5
+mesh|EXPL|proj_dm12|round_mesh_expl_shell.mesh|3049|2924|0de864d21056e48b
+capsule|OFL|projectile hitzone|0.00000,0.70000,0.00000|0.0120|0.5600|1
+capsule|EXPL|warhead|0.00000,0.75950,0.00000|0.0600|0.4290|1
