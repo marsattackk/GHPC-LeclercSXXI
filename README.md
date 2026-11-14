@@ -116,6 +116,12 @@ next round of that type is at the door, the door opens, the rammer pushes it in 
 the door and breech close. That takes 6 s, or 8 s when the type changes. The gun dips to -1.8° to load and comes back
 up to where the fire control wants it, the sight stays where you put it.
 
+<p align="center">
+  <img src="docs/images/leclerc_autoloader.gif" width="80%" alt="The autoloader through the hit x-ray: a reload with a change of round type, the chain turns, the door opens and the rammer loads the gun">
+</p>
+
+Above is a reload with a change of round type, through the X-ray, at its real speed.
+
 The crew moves rounds from the hull drum up to the bustle, about 22 s each. Loading the gun comes first: a transfer
 waits while the gun loads and then carries on.
 
