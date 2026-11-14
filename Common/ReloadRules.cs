@@ -46,6 +46,20 @@ namespace LeclercSXXI.Common
 			return Math.Abs(k - 1f) < 0.001f ? 1f : k;
 		}
 
+		internal static float[] CueTimes(float[] stageSeconds, float T)
+		{
+			var cues = new float[stageSeconds.Length];
+			float total = 0f;
+			foreach (var s in stageSeconds) total += s;
+			float at = 0f;
+			for (int i = 0; i < stageSeconds.Length; i++)
+			{
+				cues[i] = total > 0f ? at * T / total : 0f;
+				at += stageSeconds[i];
+			}
+			return cues;
+		}
+
 		internal static bool Audible(bool ownUnit, float distance, float maxDistance) => ownUnit || distance <= maxDistance;
 	}
 }

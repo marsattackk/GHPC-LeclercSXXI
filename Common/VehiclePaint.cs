@@ -23,7 +23,12 @@ namespace LeclercSXXI.Common
 					if (!made.TryGetValue(src, out var dst))
 					{
 						if (template != null && Painted(src.name)) dst = VehicleMaterial(src, template);
-						else if (flir != null && src.shader.name == "Standard") { dst = new Material(src) { name = src.name }; dst.shader = flir; }
+						else if (flir != null && src.shader.name == "Standard")
+						{
+							int q = src.renderQueue;
+							dst = new Material(src) { name = src.name }; dst.shader = flir;
+							if (dst.renderQueue != q) dst.renderQueue = q;
+						}
 						else dst = src;
 						made[src] = dst;
 					}

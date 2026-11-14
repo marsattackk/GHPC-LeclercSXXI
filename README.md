@@ -17,7 +17,7 @@ It's a separate mod from my other tanks, you don't need any of them for it, and 
   <img src="docs/images/leclerc_firing.jpg" width="49%" alt="The Leclerc SXXI firing its 120 mm gun">
 </p>
 
-This README describes **version 0.1.1**. No other mod needed, just MelonLoader.
+This README describes **version 0.1.2**. No other mod needed, just MelonLoader.
 
 ## Installing it
 

@@ -83,6 +83,7 @@ namespace LeclercSXXI
 				return;
 			}
 			feed.ReloadStageStarted += loader.Stage;
+			feed.gameObject.AddComponent<StorageLoadSound>().Watch(feed);
 		}
 
 		void Build(Vehicle vehicle)

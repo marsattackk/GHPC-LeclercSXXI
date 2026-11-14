@@ -88,6 +88,12 @@ namespace LeclercSXXI.Common
 			if (!_sceneHook) { _sceneHook = true; SceneManager.sceneUnloaded += _ => StopAll(); }
 		}
 
+		internal static void Silence(AmmoFeed feed)
+		{
+			for (int i = Active.Count - 1; i >= 0; i--)
+				if (Active[i].Feed == feed) { Stop(Active[i]); Active.RemoveAt(i); }
+		}
+
 		static void Stop(Run r)
 		{
 			if (r.HasChannel) r.Channel.stop();
