@@ -350,12 +350,6 @@ G|Plate|Impact||0.0000|0.0000|0.0000
  T|12.7|-33.3794|-2.3562|8.0000|painted|NightIllumination
  T|OECC|-21.6966|-2.3562|8.0000|painted|NightIllumination
  T|OFL|22.6784|-2.3562|8.0000|painted|NightIllumination
- L|-28.7652|-0.2454|-157.3801|1.2763|0.0687|painted|NightIllumination
- L|-28.7652|-0.7363|-22.6199|1.2763|0.0687|painted|NightIllumination
- L|-17.7696|1.2861|-157.3801|1.2763|0.0687|painted|NightIllumination
- L|-17.7696|0.7952|-22.6198|1.2763|0.0687|painted|NightIllumination
- L|18.6532|-0.6087|-22.6199|1.2763|0.0687|painted|NightIllumination
- L|18.6532|-1.0996|-157.3801|1.2763|0.0687|painted|NightIllumination
  L|36.8155|-1.9635|0.0000|3.1416|0.0589|painted|NightIllumination
  L|36.4719|-1.4726|0.0000|2.4544|0.0589|painted|NightIllumination
  L|36.4719|-0.9817|0.0000|2.4544|0.0589|painted|NightIllumination
@@ -370,6 +364,15 @@ G|Plate|Impact||0.0000|0.0000|0.0000
  T|2|39.1717|-1.9635|7.0000|painted|NightIllumination
  L|33.9685|0.2454|-22.6199|1.2763|0.0687|painted|NightIllumination
  L|33.9685|-0.2454|-157.3801|1.2763|0.0687|painted|NightIllumination
+G|12.7 range index|LasePoint||0.0000|0.0000|0.0000
+ L|-28.7652|-0.2454|-157.3801|1.2763|0.0687|painted|NightIllumination
+ L|-28.7652|-0.7363|-22.6199|1.2763|0.0687|painted|NightIllumination
+G|OECC range index|RotaryRange||0.0000|0.0000|0.0000
+ L|-17.7696|1.2861|-157.3801|1.2763|0.0687|painted|NightIllumination
+ L|-17.7696|0.7952|-22.6198|1.2763|0.0687|painted|NightIllumination
+G|OFL range index|VerticalRange||0.0000|0.0000|0.0000
+ L|18.6532|-0.6087|-22.6199|1.2763|0.0687|painted|NightIllumination
+ L|18.6532|-1.0996|-157.3801|1.2763|0.0687|painted|NightIllumination
 screen|HL 130 day display
 S|rect|box|centre|0.5400|-14.0400|19.9300|8.8400|0.0000|0.0000|0|||center|0.0350,0.0300,0.0250,0.9300
 S|readout|range|centre|-5.6000|-12.6000|7.0000|2.4000|2.1000|0.0000|0|0000|Soviet7SegmentFont SDF|center|0.4200,1.0000,0.3800,1.0000

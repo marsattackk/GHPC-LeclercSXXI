@@ -174,12 +174,13 @@ SHA-256 of `Mods/LeclercSXXI/leclercsxxi` in each release zip. When a release ch
 | 0.1.1 | `de5a338a1794e1b34d66b3bd8eebdd619dcf0e801e7fdc078db2b717971815c5` |
 | 0.1.2 | `1b9e8a91b64ccdddc2794e035e0c089294d2eaba2b2ac270d9aa50fd985486ea` |
 | 0.2.0 | `1b9e8a91b64ccdddc2794e035e0c089294d2eaba2b2ac270d9aa50fd985486ea` |
+| 0.2.1 | `1b9e8a91b64ccdddc2794e035e0c089294d2eaba2b2ac270d9aa50fd985486ea` |
 
-0.2.0 ships the same bundle file as 0.1.2, byte for byte (191,848,931 bytes). What changed in that release is the DLL,
+0.2.0 and 0.2.1 ship the same bundle file as 0.1.2, byte for byte (191,848,931 bytes). What changed in 0.2.0 is the DLL,
 which now also carries the five text tables, `dm_armour`, `vanilla_edits`, `material_roles`, `rig_map` and
 `smoke_points`, and reads them first. The bundle's own copies are only the fallback.
 
 ```
-Expand-Archive LeclercSXXI_0.2.0.zip -DestinationPath check
+Expand-Archive LeclercSXXI_0.2.1.zip -DestinationPath check
 (Get-FileHash check\Mods\LeclercSXXI\leclercsxxi -Algorithm SHA256).Hash.ToLower()
 ```

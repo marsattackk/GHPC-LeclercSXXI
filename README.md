@@ -89,8 +89,9 @@ laser and the fire control. The keys are the game's own:
 
 **Lasing.** The laser reads out to 6000 m and has no minimum range. Put the centre of the cross on the target and lase.
 The computer puts superelevation and lead into the gun, and the cross stays where you put it. What moves is the plate,
-the big set of scales round the cross. It shows where the gun is actually laid, so after a lase it jumps up, and to the
-side as well if you were tracking. Don't chase it. Keep the cross on the target.
+the big set of scales round the cross. It shows the elevation and lead the computer is putting in, so after a lase it
+moves up, and to the side as well if you were tracking. Don't chase it. Keep the cross on the target. The arrow by each
+range scale points at the range that's set, read on that round's scale.
 
 There's no manual mode to fall into. Set the range by hand and the computer simply lays the gun for that range, with
 everything else still on. That's the way to shoot with the laser gone, or into smoke the laser can't see through. For a

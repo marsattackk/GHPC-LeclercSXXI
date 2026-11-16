@@ -17,12 +17,25 @@ namespace LeclercSXXI
 	// plate shows the gun's direction (the fire control's lay: superelevation and lead; not the barrel itself, so the loading
 	// dip doesn't drag it). Not the parallax: the gun still converges on the line of sight, but the plate jumped 5.6 mil
 	// sideways at 100 m, 1.9 at 300 m (the head 0.56 m beside the bore), at every range step (user, 2026-11-16).
+	// Each drop scale's index (the French diagram's "<" / ">") points at the set range on its own round's scale and moves
+	// with the plate: INFERRED, no source says what drives it. GHPC moves a reticle part only by its group's alignment, one
+	// bone per alignment, so each index has an alignment of its own that this class drives in place of the game (none of
+	// the three means here what its name says; the game also turns the RotaryRange bone by the range: put back straight).
 	[DefaultExecutionOrder(20)]
 	internal sealed class GunnerDayReticle : MonoBehaviour
 	{
 		const string File = "hl130_day.jsonc";
 		static readonly System.Reflection.FieldInfo ParallaxOn = Reflect.Field(typeof(FireControlSystem), "_fixParallaxForVectorMode");
+		static readonly System.Reflection.FieldInfo LayRound = Reflect.Field(typeof(FireControlSystem), "_bcAmmo");
+		static readonly (ReticleTree.GroupBase.Alignment Align, string Round, string Top)[] RangeIndices =
+		{
+			(ReticleTree.GroupBase.Alignment.LasePoint, "m2", "Top127"),
+			(ReticleTree.GroupBase.Alignment.RotaryRange, "oecc", "TopOecc"),
+			(ReticleTree.GroupBase.Alignment.VerticalRange, "ofl", "TopOfl"),
+		};
 		UsableOptic _optic;
+		AmmoType[] _indexRounds;
+		float[] _indexTops;
 
 		internal static ReticleSO Fit(Vehicle vehicle, UsableOptic optic, ReticleSO fallback)
 		{
@@ -51,33 +64,58 @@ namespace LeclercSXXI
 
 			var marks = Reticles.Hl130Day.Build(File, host, fontHost, rounds);
 			foreach (var label in ReticleBuild.AllOf<ReticleTree.Text>(marks)) label.font = font;
-			optic.gameObject.AddComponent<GunnerDayReticle>().Init(optic);
+			var spec = Reticles.Hl130Day.Spec(File);
+			var indexRounds = RangeIndices.Select(index => rounds[index.Round].AmmoType).ToArray();
+			var indexTops = RangeIndices.Select(index => (float)spec.Num(index.Top)).ToArray();
+			optic.gameObject.AddComponent<GunnerDayReticle>().Init(optic, indexRounds, indexTops);
 			return marks;
 		}
 
-		void Init(UsableOptic optic)
+		void Init(UsableOptic optic, AmmoType[] indexRounds, float[] indexTops)
 		{
 			_optic = optic;
+			_indexRounds = indexRounds;
+			_indexTops = indexTops;
 		}
 
 		void LateUpdate()
 		{
 			if (_optic?.slot == null || !_optic.slot.IsActive || _optic.FCS == null || _optic.reticleMesh == null) return;
 			var fcs = _optic.FCS;
-			// No range, no round: the gun on the line of sight, the emergency mark on the cross.
+			var mesh = _optic.reticleMesh;
+			mesh.SetRotation(ReticleTree.GroupBase.Alignment.RotaryRange, new AngularLength(0f, AngularLength.AngularUnit.DEG));
+			// No range, no round: the gun on the line of sight, the emergency mark on the cross, each index on its zero.
 			if (fcs.CurrentRange <= 0f || fcs.CurrentAmmoType == null)
 			{
-				_optic.reticleMesh.SetAlignment(ReticleTree.GroupBase.Alignment.Impact, default(AngularVector2));
+				mesh.SetAlignment(ReticleTree.GroupBase.Alignment.Impact, default(AngularVector2));
+				foreach (var index in RangeIndices)
+				{
+					mesh.SetAlignment(index.Align, default(AngularVector2));
+				}
 				return;
 			}
 			var offset = Offset(fcs);
-			var mesh = _optic.reticleMesh;
-			mesh.SetAlignment(ReticleTree.GroupBase.Alignment.Impact, offset * mesh.transform.forward, ReticleMesh.VectorType.Direction);
+			var forward = mesh.transform.forward;
+			mesh.SetAlignment(ReticleTree.GroupBase.Alignment.Impact, offset * forward, ReticleMesh.VectorType.Direction);
+			var ballistics = BallisticComputerRepository.Instance;
+			for (int i = 0; i < RangeIndices.Length; i++)
+			{
+				// The round's superelevation at the set range (as its scale's rows: VerticalBallistic), the scale's last
+				// row at most, up from the zero row with the plate.
+				float range = Mathf.Min(fcs.CurrentRange, _indexTops[i]);
+				float lift = ballistics != null ? ballistics.GetSuperelevation(_indexRounds[i], range) : 0f;
+				var up = Quaternion.AngleAxis(-lift, mesh.transform.right);
+				mesh.SetAlignment(RangeIndices[i].Align, offset * up * forward, ReticleMesh.VectorType.Direction);
+			}
 		}
 
 		// The gun's lay against the aim (superelevation, lead), applied to the line of sight. Not against the sight's own
 		// direction: it lags at its limits while the turret comes round (the plate went off the screen). The parallax term
 		// GHPC adds once a range is set (the sight's position less the muzzle's, GunnerFcs.Parallax) is taken back out.
+		// GHPC also lays the gun by a fall of shot it interpolates in a straight line from its first 0.1 deg step, so the gun
+		// stays at least 0.1 deg (1.78 mil) up out to about 1 km and the plate jumped that far at the first range (user,
+		// 2026-11-16; 1.78 mil from 100 to 1000 m, then the round's own 3.45 at 2000 m). The plate rises by the round's
+		// superelevation instead, the table its scales are drawn from; the lead stays the fire control's.
 		internal static Quaternion Offset(FireControlSystem fcs)
 		{
 			var aim = fcs.AimWorldVector;
@@ -89,8 +127,19 @@ namespace LeclercSXXI
 			{
 				lay -= fcs.ReferenceTransform.position - muzzle.position;
 			}
+			var ballistics = BallisticComputerRepository.Instance;
+			var round = LayRound?.GetValue(fcs) as AmmoType;
+			float range = fcs.CurrentRange;
+			if (ballistics != null && round != null && range > 0f)
+			{
+				float rise = Mathf.Tan(ballistics.GetSuperelevation(round, range) * Mathf.Deg2Rad) * range;
+				lay += Vector3.up * (rise - ballistics.GetFallOfShot(round, range));
+			}
 			if (aim.sqrMagnitude < 1e-6f || lay.sqrMagnitude < 1e-6f) return Quaternion.identity;
-			return Quaternion.FromToRotation(aim.normalized, lay.normalized);
+			// Two look rotations, not FromToRotation: that one rounds angles under about 1 mrad to nothing (the plate stayed
+			// on the cross out to 500 m).
+			var toLay = Quaternion.LookRotation(lay.normalized, Vector3.up);
+			return toLay * Quaternion.Inverse(Quaternion.LookRotation(aim.normalized, Vector3.up));
 		}
 	}
 }

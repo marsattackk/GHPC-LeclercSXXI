@@ -4,7 +4,7 @@ using MelonLoader;
 using MelonLoader.Utils;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(LeclercSXXI.LeclercSXXIMod), "Leclerc SXXI", "0.2.0", "marsattackk")]
+[assembly: MelonInfo(typeof(LeclercSXXI.LeclercSXXIMod), "Leclerc SXXI", "0.2.1", "marsattackk")]
 [assembly: MelonGame("Radian Simulations LLC", "GHPC")]
 
 namespace LeclercSXXI

@@ -64,9 +64,14 @@ redrawn from pictures of the real sight, one of them a French diagram with the e
   and dots and the same readout without the box.
 - The units are French millièmes. 6400 to a turn, the same as NATO mils.
 - The pictures show the plate 7.6 to 23.6 mils above the cross and once 10 to its side, while the cross and the box stay
-  put, so I read it as the plate showing where the gun is laid. That's my reading, not something a source says. A few
-  small marks aren't drawn yet: the scales' second "<" index, the bubble level, the corner brackets one thermal picture
-  shows and the dashed circle round the cross in two of them.
+  put, so I read it as the plate showing where the gun is laid. That's my reading, not something a source says.
+- Each drop scale's "<" index slides up to the range that's set, read on that round's own scale, and stops at the
+  scale's top. No source says what drives it; that's my reading too. The French diagram also shows one fixed on each
+  zero, which I left out.
+- The plate rises by the round's superelevation from the same table its scales are drawn from. The game's own gun lay
+  holds the gun at least 0.1° up out to about a kilometre, which made the plate jump 1.8 mils at the first range.
+- A few small marks aren't drawn yet: the bubble level, the corner brackets one thermal picture shows and the dashed
+  circle round the cross in two of them.
 
 **HL 120** (commander): the head is on the turret and can be shot off, but it's a still prop. The commander has no
 sight of its own, only the free-look view and the night-vision goggles. What the HL 120 gives you is the **secours**:
@@ -250,9 +255,9 @@ like to see it.
 
 - The HL 130's day fields of 17.5° / 5.5° are sourced (the French wiki). The thermal's 576 lines follow the same rule as
   the T-90A's ESSA.
-- On the HL 130 reticle I didn't draw the second "<" index of each scale, the bubble level, the thermal's corner brackets,
-  the dashed-circle cross variant, the doubling mark or «PC». The plate follows the gun's lay (superelevation, lead and
-  parallax) by my guess. The «E» for the HE round has no picture behind it, and the hull symbol's size and place are my
+- On the HL 130 reticle I didn't draw the bubble level, the thermal's corner brackets, the dashed-circle cross variant,
+  the doubling mark or «PC». The plate follows the gun's lay (superelevation and lead) by my guess, and each scale's
+  index pointing at the set range is my guess too. The «E» for the HE round has no picture behind it, and the hull symbol's size and place are my
   guess too.
 - The secours view's x10 field is the HL 70's narrow one, borrowed, because I found no figure for the HL 120's own.
   The head doesn't turn, so the view always looks where the gun does.
