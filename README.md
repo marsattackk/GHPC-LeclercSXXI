@@ -57,18 +57,6 @@ as long as you stay on one round.
 
 How it was made, what it takes from other tanks and where I guessed: [docs/details.md](docs/details.md).
 
-## Target alerts
-
-The crew are American, voiced by the M1IP's, because the game has no French army to take voices from. They don't call a
-bearing at all. The commander names the round and the target the US way ("Gunner, sabot, tank"), then talks you on with
-"traverse left" or "traverse right", "steady" as you get close and "on" once you're on it. The gunner answers
-"identified", and if your range is a long way out the commander tells you to lase again before he gives "fire". If the
-wrong round's loaded he names the one he wants with the fire order.
-
-It's nothing like the T-80B's hull compass in the
-[official T-80B guide](https://gunnerheatpc.com/news/articles/gunnery-guide-t-80b), which my T-90s use. Just turn the way
-he says until he stops.
-
 ## HL 130 sight
 
 <p align="center">
@@ -78,42 +66,40 @@ he says until he stops.
 
 *Left: the HL 130 day channel, lased on a tank at 180 m. Right: the Iris on the same tank at x10.*
 
-The gunner's sight is the HL 130, a day channel and the Iris thermal behind one window on the turret roof, with the
-laser and the fire control. The keys are the game's own:
+The HL 130 is the gunner's sight: a day channel and the Iris thermal behind one window on the turret roof, with the laser
+and the fire control built in. It's used much like the M1IP's GPS in the
+[official M1IP guide](https://gunnerheatpc.com/news/articles/gunnery-guide-m1ip). Keep the cross on the target, lase and
+fire, and the computer looks after superelevation and lead. The keys are the game's own:
 
 - lase (default E)
-- set the range by hand (default LCtrl + mouse wheel, or PgUp / PgDn), and LCtrl + range down puts it back to the
-  battlesight range
 - zoom (default mouse wheel): 17.5° and 5.5° on the day channel
 - thermal (default T)
+- range by hand (default LCtrl + mouse wheel, or PgUp / PgDn). LCtrl + range down puts it back to battlesight
 
-**Lasing.** The laser reads out to 6000 m and has no minimum range. Put the centre of the cross on the target and lase.
-The computer puts superelevation and lead into the gun, and the cross stays where you put it. What moves is the plate,
-the big set of scales round the cross. It shows the elevation and lead the computer is putting in, so after a lase it
-moves up, and to the side as well if you were tracking. Don't chase it. Keep the cross on the target. The arrow by each
-range scale points at the range that's set, read on that round's scale.
+**Lasing.** Put the centre of the cross on the target and lase. The laser reads out to 6000 m and has no minimum range.
+After the lase the cross stays on the target and the scales round it move instead. They show the elevation and lead going
+into the gun, so they jump up, and sideways too if you were tracking. Ignore them and keep the cross where it is. The
+arrow next to each round's range scale marks the range that's set.
 
-There's no manual mode to fall into. Set the range by hand and the computer simply lays the gun for that range, with
-everything else still on. That's the way to shoot with the laser gone, or into smoke the laser can't see through. For a
-range without the laser, the curved stadia lines on the plate are for a target 6 m long, marked 10, 20 and 30 for
-1000, 2000 and 3000 m.
+With the laser gone, or a target behind smoke the laser can't see through, set the range by hand. There's no separate
+manual mode, so the computer still lays the gun for that range with everything else working. The curved stadia lines
+help you judge it: a 6 m long target fills the one marked 10 at 1000 m, 20 at 2000 m and 30 at 3000 m.
 
-**Lead.** It works like the M1's. Hold the palm switch, listed as Aim (Palm Switch) in the controls and the right mouse
-button by default, so you're already holding it to aim with the mouse. Track the target and lase while you're still
-tracking. From then on the lead follows the last half second of your tracking, up and down as well as sideways, for as
-long as you keep the button held. Let go before you fire and the lead's gone, and a lase without it held gives no lead
-at all. The gun can lead up to 5° ahead of the sight, which only a fast target close in will run out of.
+**Lead.** Same as the M1's. Hold the palm switch (Aim (Palm Switch) in the controls, right mouse button by default),
+track the target and lase while you're still tracking. The lead then follows your last half second of tracking, up and
+down as well as sideways, for as long as you hold the button. Let go and it's dumped, so keep holding until the round's
+gone. A lase without the button held gives no lead at all. The gun can lead up to 5° ahead of the sight, and only a fast
+target close in will run out of that.
 
-**Firing when laid.** After a lase the gun won't fire until it has climbed to the elevation the computer set. On a long
-shot you'll feel it as a short pause before the round goes. There's no setting for it.
+**Firing.** After a lase the gun won't fire until it has climbed to the elevation the computer wants. On a long shot
+that's a short pause before the round goes. Wait for the ready square and you won't notice it.
 
 **The display.** The green box under the cross:
 
-- four digits, the range in metres in steps of 5. "HF" instead means no range is set, or it's back on battlesight
-- the round in the gun: F for the dart, C for the HEAT, E for the HE. With the coax selected the letter goes blank
-- the arrow is the gun. The outline round it is the hull and turns to show which way it points, so you know where your
-  nose is without looking out
-- the small square on the right lights when the gun is loaded and laid, the same job as the M1's ready mark
+- the range in metres, in steps of 5. "HF" means no range is set or it's on battlesight
+- the round loaded: F for the dart, C for the HEAT, E for the HE. Blank with the coax selected
+- the arrow is the gun, and the outline round it is the hull. It turns to show where your nose points
+- the small square on the right lights when the gun is loaded and laid, like the M1's ready mark
 
 The thermal has the same row along the bottom, without the box, under a cross with hollow bars and dots.
 
