@@ -1,0 +1,17 @@
+{
+	"name": "Leclerc SXXI HL 130 hull symbol",
+	"fov": 1,
+	"units": "mrad",
+	"vars": {"W": 0.09, "Hw": 0.34, "Top": 0.5, "Bottom": -0.5, "R": 0.14},
+	"elements": [],
+	"screen": {
+		"name": "HL 130 hull symbol",
+		"items": [
+			{"seg": ["-Hw", "Bottom", "-Hw", "Top - R"], "w": "W"},
+			{"seg": ["Hw", "Bottom", "Hw", "Top - R"], "w": "W"},
+			{"seg": ["-Hw", "Top - R", "-Hw + R", "Top"], "w": "W"},
+			{"seg": ["Hw", "Top - R", "Hw - R", "Top"], "w": "W"},
+			{"seg": ["-Hw + R", "Top", "Hw - R", "Top"], "w": "W"}
+		]
+	}
+}

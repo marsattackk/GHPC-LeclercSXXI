@@ -17,6 +17,10 @@ using UnityEngine.AddressableAssets;
 
 namespace LeclercSXXI.Common
 {
+	// Gets my unit into the unit list, the mission menu, the spawner and the campaign, and runs its spawn code. A port
+	// fills in a UnitDef.
+	// Fields a tank never sets keep their defaults here: another tank sets them (CS0649 is off for this declaration only).
+#pragma warning disable CS0649
 	internal sealed class UnitDef
 	{
 		public string Key;
@@ -24,12 +28,47 @@ namespace LeclercSXXI.Common
 		public Func<string> BaseUnit;
 		public Func<string> ArmyFrom;
 		public Func<bool> Enabled = () => true;
+		public Func<bool> InCampaign = () => false;
+		public Func<float> CampaignPrevalence = () => 0.5f;
+		public Func<int> CampaignAfterMissions = () => 0;
 		public Action<Vehicle> OnSpawn;
 		public string[] ShieldFrom;
 		public Func<string> ShieldName;
 	}
+#pragma warning restore CS0649
 
-	internal static class UnitRegistry
+	internal sealed class CampaignConfig
+	{
+		internal MelonPreferences_Entry<bool> InRoster;
+		internal MelonPreferences_Entry<float> Prevalence;
+		internal MelonPreferences_Entry<int> AfterMissions;
+
+		internal static CampaignConfig Create(MelonPreferences_Category cfg, string friendlyName, float prevalence, int afterMissions)
+			=> Create(cfg, friendlyName, prevalence, afterMissions, "Soviet");
+
+		internal static CampaignConfig Create(MelonPreferences_Category cfg, string friendlyName, float prevalence, int afterMissions, string side)
+			=> new CampaignConfig
+			{
+				InRoster = cfg.CreateEntry(
+					"Add to campaign roster",
+					true,
+					description: $"Adds the {friendlyName} to the {side} campaign roster."),
+				Prevalence = cfg.CreateEntry(
+					"Campaign prevalence",
+					prevalence,
+					description: "How common it is compared to other tanks (1 = as common as a typical tank)."),
+				AfterMissions = cfg.CreateEntry("Campaign unlock after missions", afterMissions),
+			};
+
+		internal void Use(UnitDef u)
+		{
+			u.InCampaign = () => InRoster.Value;
+			u.CampaignPrevalence = () => Prevalence.Value;
+			u.CampaignAfterMissions = () => AfterMissions.Value;
+		}
+	}
+
+	internal static partial class UnitRegistry
 	{
 		internal static readonly List<UnitDef> Units = new List<UnitDef>();
 		static bool _registered, _running;
@@ -41,7 +80,8 @@ namespace LeclercSXXI.Common
 		internal static UnitPrefabLookupScriptable.UnitPrefabMetadata Find(string key) => FindIn(Lookup, key);
 
 		static UnitPrefabLookupScriptable.UnitPrefabMetadata FindIn(UnitPrefabLookupScriptable lookup, string key) =>
-			lookup?.AllUnits?.FirstOrDefault(m => m != null && string.Equals(m.Name, key, StringComparison.OrdinalIgnoreCase));
+			lookup?.AllUnits?.FirstOrDefault(m => m != null
+				&& string.Equals(m.Name, key, StringComparison.OrdinalIgnoreCase));
 
 		internal static void TryRegister()
 		{
@@ -52,13 +92,30 @@ namespace LeclercSXXI.Common
 
 		static IEnumerator RegisterRoutine()
 		{
+			float started = Time.realtimeSinceStartup;
+			bool warned = false;
 			while (!_registered)
 			{
 				bool any = false;
 				foreach (var lookup in Resources.FindObjectsOfTypeAll<UnitPrefabLookupScriptable>())
 					any |= EnsureRegistered(lookup);
-				if (any) _registered = true;
-				else yield return null;
+				if (any)
+				{
+					_registered = true;
+					break;
+				}
+				if (Time.realtimeSinceStartup - started < 60f)
+				{
+					yield return null;
+					continue;
+				}
+				if (!warned)
+				{
+					warned = true;
+					string keys = string.Join(", ", Units.Where(c => c.Enabled()).Select(x => x.Key));
+					MelonLogger.Warning($"{keys}: not added to the unit list after a minute (base unit not found); still trying.");
+				}
+				yield return new WaitForSecondsRealtime(1f);
 			}
 			_running = false;
 		}
@@ -70,18 +127,22 @@ namespace LeclercSXXI.Common
 		{
 			if (lookup?.AllUnits == null) return false;
 			bool all = true;
-			foreach (var u in Units.Where(x => x.Enabled()))
+			foreach (var definition in Units.Where(c => c.Enabled()))
 			{
-				if (FindIn(lookup, u.Key) != null) continue;
-				var baseMeta = FindIn(lookup, u.BaseUnit());
-				if (baseMeta?.PrefabReference == null) { all = false; continue; }
-				var armyMeta = FindIn(lookup, u.ArmyFrom()) ?? baseMeta;
+				if (FindIn(lookup, definition.Key) != null) continue;
+				var baseMeta = FindIn(lookup, definition.BaseUnit());
+				if (baseMeta?.PrefabReference == null)
+				{
+					all = false;
+					continue;
+				}
+				var armyMeta = FindIn(lookup, definition.ArmyFrom()) ?? baseMeta;
 				var units = lookup.AllUnits.ToList();
 				units.Add(new UnitPrefabLookupScriptable.UnitPrefabMetadata
 				{
-					Name = u.Key,
-					FriendlyName = u.FriendlyName(),
-					// Shared on purpose, the spawner loads each reference once.
+					Name = definition.Key,
+					FriendlyName = definition.FriendlyName(),
+					// Shared on purpose. The spawner loads each reference once.
 					PrefabReference = baseMeta.PrefabReference,
 					// Not shared: the customizer loads every unit's ammo list and Addressables moans at a second load.
 					BaseAmmoClipsReference = OwnReference(baseMeta.BaseAmmoClipsReference),
@@ -100,13 +161,100 @@ namespace LeclercSXXI.Common
 			return all;
 		}
 
+		// A campaign save holds no unit list. Each mission draws from AllUnits, so entries can come and go.
+		static readonly HashSet<TheaterUnitMetadata> _added = new HashSet<TheaterUnitMetadata>();
+		static readonly HashSet<string> _notFielded = new HashSet<string>();
+
+		internal static void StartCampaignRoster()
+		{
+			if (_added.Count > 0 || Units.Any(d => d.Enabled() && d.InCampaign()))
+				MelonCoroutines.Start(UpdateCampaignRoster());
+		}
+
+		internal static IEnumerator UpdateCampaignRoster()
+		{
+			TheaterMetaScriptable meta = null;
+			for (int frame = 0; frame < 600 && meta == null; frame++)
+			{
+				if (frame % 10 == 0) meta = Resources.FindObjectsOfTypeAll<TheaterMetaScriptable>().FirstOrDefault();
+				if (meta == null) yield return null;
+			}
+			if (meta?.AllTheaters == null) yield break;
+
+			foreach (var theater in meta.AllTheaters)
+			{
+				if (theater?.Factions == null) continue;
+				foreach (var faction in theater.Factions)
+				{
+					if (faction?.AllUnits == null) continue;
+					var gone = faction.AllUnits
+						.Where(m => m != null
+							&& _added.Contains(m)
+							&& !Units.Any(d => d.Key == m.Key && d.Enabled() && d.InCampaign()))
+						.ToList();
+					if (gone.Count == 0) continue;
+					faction.AllUnits = faction.AllUnits.Except(gone).ToArray();
+					foreach (var metadata in gone) _added.Remove(metadata);
+				}
+			}
+
+			foreach (var definition in Units.Where(c => c.Enabled() && c.InCampaign()))
+			{
+				bool fielded = false;
+				foreach (var theater in meta.AllTheaters)
+				{
+					if (theater?.Factions == null) continue;
+					foreach (var faction in theater.Factions)
+					{
+						if (faction?.AllUnits == null) continue;
+						var units = faction.AllUnits.ToList();
+						var ours = units.FirstOrDefault(m => m != null && m.Key == definition.Key);
+						if (ours != null)
+						{
+							fielded = true;
+							if (_added.Contains(ours))
+							{
+								ours.Prevalence = definition.CampaignPrevalence();
+								ours.BlockUntilMissionsCompleted = definition.CampaignAfterMissions();
+							}
+							continue;
+						}
+						var armyUnit = units.FirstOrDefault(m => m != null && m.Key == definition.ArmyFrom());
+						if (armyUnit == null) continue;
+						fielded = true;
+						var template = units.FirstOrDefault(m => m != null && m.Key == definition.BaseUnit())
+							?? armyUnit;
+						var entry = new TheaterUnitMetadata
+						{
+							Key = definition.Key,
+							FriendlyName = definition.FriendlyName(),
+							Type = armyUnit.Type,
+							Class = armyUnit.Class,
+							Tier = armyUnit.Tier,
+							SpawnRatio = armyUnit.SpawnRatio,
+							Prevalence = definition.CampaignPrevalence(),
+							BlockUntilMissionsCompleted = definition.CampaignAfterMissions(),
+							LogisticsModifierCurve = template.LogisticsModifierCurve,
+						};
+						units.Add(entry);
+						_added.Add(entry);
+						faction.AllUnits = units.ToArray();
+					}
+				}
+				if (!fielded && _notFielded.Add(definition.Key))
+					MelonLogger.Msg($"{definition.FriendlyName()}: no campaign side fields the {definition.ArmyFrom()}, so it is not in the campaign roster.");
+			}
+		}
+
 		// The customizer has its own registry reference, not necessarily the one I added to.
 		[HarmonyPatch(typeof(MissionConfigMenuPanel), "GetUnitKeysByClass")]
 		internal static class MenuListPatch
 		{
 			static readonly AccessTools.FieldRef<MissionConfigMenuPanel, UnitPrefabLookupScriptable> AllUnits =
 				Reflect.FieldRefAccess<MissionConfigMenuPanel, UnitPrefabLookupScriptable>("_allUnitsScriptable");
-			static readonly FieldInfo Cache = Reflect.Field(typeof(MissionConfigMenuPanel), "_unitKeysByClassCached");
+			static readonly FieldInfo Cache = Reflect.Field(
+				typeof(MissionConfigMenuPanel),
+				"_unitKeysByClassCached");
 
 			internal static void ClearCache() => (Cache?.GetValue(null) as IDictionary)?.Clear();
 
@@ -114,7 +262,8 @@ namespace LeclercSXXI.Common
 			{
 				var lookup = AllUnits(__instance);
 				if (lookup?.AllUnits == null) return;
-				if (Units.Any(u => u.Enabled() && !lookup.AllUnits.Any(m => m != null && m.Name == u.Key)))
+				if (Units.Any(d => d.Enabled()
+					&& !lookup.AllUnits.Any(m => m != null && m.Name == d.Key)))
 					EnsureRegistered(lookup);
 			}
 		}
@@ -129,21 +278,24 @@ namespace LeclercSXXI.Common
 
 			static void Prefix(UnitSpawner __instance, string __0)
 			{
-				var u = Units.FirstOrDefault(x => string.Equals(__0, x.Key, StringComparison.OrdinalIgnoreCase));
-				if (u == null || !u.Enabled() || __instance == null) return;
+				var definition = Units.FirstOrDefault(c => string.Equals(__0, c.Key, StringComparison.OrdinalIgnoreCase));
+				if (definition == null || !definition.Enabled() || __instance == null) return;
 				var lookup = __instance.PrefabLookup;
 				if (lookup?.AllUnits == null) return;
-				bool listed = FindIn(lookup, u.Key) != null;
+				bool listed = FindIn(lookup, definition.Key) != null;
 				if (!listed) EnsureRegistered(lookup);
 				var cache = CacheField?.GetValue(__instance) as IDictionary;
-				bool stale = cache != null && !cache.Contains(u.Key);
+				bool stale = cache != null && !cache.Contains(definition.Key);
 				if (stale || !listed) CacheField?.SetValue(__instance, null);
 				if ((stale || !listed) && _told.Add(__instance.GetInstanceID()))
-					MelonLogger.Msg($"{u.Key}: the unit spawner's list {(listed ? "had it but its name cache did not" : $"'{lookup.name}' lacked it")}; added again before the spawn.");
+					MelonLogger.Msg($"{definition.Key}: the unit spawner's list {(listed ? "had it but its name cache did not" : $"'{lookup.name}' lacked it")}; added again before the spawn.");
 			}
 		}
 
-		[HarmonyPatch(typeof(UnitSpawner), nameof(UnitSpawner.SpawnUnit), new[] { typeof(string), typeof(UnitMetaData), typeof(WaypointHolder), typeof(Transform) })]
+		[HarmonyPatch(
+			typeof(UnitSpawner),
+			nameof(UnitSpawner.SpawnUnit),
+			new[] { typeof(string), typeof(UnitMetaData), typeof(WaypointHolder), typeof(Transform) })]
 		internal static class SpawnPatch
 		{
 			static readonly AccessTools.FieldRef<Unit, string> UniqueName = Reflect.FieldRefAccess<Unit, string>("_uniqueName");
@@ -152,14 +304,26 @@ namespace LeclercSXXI.Common
 			static void Postfix(string __0, IUnit __result)
 			{
 				string uniqueName = __0;
-				var u = Units.FirstOrDefault(x => string.Equals(uniqueName, x.Key, StringComparison.OrdinalIgnoreCase));
-				if (u == null) return;
-				if (!(__result is Vehicle vehicle)) { MelonLogger.Warning($"{u.Key} spawn returned no Vehicle."); return; }
+				var definition = Units.FirstOrDefault(c => string.Equals(
+					uniqueName,
+					c.Key,
+					StringComparison.OrdinalIgnoreCase));
+				if (definition == null) return;
+				if (!(__result is Vehicle vehicle))
+				{
+					MelonLogger.Warning($"{definition.Key} spawn returned no Vehicle.");
+					return;
+				}
 				// Now, not later: other mods convert the base unit by name at PlayerReady.
-				UniqueName(vehicle) = u.Key;
-				FriendlyNameRef(vehicle) = u.FriendlyName();
-				u.OnSpawn?.Invoke(vehicle);
-				ArmShield(vehicle, u);
+				if (UniqueName != null) UniqueName(vehicle) = definition.Key;
+				if (FriendlyNameRef != null) FriendlyNameRef(vehicle) = definition.FriendlyName();
+				// A throw out of this postfix reaches GHPC's mission spawner: the conversion's failure stays here.
+				try { definition.OnSpawn?.Invoke(vehicle); }
+				catch (Exception exception)
+				{
+					MelonLogger.Error($"{definition.Key} conversion failed at spawn, the unit may be half converted: {exception}");
+				}
+				ArmShield(vehicle, definition);
 			}
 		}
 
@@ -174,14 +338,15 @@ namespace LeclercSXXI.Common
 			if (u.ShieldFrom == null) return;
 			if (NameShield.Form(u.FriendlyName(), u.ShieldFrom, ShieldNameOf(u)) == null) return;
 			if (StateController.IsGameStateTriggered(GameState.SkyReady)) return;
-			var sc = StateController.Instance;
-			if (sc == null) return;
-			if (_shieldArmedFor != sc)
+			var controller = StateController.Instance;
+			if (controller == null) return;
+			if (_shieldArmedFor != controller)
 			{
 				_shielded.Clear();
-				if (StateController.RunOrDefer(GameState.SkyReady, ShieldOn, GameStatePriority.High) != GameStateInvocationStatus.Deferred) return;
+				if (StateController.RunOrDefer(GameState.SkyReady, ShieldOn, GameStatePriority.High) != GameStateInvocationStatus.Deferred)
+					return;
 				StateController.RunOrDefer(GameState.SkyReady, ShieldOff, GameStatePriority.Low);
-				_shieldArmedFor = sc;
+				_shieldArmedFor = controller;
 			}
 			_shielded.Add((v, u));
 		}
@@ -191,18 +356,28 @@ namespace LeclercSXXI.Common
 		static IEnumerator ShieldOn(GameState _)
 		{
 			_shieldCount = 0;
-			foreach (var (v, u) in _shielded)
-				if (v != null && v.FriendlyName == u.FriendlyName()) { ShieldNameRef(v) = ShieldNameOf(u); _shieldCount++; }
+			foreach (var (vehicle, definition) in _shielded)
+				if (vehicle != null && vehicle.FriendlyName == definition.FriendlyName())
+				{
+					ShieldNameRef(vehicle) = ShieldNameOf(definition);
+					_shieldCount++;
+				}
 			yield break;
 		}
 
 		static IEnumerator ShieldOff(GameState _)
 		{
 			int back = 0;
-			foreach (var (v, u) in _shielded)
-				if (v != null && v.FriendlyName == ShieldNameOf(u)) { ShieldNameRef(v) = u.FriendlyName(); back++; }
-			if (_shielded.Count > 0) MelonLogger.Msg($"Name shield: {_shieldCount} unit(s) named '{ShieldNameOf(_shielded[0].u)}' over SkyReady, {back} given back '{_shielded[0].u.FriendlyName()}'.");
-			_shielded.Clear(); _shieldArmedFor = null;
+			foreach (var (vehicle, definition) in _shielded)
+				if (vehicle != null && vehicle.FriendlyName == ShieldNameOf(definition))
+				{
+					ShieldNameRef(vehicle) = definition.FriendlyName();
+					back++;
+				}
+			if (_shielded.Count > 0)
+				MelonLogger.Msg($"Name shield: {_shieldCount} unit(s) named '{ShieldNameOf(_shielded[0].u)}' over SkyReady, {back} given back '{_shielded[0].u.FriendlyName()}'.");
+			_shielded.Clear();
+			_shieldArmedFor = null;
 			yield break;
 		}
 	}

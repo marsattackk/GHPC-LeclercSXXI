@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GHPC.Vehicle;
 using LeclercSXXI.Common;
 using MelonLoader;
@@ -8,38 +7,52 @@ using UnityEngine;
 
 namespace LeclercSXXI
 {
-	internal static class Armour
+	// Loads the armour pieces and their numbers from the bundle and fits them: the Leclerc's own pieces and compartments in
+	// place of the T-80B's.
+	internal static partial class Armour
 	{
-		static DmArmour _values;
-		static VanillaEdits _edits;
+		internal static GameObject Prefab;
+		internal static DmArmour Values;
+		// These exterior pieces live in the donor's separate AAR hierarchy, outside the armour collider groups.
 		static readonly string[] StandaloneExterior = { "TurretRingNotSureAboutTheCrossection", "Commander_Cupola_Ring" };
 
 		internal static void Load(AssetBundle bundle)
 		{
-			var values = bundle?.LoadAsset<TextAsset>(DmArmour.AssetName);
-			var edits = bundle?.LoadAsset<TextAsset>(VanillaEdits.AssetName);
-			_values = values == null ? null : DmArmour.Parse(values.text);
-			_edits = edits == null ? null : VanillaEdits.Parse(edits.text);
-			if (_edits != null) _edits.Off = _edits.Off.Except(StandaloneExterior).ToArray();
+			Prefab = BundleAssets.Prefab(
+				bundle,
+				"LeclercSXXI_armor",
+				LeclercSXXIMod.FriendlyName,
+				required: false,
+				ifMissing: "armour will not be changed.");
+			var values = PortText.Load(bundle, DmArmour.AssetName);
+			var edits = PortText.Load(bundle, VanillaEdits.AssetName);
+			Values = values == null ? null : DmArmour.Parse(values);
+			LeclercSXXIMod.Edits = edits == null ? null : VanillaEdits.Parse(edits);
+			if (LeclercSXXIMod.Edits != null) LeclercSXXIMod.Edits.Off = LeclercSXXIMod.Edits.Off.Except(StandaloneExterior).ToArray();
 		}
 
 		internal static void Apply(Vehicle vehicle)
 		{
-			if (_values == null || _edits == null || LeclercSXXIMod.Armor == null)
+			if (Values == null || LeclercSXXIMod.Edits == null || Prefab == null)
 			{
-				MelonLogger.Warning("Leclerc SXXI: armour is incomplete; keeping the donor armour.");
+				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: armour is incomplete; keeping the donor armour.");
 				return;
 			}
 			var problems = new List<string>();
-			foreach (var col in vehicle.GetComponentsInChildren<Collider>(true).Where(c => StandaloneExterior.Contains(c.name)))
+			foreach (var collider in vehicle
+				.GetComponentsInChildren<Collider>(true)
+				.Where(piece => StandaloneExterior.Contains(piece.name)))
 			{
-				col.gameObject.SetActive(false);
+				collider.gameObject.SetActive(false);
 			}
-			StringBuilder table = null;
-			var result = DmArmourApply.Install(vehicle, LeclercSXXIMod.Armor, _values, _edits, "Leclerc SXXI", problems, table);
-			DmArmourApply.EmptyVolumes(vehicle, LeclercSXXIMod.Armor, problems);
+			var result = DmArmourApply.Install(vehicle, Prefab, Values, LeclercSXXIMod.Edits, LeclercSXXIMod.FriendlyName, problems);
+			DmArmourApply.EmptyVolumes(vehicle, Prefab, problems);
 			if (result.count == 0) problems.Add("none of the Leclerc's armour pieces fitted, so it has next to no armour");
-			if (problems.Count > 0) MelonLogger.Warning("Leclerc SXXI armour: " + string.Join("; ", problems));
+			if (problems.Count > 0) MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName} armour: " + string.Join("; ", problems));
+			DevApplied(vehicle, Values, null, problems);
 		}
+
+		// Dev hooks: optional methods the author's own test harness fills in. They compile to nothing in a normal build.
+		static partial void DevApplied(Vehicle vehicle, DmArmour values, string preset, List<string> problems);
 	}
 }

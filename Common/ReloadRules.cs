@@ -20,17 +20,21 @@ namespace LeclercSXXI.Common
 			if (t < 0f) t = 0f;
 			if (T <= L || holds == null || holds.Length == 0)
 				return Math.Min(L, T <= L ? L - Math.Max(0f, T - t) : t);
-			float each = (T - L) / holds.Length, at = 0f, prev = 0f;
-			foreach (var h in holds)
+			float each = (T - L) / holds.Length, elapsed = 0f, prev = 0f;
+			foreach (var hold in holds)
 			{
-				float run = h - prev;
-				if (t < at + run) return prev + (t - at);
-				at += run;
-				if (t < at + each) { holding = true; return h; }
-				at += each;
-				prev = h;
+				float run = hold - prev;
+				if (t < elapsed + run) return prev + (t - elapsed);
+				elapsed += run;
+				if (t < elapsed + each)
+				{
+					holding = true;
+					return hold;
+				}
+				elapsed += each;
+				prev = hold;
 			}
-			return Math.Min(L, prev + (t - at));
+			return Math.Min(L, prev + (t - elapsed));
 		}
 
 		internal static Act Decide(float target, bool holding, float position, float tolerance)
@@ -50,12 +54,12 @@ namespace LeclercSXXI.Common
 		{
 			var cues = new float[stageSeconds.Length];
 			float total = 0f;
-			foreach (var s in stageSeconds) total += s;
-			float at = 0f;
+			foreach (var seconds in stageSeconds) total += seconds;
+			float elapsed = 0f;
 			for (int i = 0; i < stageSeconds.Length; i++)
 			{
-				cues[i] = total > 0f ? at * T / total : 0f;
-				at += stageSeconds[i];
+				cues[i] = total > 0f ? elapsed * T / total : 0f;
+				elapsed += stageSeconds[i];
 			}
 			return cues;
 		}

@@ -1,0 +1,55 @@
+Leclerc SXXI HL 120 secours|5.0000|first|True
+light|NightIllumination|2.4000,0.5000,0.1200
+G|Ligne de visée|Boresight||0.0000|0.0000|0.0000
+ L|-0.7363|-0.7363|45.0000|2.0826|0.1473|painted|NightIllumination
+ L|0.7363|-0.7363|-45.0000|2.0826|0.1473|painted|NightIllumination
+ L|-12.5173|0.0000|0.0000|18.1623|0.2356|painted|NightIllumination
+ L|12.5173|0.0000|0.0000|18.1623|0.2356|painted|NightIllumination
+ L|-4.9087|0.4418|90.0000|0.8836|0.1080|painted|NightIllumination
+ L|-9.8175|0.7854|90.0000|1.5708|0.1080|painted|NightIllumination
+ T|10|-9.8175|2.6507|6.0000|painted|NightIllumination
+ L|-14.7262|0.4418|90.0000|0.8836|0.1080|painted|NightIllumination
+ L|-19.6350|0.7854|90.0000|1.5708|0.1080|painted|NightIllumination
+ T|20|-19.6350|2.6507|6.0000|painted|NightIllumination
+ L|4.9087|0.4418|90.0000|0.8836|0.1080|painted|NightIllumination
+ L|9.8175|0.7854|90.0000|1.5708|0.1080|painted|NightIllumination
+ T|10|9.8175|2.6507|6.0000|painted|NightIllumination
+ L|14.7262|0.4418|90.0000|0.8836|0.1080|painted|NightIllumination
+ L|19.6350|0.7854|90.0000|1.5708|0.1080|painted|NightIllumination
+ T|20|19.6350|2.6507|6.0000|painted|NightIllumination
+ T|#ROUND|0.0000|7.2649|8.0000|painted|NightIllumination
+ T|SECOURS  -  HM|0.0000|5.3014|6.0000|painted|NightIllumination
+ G|Hausse||ofl|0.0000|0.0000|0.0000
+  G|1000 m|||0.0000|0.0000|1000.0000
+   L|-0.2945|-0.2945|45.0000|0.8330|0.1080|painted|NightIllumination
+   L|0.2945|-0.2945|-45.0000|0.8330|0.1080|painted|NightIllumination
+   L|-5.5960|0.0000|0.0000|6.4795|0.1080|painted|NightIllumination
+   L|2.7489|0.0000|0.0000|0.7854|0.1080|painted|NightIllumination
+   T|10|4.3197|0.0000|7.0000|painted|NightIllumination
+  G|1500 m|||0.0000|0.0000|1500.0000
+   L|0.0000|0.0000|0.0000|0.8836|0.1080|painted|NightIllumination
+   L|-3.4361|0.0000|0.0000|2.1598|0.1080|painted|NightIllumination
+  G|2000 m|||0.0000|0.0000|2000.0000
+   L|-0.2945|-0.2945|45.0000|0.8330|0.1080|painted|NightIllumination
+   L|0.2945|-0.2945|-45.0000|0.8330|0.1080|painted|NightIllumination
+   L|-5.5960|0.0000|0.0000|6.4795|0.1080|painted|NightIllumination
+   L|2.7489|0.0000|0.0000|0.7854|0.1080|painted|NightIllumination
+   T|20|4.3197|0.0000|7.0000|painted|NightIllumination
+  G|2500 m|||0.0000|0.0000|2500.0000
+   L|0.0000|0.0000|0.0000|0.8836|0.1080|painted|NightIllumination
+   L|-3.4361|0.0000|0.0000|2.1598|0.1080|painted|NightIllumination
+  G|3000 m|||0.0000|0.0000|3000.0000
+   L|-0.2945|-0.2945|45.0000|0.8330|0.1080|painted|NightIllumination
+   L|0.2945|-0.2945|-45.0000|0.8330|0.1080|painted|NightIllumination
+   L|-5.5960|0.0000|0.0000|6.4795|0.1080|painted|NightIllumination
+   L|2.7489|0.0000|0.0000|0.7854|0.1080|painted|NightIllumination
+   T|30|4.3197|0.0000|7.0000|painted|NightIllumination
+  G|3500 m|||0.0000|0.0000|3500.0000
+   L|0.0000|0.0000|0.0000|0.8836|0.1080|painted|NightIllumination
+   L|-3.4361|0.0000|0.0000|2.1598|0.1080|painted|NightIllumination
+  G|4000 m|||0.0000|0.0000|4000.0000
+   L|-0.2945|-0.2945|45.0000|0.8330|0.1080|painted|NightIllumination
+   L|0.2945|-0.2945|-45.0000|0.8330|0.1080|painted|NightIllumination
+   L|-5.5960|0.0000|0.0000|6.4795|0.1080|painted|NightIllumination
+   L|2.7489|0.0000|0.0000|0.7854|0.1080|painted|NightIllumination
+   T|40|4.3197|0.0000|7.0000|painted|NightIllumination

@@ -1,0 +1,193 @@
+turret_side_dm	nominal	30	30	0	0	1	armour_steel		sponson wall		0
+superstructure_bottom_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+body_top_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+body_bottom_dm	nominal	30	30	0	0	1	armour_steel		hull floor		0
+superstructure_top_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_08_back_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+body_side_dm	nominal	40	40	0	0	1	armour_steel		hull side (lower)		0
+ex_armor_01_dm	nominal	20	20	0	0	1	armour_steel		rear deck cover		0
+turret_04_bottom_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_11_top_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+superstructure_side_dm	nominal	40	40	0	0	1	armour_steel		hull side (upper)		0
+turret_11_bottom_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_11_side_dm	nominal	40	40	0	0	1	armour_steel		turret side wall		0
+turret_top_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_07_bottom_dm	nominal	5	5	0	0	1	mild_steel		rear stowage box		0
+turret_back_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_bottom_dm	geometry	0.333333343	0.333333343	0	0	1	armour_steel		engine bulkhead		0
+turret_06_bottom_dm	nominal	50	50	0	0	1	armour_steel		turret ring flange		0
+turret_08_top_dm	nominal	5	5	0	0	1	mild_steel		front mud deflector		0
+turret_09_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_09_bottom_dm	geometry	0.9435	1.5735	0	0	0	composite	0.38,0.60,0.62,0.10	turret side modules (composite)		0
+superstructure_front_dm	nominal	30	30	0	0	1	armour_steel		glacis top plate		0
+superstructure_back_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_10_bottom_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_02_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_02_top_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_06_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_05_top_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+composite_armor_turret_03_dm	nominal	30	30	0	0	1	armour_steel		crew to bustle bulkhead		0
+turret_02_bottom_dm	nominal	50	50	0	0	1	armour_steel		glacis support box		0
+turret_09_top_dm	geometry	0.5801	1.055	0	0	0	composite	0.38,0.60,0.62,0.10	glacis composite		0
+turret_03_bottom_dm	nominal	20	20	0	0	1	armour_steel		engine deck grilles		0
+turret_07_top_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_06_side_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_01_bottom_dm	geometry	0.5801	1.055	0	0	0	composite	0.38,0.60,0.62,0.10	glacis composite		0
+turret_04_top_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_01_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_06_front_dm	nominal	50	50	0	0	1	armour_steel		turret front wall R		0
+turret_08_bottom_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+body_front_dm	nominal	50	50	0	0	1	armour_steel		lower front plate		0
+turret_03_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+body_back_dm	nominal	30	30	0	0	1	armour_steel		hull plate		0
+turret_09_front_dm	nominal	50	50	0	0	1	armour_steel		nose plate		0
+turret_front_dm	nominal	50	50	0	0	1	armour_steel		turret front wall L		0
+turret_06_top_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+cheek_R_front	drawn	0	0	0	0	0		0.38,0.60,0.62,0.10	right cheek front pack		0
+turret_05_front_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_11_back_dm	geometry	0.9435	1.5735	0	0	0	composite	0.38,0.60,0.62,0.10	turret front module L (composite)		0
+ex_armor_turret_r_12_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_armor_turret_l_10_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+turret_07_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_turret_r_07_dm	nominal	40	40	0	0	1	composite		ceramic top plate		0
+ex_armor_turret_l_06_dm	nominal	40	40	0	0	1	composite		ceramic top plate		0
+ex_armor_turret_l_11_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_armor_turret_r_11_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+turret_04_side_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_turret_l_04_dm	nominal	10	10	0	0	1	composite		roof cover		0
+ex_armor_turret_r_08_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_armor_turret_l_07_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+turret_03_front_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_body_r_02_dm	composite	120	450	0	0	0	composite	0.38,0.60,0.62,0.10	heavy side skirt		0
+ex_armor_body_l_02_dm	composite	120	450	0	0	0	composite	0.38,0.60,0.62,0.10	heavy side skirt		0
+gun_mask_01_dm	nominal	60	60	0	0	1	armour_steel		gun embrasure plate		0
+ex_armor_turret_r_05_dm	nominal	10	10	0	0	1	composite		roof cover		0
+ex_armor_turret_l_03_dm	nominal	10	10	0	0	1	composite		roof cover		0
+turret_04_front_dm	nominal	50	50	0	0	1	armour_steel		embrasure front wall		0
+gun_mask_03_dm	nominal	60	60	0	0	1	armour_steel		gun embrasure plate		0
+ex_armor_body_r_04_dm	composite	120	450	0	0	0	composite	0.38,0.60,0.62,0.10	heavy side skirt		0
+ex_armor_body_l_04_dm	composite	120	450	0	0	0	composite	0.38,0.60,0.62,0.10	heavy side skirt		0
+ex_armor_body_r_09_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_09_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_turret_l_08_dm	nominal	5	5	0	0	1	mild_steel		rear basket		0
+turret_03_side_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_body_r_11_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_11_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_r_08_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_08_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_r_07_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_07_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_r_03_dm	composite	120	450	0	0	0	composite	0.38,0.60,0.62,0.10	heavy side skirt		0
+ex_armor_body_l_03_dm	composite	120	450	0	0	0	composite	0.38,0.60,0.62,0.10	heavy side skirt		0
+ex_armor_body_r_05_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_05_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_01_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_body_r_01_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_body_r_06_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+ex_armor_body_l_06_dm	nominal	6	6	0	0	1	mild_steel		side skirt panel		0
+turret_02_front_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+gun_mask_dm	nominal	40	40	0	0	1	armour_steel		gun shield		0
+ex_armor_r_07_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_l_07_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_r_06_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_l_06_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_l_04_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_r_04_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_r_05_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_l_05_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+gun_mask_02_dm	nominal	150	150	0	0	1	armour_steel		embrasure block		0
+turret_05_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_decor_05_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_turret_r_06_dm	nominal	10	10	0	0	1	composite		roof cover		0
+ex_armor_l_01_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_r_01_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+turret_10_top_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_r_03_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_l_03_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_body_r_10_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_body_l_10_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_turret_r_10_dm	nominal	10	10	0	0	1	composite		roof cover		0
+turret_08_front_dm	geometry	0.9435	1.5735	0	0	0	composite	0.38,0.60,0.62,0.10	gunner's sight block rear (composite)		0
+turret_01_front_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_r_02_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_armor_l_02_dm	geometry	0.1	0.1	0	0	0	plain		rubber skirt		0
+ex_era_turret_06_dm	composite	120	500	0	0	0	composite	0.38,0.60,0.62,0.10	bustle side module (NERA)		0
+turret_07_front_dm	geometry	0.9435	1.5735	0	0	0	composite	0.38,0.60,0.62,0.10	gunner's sight block (composite)		0
+ex_era_turret_01_dm	composite	120	500	0	0	0	composite	0.38,0.60,0.62,0.10	bustle side module (NERA)		0
+ex_era_turret_05_dm	composite	120	500	0	0	0	composite	0.38,0.60,0.62,0.10	bustle side module (NERA)		0
+ex_armor_turret_l_09_dm	nominal	10	10	0	0	1	composite		roof cover		0
+ex_era_turret_02_dm	composite	120	500	0	0	0	composite	0.38,0.60,0.62,0.10	bustle side module (NERA)		0
+ex_era_turret_03_dm	composite	120	500	0	0	0	composite	0.38,0.60,0.62,0.10	bustle side module (NERA)		0
+ex_decor_r_03_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_decor_r_02_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_decor_l_02_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_decor_l_01_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_era_turret_04_dm	composite	120	500	0	0	0	composite	0.38,0.60,0.62,0.10	bustle side module (NERA)		0
+turret_10_front_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+turret_10_back_dm	nominal	30	30	0	0	1	armour_steel		turret plate		0
+ex_armor_r_08_dm	nominal	5	5	0	0	1	mild_steel		stowage box		0
+ex_armor_turret_r_02_dm	nominal	15	15	0	0	1	composite		sight shutter		0
+ex_armor_turret_r_01_dm	nominal	15	15	0	0	1	composite		sight shutter		0
+ex_armor_turret_l_05_dm	nominal	10	10	0	0	1	composite		roof cover		0
+cheek_R_inner	drawn	0	0	0	0	0		0.38,0.60,0.62,0.10	right cheek inner pack		0
+turret_12_side_dm	geometry	0.9435	1.5735	0	0	0	composite		right cheek (two composite packs)		0
+detail_turret_11_back_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_turret_11_back_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_turret_11_back_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_cheek_R_front_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_cheek_R_front_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_cheek_R_front_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_cheek_R_inner_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_cheek_R_inner_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_cheek_R_inner_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_turret_07_front_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_turret_07_front_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_turret_07_front_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_turret_08_front_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_turret_08_front_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_turret_08_front_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_turret_09_bottom_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_turret_09_bottom_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_turret_09_bottom_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_turret_01_bottom_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_turret_01_bottom_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_turret_01_bottom_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_turret_09_top_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_turret_09_top_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_turret_09_top_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_armor_body_r_02_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_armor_body_r_02_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_armor_body_r_02_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_armor_body_l_02_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_armor_body_l_02_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_armor_body_l_02_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_armor_body_r_04_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_armor_body_r_04_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_armor_body_r_04_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_armor_body_l_04_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_armor_body_l_04_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_armor_body_l_04_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_armor_body_r_03_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_armor_body_r_03_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_armor_body_r_03_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_armor_body_l_03_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_armor_body_l_03_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_armor_body_l_03_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_era_turret_06_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_era_turret_06_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_era_turret_06_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_era_turret_01_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_era_turret_01_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_era_turret_01_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_era_turret_05_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_era_turret_05_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_era_turret_05_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_era_turret_02_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_era_turret_02_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_era_turret_02_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_era_turret_03_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_era_turret_03_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_era_turret_03_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0
+detail_ex_era_turret_04_dm_0	drawn	0	0	0	0	0		0.22,0.29,0.34,0.58	composite cassette face		0
+detail_ex_era_turret_04_dm_1	drawn	0	0	0	0	0		0.88,0.84,0.65,0.48	composite cassette core		0
+detail_ex_era_turret_04_dm_2	drawn	0	0	0	0	0		0.24,0.57,0.48,0.42	composite cassette backing		0

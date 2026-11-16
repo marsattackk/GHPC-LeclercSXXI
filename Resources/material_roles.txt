@@ -1,0 +1,26 @@
+leclercsxxi_episcope_prism	episcope_prism	-	
+leclercsxxi_fr_leclerc_s1_track	tracks	-	
+leclercsxxi_glass_backing	glass_backing	-	
+leclercsxxi_hatch_inner	plain_underside	-	
+leclercsxxi_headlight_glass	lamp_lens	glass semi matte	T80B
+leclercsxxi_headlight_glass_under	lens_under	-	
+leclercsxxi_hl120_window	camera_glass	fake glass	T62,T55A,LEO2A3
+leclercsxxi_hl130_day_window	camera_glass	fake glass	T62,T55A,LEO2A3
+leclercsxxi_hl130_thermal_window	camera_glass	fake glass	T62,T55A,LEO2A3
+leclercsxxi_interior	back_faces	-	
+leclercsxxi_leclerc_s2_body	paint	-	
+leclercsxxi_leclerc_s2_dz	paint	-	
+leclercsxxi_leclerc_s2_gun	paint	-	
+leclercsxxi_leclerc_s2_turret	paint	-	
+leclercsxxi_leclerc_sxxi_turret	paint	-	
+leclercsxxi_lens_barrel	lens_barrel	-	
+leclercsxxi_lens_laser	lens_laser	-	
+leclercsxxi_lens_thermal	lens_thermal	-	
+leclercsxxi_lens_trim	lens_trim	-	
+leclercsxxi_lens_tv	lens_tv	-	
+leclercsxxi_mg_browning_m2hb	small_arms	-	
+leclercsxxi_net_f	net	-	
+leclercsxxi_net_l	net	-	
+leclercsxxi_optic_wall	optic_wall	-	
+leclercsxxi_periscope_recessed	episcope_glass	-	
+leclercsxxi_smooth_barrel_a	barrel	-	

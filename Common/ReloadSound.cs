@@ -18,7 +18,10 @@ namespace LeclercSXXI.Common
 		{
 			internal GunShotSound.Settings Sound;
 			internal float ClipSeconds;
+			// Fields a tank never sets keep their defaults here: another tank sets them (CS0649 is off for this declaration only).
+#pragma warning disable CS0649
 			internal float[] HoldPoints;
+#pragma warning restore CS0649
 			internal float MaxHearDistance = 250f;
 			internal float SyncTolerance = 0.15f;
 			internal Settings[] Variants;
@@ -47,18 +50,22 @@ namespace LeclercSXXI.Common
 		static bool _sceneHook;
 		static Ticker _ticker;
 
-		internal static void Attach(Settings s, WeaponSystem gun, IUnit unit)
+		internal static bool Attach(Settings s, WeaponSystem gun, IUnit unit)
 		{
 			var feed = gun != null ? gun.Feed : null;
-			if (feed == null || feed.ClipReloadStages == null) return;
-			if (Clock == null || WholeEvent == null) { GunShotSound.WarnOnce(s.Sound, "its reload sound does not fit this version of the game"); return; }
+			if (feed == null || feed.ClipReloadStages == null) return false;
+			if (Clock == null || WholeEvent == null)
+			{
+				GunShotSound.WarnOnce(s.Sound, "its reload sound does not fit this version of the game");
+				return false;
+			}
 			var variants = s.Variants ?? new[] { s };
 			var loaded = new GunShotSound.Loaded[variants.Length];
 			var lengths = new float[variants.Length];
 			for (int i = 0; i < variants.Length; i++)
 			{
 				loaded[i] = GunShotSound.Load(variants[i].Sound);
-				if (loaded[i] == null) return;
+				if (loaded[i] == null) return false;
 				lengths[i] = variants[i].ClipSeconds;
 			}
 			WholeEvent.SetValue(feed, "");
@@ -73,25 +80,34 @@ namespace LeclercSXXI.Common
 				if (stage != 0) return;
 				Begin(variants, loaded, lengths, feed, gun, unit);
 			};
+			return true;
 		}
 
 		static void Begin(Settings[] variants, GunShotSound.Loaded[] sounds, float[] lengths, AmmoFeed feed, WeaponSystem gun, IUnit unit)
 		{
-			foreach (var r in Active) if (r.Feed == feed) return;
+			foreach (var run in Active) if (run.Feed == feed) return;
 			Active.Add(new Run { Variants = variants, Sounds = sounds, Lengths = lengths, Feed = feed, Gun = gun, Unit = unit });
 			if (_ticker == null)
 			{
-				var go = new GameObject("ReloadSound ticker");
-				UnityEngine.Object.DontDestroyOnLoad(go);
-				_ticker = go.AddComponent<Ticker>();
+				var holder = new GameObject("ReloadSound ticker");
+				UnityEngine.Object.DontDestroyOnLoad(holder);
+				_ticker = holder.AddComponent<Ticker>();
 			}
-			if (!_sceneHook) { _sceneHook = true; SceneManager.sceneUnloaded += _ => StopAll(); }
+			if (!_sceneHook)
+			{
+				_sceneHook = true;
+				SceneManager.sceneUnloaded += _ => StopAll();
+			}
 		}
 
 		internal static void Silence(AmmoFeed feed)
 		{
 			for (int i = Active.Count - 1; i >= 0; i--)
-				if (Active[i].Feed == feed) { Stop(Active[i]); Active.RemoveAt(i); }
+				if (Active[i].Feed == feed)
+				{
+					Stop(Active[i]);
+					Active.RemoveAt(i);
+				}
 		}
 
 		static void Stop(Run r)
@@ -102,7 +118,7 @@ namespace LeclercSXXI.Common
 
 		static void StopAll()
 		{
-			foreach (var r in Active) Stop(r);
+			foreach (var run in Active) Stop(run);
 			Active.Clear();
 		}
 
@@ -134,7 +150,8 @@ namespace LeclercSXXI.Common
 			if (r.Feed == null || r.Gun == null || !r.Feed.Reloading || r.Unit.Destroyed || r.Unit.Neutralized) return false;
 			if (r.S == null) {
 				int i = ReloadRules.CycleIndex(r.Feed.TotalReloadTime, r.Lengths);
-				r.S = r.Variants[i]; r.L = r.Sounds[i];
+				r.S = r.Variants[i];
+				r.L = r.Sounds[i];
 			}
 			float clock = (float)Clock.GetValue(r.Feed);
 			bool stalled = clock == r.LastClock;
@@ -147,11 +164,19 @@ namespace LeclercSXXI.Common
 				r.NextRangeCheck = Time.time + 0.25f;
 				r.Near = cam != null && ReloadRules.Audible(own, Vector3.Distance(cam.transform.position, muzzle), r.S.MaxHearDistance);
 			}
-			if (!r.Near) { Stop(r); return true; }
+			if (!r.Near)
+			{
+				Stop(r);
+				return true;
+			}
 			float target = ReloadRules.ClipTarget(clock, r.Feed.TotalReloadTime, r.S.ClipSeconds, r.S.HoldPoints, out bool holding);
 			bool interior = VehicleParameterTracker.IsVehicleInterior(r.Unit);
-			if (interior != r.Interior) { Stop(r); r.Interior = interior; }
-			if (r.HasChannel && (r.Channel.isPlaying(out bool on) != RESULT.OK || !on)) r.HasChannel = false;
+			if (interior != r.Interior)
+			{
+				Stop(r);
+				r.Interior = interior;
+			}
+			if (r.HasChannel && (r.Channel.isPlaying(out bool playing) != RESULT.OK || !playing)) r.HasChannel = false;
 			if (!r.HasChannel)
 			{
 				if (target < r.S.ClipSeconds - 0.2f && Time.time >= r.NextStart)
@@ -161,8 +186,8 @@ namespace LeclercSXXI.Common
 				}
 				return true;
 			}
-			r.Channel.getPosition(out uint ms, TIMEUNIT.MS);
-			var act = ReloadRules.Decide(target, holding, ms / 1000f, r.S.SyncTolerance);
+			r.Channel.getPosition(out uint milliseconds, TIMEUNIT.MS);
+			var act = ReloadRules.Decide(target, holding, milliseconds / 1000f, r.S.SyncTolerance);
 			if (act == ReloadRules.Act.Seek) r.Channel.setPosition((uint)(target * 1000f), TIMEUNIT.MS);
 			r.Channel.setPaused(stalled || act == ReloadRules.Act.Hold);
 			Place(r, muzzle);
@@ -176,15 +201,19 @@ namespace LeclercSXXI.Common
 			{
 				for (int i = Active.Count - 1; i >= 0; i--)
 				{
-					var r = Active[i];
-					bool go;
-					try { go = Tick(r); }
+					var run = Active[i];
+					bool keepRunning;
+					try { keepRunning = Tick(run); }
 					catch (Exception)
 					{
-						GunShotSound.WarnOnce(r.S.Sound, "its reload sound stopped working");
-						go = false;
+						GunShotSound.WarnOnce(run.S.Sound, "its reload sound stopped working");
+						keepRunning = false;
 					}
-					if (!go) { Stop(r); Active.RemoveAt(i); }
+					if (!keepRunning)
+					{
+						Stop(run);
+						Active.RemoveAt(i);
+					}
 				}
 			}
 		}

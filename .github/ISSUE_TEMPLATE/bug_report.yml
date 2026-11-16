@@ -35,7 +35,7 @@ body:
       label: Where and how
       description: The mission or mode, which vehicle you were in, and what you did right before it happened.
       placeholder: |
-        Instant Action, BMP Barricade, Leclerc SXXI with OFL 120 F2, switched to OECC and ...
+        Instant Action, BMP Barricade, Leclerc SXXI with 3BM60, fired the second round and ...
     validations:
       required: true
 
@@ -44,7 +44,7 @@ body:
     attributes:
       label: Leclerc SXXI version
       description: From the zip you installed, or the MelonLoader console when the game starts.
-      placeholder: "0.1.0"
+      placeholder: "0.4.2"
     validations:
       required: true
 
@@ -58,11 +58,11 @@ body:
   - type: dropdown
     id: alone
     attributes:
-      label: Does it happen with only the Leclerc installed?
+      label: Does it happen with only the Leclerc SXXI installed?
       description: Move your other mods out of the `Mods` folder for one go. It tells me straight away if it's a clash with another mod.
       options:
         - Haven't tried
-        - "Yes, it happens with only the Leclerc"
+        - "Yes, it happens with only the Leclerc SXXI"
         - "No, only with my other mods"
     validations:
       required: true

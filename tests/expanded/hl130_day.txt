@@ -1,0 +1,385 @@
+Leclerc SXXI HL 130 day|3.1000|first|True
+G|Nominal cross|Boresight||0.0000|0.0000|0.0000
+ L|0.0000|0.0000|0.0000|1.7671|0.0687|painted|NightIllumination
+ L|0.0000|0.0000|90.0000|1.7671|0.0687|painted|NightIllumination
+ L|-1.9144|0.0834|180.0000|2.0617|0.0687|painted|NightIllumination
+ L|-1.9144|-0.0834|180.0000|2.0617|0.0687|painted|NightIllumination
+ L|0.0834|-1.9144|-90.0000|2.0617|0.0687|painted|NightIllumination
+ L|-0.0834|-1.9144|-90.0000|2.0617|0.0687|painted|NightIllumination
+ L|-3.9270|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|-5.8905|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|-6.8722|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|-7.8540|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|-8.8357|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|-9.8175|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|-4.9873|0.2209|65.4328|0.3778|0.0589|painted|NightIllumination
+ L|-4.8302|0.2209|-65.4328|0.3778|0.0589|painted|NightIllumination
+ L|1.9144|0.0834|0.0000|2.0617|0.0687|painted|NightIllumination
+ L|1.9144|-0.0834|0.0000|2.0617|0.0687|painted|NightIllumination
+ L|0.0834|1.9144|90.0000|2.0617|0.0687|painted|NightIllumination
+ L|-0.0834|1.9144|90.0000|2.0617|0.0687|painted|NightIllumination
+ L|3.9270|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|5.8905|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|6.8722|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|7.8540|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|8.8357|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|9.8175|0.0000|0.0000|0.1178|0.1178|painted|NightIllumination
+ L|4.8302|0.2209|65.4328|0.3778|0.0589|painted|NightIllumination
+ L|4.9873|0.2209|-65.4328|0.3778|0.0589|painted|NightIllumination
+G|Plate|Impact||0.0000|0.0000|0.0000
+ L|-6.6268|0.0000|0.0000|10.3084|0.0687|painted|NightIllumination
+ L|-0.5890|0.0000|0.0000|0.7854|0.0687|painted|NightIllumination
+ L|0.5890|0.0000|0.0000|0.7854|0.0687|painted|NightIllumination
+ L|6.6268|0.0000|0.0000|10.3084|0.0687|painted|NightIllumination
+ L|-2.9452|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|-4.9087|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|-6.8722|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|-8.8357|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|-10.7992|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|-1.9635|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|2|-1.9635|-2.0617|8.0000|painted|NightIllumination
+ L|-3.9270|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|4|-3.9270|-2.0617|8.0000|painted|NightIllumination
+ L|-5.8905|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|6|-5.8905|-2.0617|8.0000|painted|NightIllumination
+ L|-7.8540|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|8|-7.8540|-2.0617|8.0000|painted|NightIllumination
+ L|-9.8175|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|10|-9.8175|-2.0617|8.0000|painted|NightIllumination
+ L|-11.7810|-0.3191|-90.0000|1.2272|0.0687|painted|NightIllumination
+ T|12|-11.7810|-2.0617|8.0000|painted|NightIllumination
+ L|2.9452|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|4.9087|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|6.8722|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|8.8357|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|10.7992|0.3191|90.0000|0.6381|0.0687|painted|NightIllumination
+ L|1.9635|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|2|1.9635|-2.0617|8.0000|painted|NightIllumination
+ L|3.9270|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|4|3.9270|-2.0617|8.0000|painted|NightIllumination
+ L|5.8905|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|6|5.8905|-2.0617|8.0000|painted|NightIllumination
+ L|7.8540|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|8|7.8540|-2.0617|8.0000|painted|NightIllumination
+ L|9.8175|-0.4172|-90.0000|0.8345|0.0687|painted|NightIllumination
+ T|10|9.8175|-2.0617|8.0000|painted|NightIllumination
+ L|11.7810|-0.3191|-90.0000|1.2272|0.0687|painted|NightIllumination
+ T|12|11.7810|-2.0617|8.0000|painted|NightIllumination
+ L|0.0000|0.3927|90.0000|0.7854|0.0687|painted|NightIllumination
+ L|-0.2209|-0.4663|-115.3462|1.0320|0.0687|painted|NightIllumination
+ L|0.2209|-0.4663|-64.6538|1.0320|0.0687|painted|NightIllumination
+ L|-5.5172|3.3587|24.7614|0.5678|0.0589|painted|NightIllumination
+ L|-5.0438|3.5976|29.1014|0.4934|0.0589|painted|NightIllumination
+ L|-4.6454|3.8387|33.5292|0.4388|0.0589|painted|NightIllumination
+ L|-4.3054|4.0825|37.9481|0.3985|0.0589|painted|NightIllumination
+ L|-4.0118|4.3290|42.2678|0.3688|0.0589|painted|NightIllumination
+ L|-3.7557|4.5787|46.4126|0.3470|0.0589|painted|NightIllumination
+ L|-3.5304|4.8318|50.3253|0.3311|0.0589|painted|NightIllumination
+ L|-3.3306|5.0886|53.9685|0.3199|0.0589|painted|NightIllumination
+ L|-3.1522|5.3493|57.3236|0.3122|0.0589|painted|NightIllumination
+ L|-2.9920|5.6143|60.3869|0.3074|0.0589|painted|NightIllumination
+ L|-2.8473|5.8839|63.1655|0.3047|0.0589|painted|NightIllumination
+ L|-2.7160|6.1583|65.6744|0.3038|0.0589|painted|NightIllumination
+ L|-2.5962|6.4378|67.9326|0.3044|0.0589|painted|NightIllumination
+ L|-2.4865|6.7227|69.9615|0.3062|0.0589|painted|NightIllumination
+ L|-2.3858|7.0132|71.7823|0.3090|0.0589|painted|NightIllumination
+ L|-2.2929|7.3098|73.4161|0.3126|0.0589|painted|NightIllumination
+ L|-2.2069|7.6125|74.8825|0.3169|0.0589|painted|NightIllumination
+ L|-2.1272|7.9218|76.1996|0.3219|0.0589|painted|NightIllumination
+ L|-2.0531|8.2380|77.3836|0.3275|0.0589|painted|NightIllumination
+ L|-1.9839|8.5612|78.4493|0.3336|0.0589|painted|NightIllumination
+ L|-1.9192|8.8918|79.4097|0.3402|0.0589|painted|NightIllumination
+ L|-1.8587|9.2300|80.2766|0.3472|0.0589|painted|NightIllumination
+ L|-1.8018|9.5763|81.0600|0.3546|0.0589|painted|NightIllumination
+ L|-1.7483|9.9307|81.7692|0.3624|0.0589|painted|NightIllumination
+ L|-1.6979|10.2937|82.4120|0.3705|0.0589|painted|NightIllumination
+ L|-1.6503|10.6655|82.9955|0.3791|0.0589|painted|NightIllumination
+ L|-1.6053|11.0463|83.5260|0.3880|0.0589|painted|NightIllumination
+ L|-1.5627|11.4366|84.0091|0.3972|0.0589|painted|NightIllumination
+ L|-1.5223|11.8365|84.4494|0.4067|0.0589|painted|NightIllumination
+ L|-1.4840|12.2463|84.8515|0.4165|0.0589|painted|NightIllumination
+ L|-1.4475|12.6663|85.2190|0.4267|0.0589|painted|NightIllumination
+ L|-1.4128|13.0969|85.5555|0.4372|0.0589|painted|NightIllumination
+ L|-1.3797|13.5382|85.8638|0.4480|0.0589|painted|NightIllumination
+ L|-1.3481|13.9907|86.1468|0.4591|0.0589|painted|NightIllumination
+ L|-1.3179|14.4544|86.4068|0.4705|0.0589|painted|NightIllumination
+ L|-1.2891|14.9299|86.6460|0.4821|0.0589|painted|NightIllumination
+ L|-1.2615|15.4172|86.8662|0.4941|0.0589|painted|NightIllumination
+ L|-1.2350|15.9168|87.0692|0.5064|0.0589|painted|NightIllumination
+ L|-1.2097|16.4288|87.2566|0.5190|0.0589|painted|NightIllumination
+ L|-1.1853|16.9537|87.4297|0.5318|0.0589|painted|NightIllumination
+ L|-1.1619|17.4916|87.5898|0.5450|0.0589|painted|NightIllumination
+ L|-1.1395|18.0428|87.7380|0.5584|0.0589|painted|NightIllumination
+ L|-1.1178|18.6077|87.8754|0.5722|0.0589|painted|NightIllumination
+ L|-1.0970|19.1865|88.0028|0.5862|0.0589|painted|NightIllumination
+ L|-1.0770|19.7794|88.1210|0.6005|0.0589|painted|NightIllumination
+ L|-1.0576|20.3869|88.2310|0.6151|0.0589|painted|NightIllumination
+ L|-1.0390|21.0091|88.3332|0.6300|0.0589|painted|NightIllumination
+ L|-1.0210|21.6464|88.4283|0.6451|0.0589|painted|NightIllumination
+ L|-1.0036|22.2991|88.5170|0.6606|0.0589|painted|NightIllumination
+ L|-0.9868|22.9673|88.5996|0.6763|0.0589|painted|NightIllumination
+ L|-0.9705|23.6514|88.6768|0.6923|0.0589|painted|NightIllumination
+ L|-0.9548|24.3518|88.7488|0.7087|0.0589|painted|NightIllumination
+ L|5.5172|3.3587|155.2386|0.5678|0.0589|painted|NightIllumination
+ L|5.0438|3.5976|150.8986|0.4934|0.0589|painted|NightIllumination
+ L|4.6454|3.8387|146.4708|0.4388|0.0589|painted|NightIllumination
+ L|4.3054|4.0825|142.0519|0.3985|0.0589|painted|NightIllumination
+ L|4.0118|4.3290|137.7322|0.3688|0.0589|painted|NightIllumination
+ L|3.7557|4.5787|133.5874|0.3470|0.0589|painted|NightIllumination
+ L|3.5304|4.8318|129.6747|0.3311|0.0589|painted|NightIllumination
+ L|3.3306|5.0886|126.0315|0.3199|0.0589|painted|NightIllumination
+ L|3.1522|5.3493|122.6764|0.3122|0.0589|painted|NightIllumination
+ L|2.9920|5.6143|119.6131|0.3074|0.0589|painted|NightIllumination
+ L|2.8473|5.8839|116.8345|0.3047|0.0589|painted|NightIllumination
+ L|2.7160|6.1583|114.3256|0.3038|0.0589|painted|NightIllumination
+ L|2.5962|6.4378|112.0674|0.3044|0.0589|painted|NightIllumination
+ L|2.4865|6.7227|110.0385|0.3062|0.0589|painted|NightIllumination
+ L|2.3858|7.0132|108.2177|0.3090|0.0589|painted|NightIllumination
+ L|2.2929|7.3098|106.5839|0.3126|0.0589|painted|NightIllumination
+ L|2.2069|7.6125|105.1175|0.3169|0.0589|painted|NightIllumination
+ L|2.1272|7.9218|103.8004|0.3219|0.0589|painted|NightIllumination
+ L|2.0531|8.2380|102.6164|0.3275|0.0589|painted|NightIllumination
+ L|1.9839|8.5612|101.5507|0.3336|0.0589|painted|NightIllumination
+ L|1.9192|8.8918|100.5903|0.3402|0.0589|painted|NightIllumination
+ L|1.8587|9.2300|99.7234|0.3472|0.0589|painted|NightIllumination
+ L|1.8018|9.5763|98.9400|0.3546|0.0589|painted|NightIllumination
+ L|1.7483|9.9307|98.2308|0.3624|0.0589|painted|NightIllumination
+ L|1.6979|10.2937|97.5880|0.3705|0.0589|painted|NightIllumination
+ L|1.6503|10.6655|97.0045|0.3791|0.0589|painted|NightIllumination
+ L|1.6053|11.0463|96.4740|0.3880|0.0589|painted|NightIllumination
+ L|1.5627|11.4366|95.9909|0.3972|0.0589|painted|NightIllumination
+ L|1.5223|11.8365|95.5506|0.4067|0.0589|painted|NightIllumination
+ L|1.4840|12.2463|95.1485|0.4165|0.0589|painted|NightIllumination
+ L|1.4475|12.6663|94.7810|0.4267|0.0589|painted|NightIllumination
+ L|1.4128|13.0969|94.4445|0.4372|0.0589|painted|NightIllumination
+ L|1.3797|13.5382|94.1362|0.4480|0.0589|painted|NightIllumination
+ L|1.3481|13.9907|93.8532|0.4591|0.0589|painted|NightIllumination
+ L|1.3179|14.4544|93.5932|0.4705|0.0589|painted|NightIllumination
+ L|1.2891|14.9299|93.3540|0.4821|0.0589|painted|NightIllumination
+ L|1.2615|15.4172|93.1338|0.4941|0.0589|painted|NightIllumination
+ L|1.2350|15.9168|92.9308|0.5064|0.0589|painted|NightIllumination
+ L|1.2097|16.4288|92.7434|0.5190|0.0589|painted|NightIllumination
+ L|1.1853|16.9537|92.5703|0.5318|0.0589|painted|NightIllumination
+ L|1.1619|17.4916|92.4102|0.5450|0.0589|painted|NightIllumination
+ L|1.1395|18.0428|92.2620|0.5584|0.0589|painted|NightIllumination
+ L|1.1178|18.6077|92.1246|0.5722|0.0589|painted|NightIllumination
+ L|1.0970|19.1865|91.9972|0.5862|0.0589|painted|NightIllumination
+ L|1.0770|19.7794|91.8790|0.6005|0.0589|painted|NightIllumination
+ L|1.0576|20.3869|91.7690|0.6151|0.0589|painted|NightIllumination
+ L|1.0390|21.0091|91.6668|0.6300|0.0589|painted|NightIllumination
+ L|1.0210|21.6464|91.5717|0.6451|0.0589|painted|NightIllumination
+ L|1.0036|22.2991|91.4830|0.6606|0.0589|painted|NightIllumination
+ L|0.9868|22.9673|91.4004|0.6763|0.0589|painted|NightIllumination
+ L|0.9705|23.6514|91.3232|0.6923|0.0589|painted|NightIllumination
+ L|0.9548|24.3518|91.2512|0.7087|0.0589|painted|NightIllumination
+ L|0.0000|5.6941|0.0000|0.9817|0.0589|painted|NightIllumination
+ T|10|0.0000|6.4304|8.0000|painted|NightIllumination
+ L|0.0000|12.3699|0.0000|0.9817|0.0589|painted|NightIllumination
+ T|20|0.0000|13.1062|8.0000|painted|NightIllumination
+ L|0.0000|23.1689|0.0000|0.9817|0.0589|painted|NightIllumination
+ T|30|0.0000|23.9052|8.0000|painted|NightIllumination
+ G|12.7 scale|||0.0000|0.0000|-0.4909
+  G|12.7 rows||m2|0.0000|0.0000|0.0000
+   G|12.7 0 m|||0.0000|0.0000|0.0000
+    L|-31.7595|0.0000|0.0000|4.2215|0.0687|painted|NightIllumination
+    T|0|-35.0484|0.0000|8.0000|painted|NightIllumination
+   G|12.7 100 m|||0.0000|0.0000|-100.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 200 m|||0.0000|0.0000|-200.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 300 m|||0.0000|0.0000|-300.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 400 m|||0.0000|0.0000|-400.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 500 m|||0.0000|0.0000|-500.0000
+    L|-31.7595|0.0000|0.0000|4.2215|0.0687|painted|NightIllumination
+    T|5|-35.0484|0.0000|8.0000|painted|NightIllumination
+   G|12.7 600 m|||0.0000|0.0000|-600.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 700 m|||0.0000|0.0000|-700.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 800 m|||0.0000|0.0000|-800.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 900 m|||0.0000|0.0000|-900.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1000 m|||0.0000|0.0000|-1000.0000
+    L|-31.7595|0.0000|0.0000|4.2215|0.0687|painted|NightIllumination
+    T|10|-35.0484|0.0000|8.0000|painted|NightIllumination
+   G|12.7 1100 m|||0.0000|0.0000|-1100.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1200 m|||0.0000|0.0000|-1200.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1300 m|||0.0000|0.0000|-1300.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1400 m|||0.0000|0.0000|-1400.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1500 m|||0.0000|0.0000|-1500.0000
+    L|-31.7595|0.0000|0.0000|4.2215|0.0687|painted|NightIllumination
+    T|15|-35.0484|0.0000|8.0000|painted|NightIllumination
+   G|12.7 1600 m|||0.0000|0.0000|-1600.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1700 m|||0.0000|0.0000|-1700.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1800 m|||0.0000|0.0000|-1800.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 1900 m|||0.0000|0.0000|-1900.0000
+    L|-30.8760|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|12.7 2000 m|||0.0000|0.0000|-2000.0000
+    L|-31.7595|0.0000|0.0000|4.2215|0.0687|painted|NightIllumination
+    T|20|-35.0484|0.0000|8.0000|painted|NightIllumination
+ G|OECC scale|||0.0000|0.0000|1.0407
+  G|OECC rows||oecc|0.0000|0.0000|0.0000
+   G|OECC 0 m|||0.0000|0.0000|0.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|0|-24.1510|0.0000|8.0000|painted|NightIllumination
+   G|OECC 100 m|||0.0000|0.0000|-100.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 200 m|||0.0000|0.0000|-200.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 300 m|||0.0000|0.0000|-300.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 400 m|||0.0000|0.0000|-400.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 500 m|||0.0000|0.0000|-500.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|5|-24.1510|0.0000|8.0000|painted|NightIllumination
+   G|OECC 600 m|||0.0000|0.0000|-600.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 700 m|||0.0000|0.0000|-700.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 800 m|||0.0000|0.0000|-800.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 900 m|||0.0000|0.0000|-900.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1000 m|||0.0000|0.0000|-1000.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|10|-24.1510|0.0000|8.0000|painted|NightIllumination
+   G|OECC 1100 m|||0.0000|0.0000|-1100.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1200 m|||0.0000|0.0000|-1200.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1300 m|||0.0000|0.0000|-1300.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1400 m|||0.0000|0.0000|-1400.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1500 m|||0.0000|0.0000|-1500.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|15|-24.1510|0.0000|8.0000|painted|NightIllumination
+   G|OECC 1600 m|||0.0000|0.0000|-1600.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1700 m|||0.0000|0.0000|-1700.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1800 m|||0.0000|0.0000|-1800.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 1900 m|||0.0000|0.0000|-1900.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2000 m|||0.0000|0.0000|-2000.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|20|-24.1510|0.0000|8.0000|painted|NightIllumination
+   G|OECC 2100 m|||0.0000|0.0000|-2100.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2200 m|||0.0000|0.0000|-2200.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2300 m|||0.0000|0.0000|-2300.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2400 m|||0.0000|0.0000|-2400.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2500 m|||0.0000|0.0000|-2500.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|25|-24.1510|0.0000|8.0000|painted|NightIllumination
+   G|OECC 2600 m|||0.0000|0.0000|-2600.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2700 m|||0.0000|0.0000|-2700.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2800 m|||0.0000|0.0000|-2800.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 2900 m|||0.0000|0.0000|-2900.0000
+    L|-20.1749|0.0000|0.0000|1.6690|0.0589|painted|NightIllumination
+   G|OECC 3000 m|||0.0000|0.0000|-3000.0000
+    L|-20.9112|0.0000|0.0000|3.9270|0.0687|painted|NightIllumination
+    T|30|-24.1510|0.0000|8.0000|painted|NightIllumination
+ G|OFL scale|||0.0000|0.0000|-0.8541
+  G|OFL rows||ofl|0.0000|0.0000|0.0000
+   G|OFL 0 m|||0.0000|0.0000|0.0000
+    L|21.9421|0.0000|0.0000|4.0252|0.0687|painted|NightIllumination
+    T|0|25.3291|0.0000|8.0000|painted|NightIllumination
+   G|OFL 200 m|||0.0000|0.0000|-200.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 400 m|||0.0000|0.0000|-400.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 600 m|||0.0000|0.0000|-600.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 800 m|||0.0000|0.0000|-800.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 1000 m|||0.0000|0.0000|-1000.0000
+    L|21.9421|0.0000|0.0000|4.0252|0.0687|painted|NightIllumination
+    T|10|25.3291|0.0000|8.0000|painted|NightIllumination
+   G|OFL 1200 m|||0.0000|0.0000|-1200.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 1400 m|||0.0000|0.0000|-1400.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 1600 m|||0.0000|0.0000|-1600.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 1800 m|||0.0000|0.0000|-1800.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 2000 m|||0.0000|0.0000|-2000.0000
+    L|21.9421|0.0000|0.0000|4.0252|0.0687|painted|NightIllumination
+    T|20|25.3291|0.0000|8.0000|painted|NightIllumination
+   G|OFL 2200 m|||0.0000|0.0000|-2200.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 2400 m|||0.0000|0.0000|-2400.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 2600 m|||0.0000|0.0000|-2600.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 2800 m|||0.0000|0.0000|-2800.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 3000 m|||0.0000|0.0000|-3000.0000
+    L|21.9421|0.0000|0.0000|4.0252|0.0687|painted|NightIllumination
+    T|30|25.3291|0.0000|8.0000|painted|NightIllumination
+   G|OFL 3200 m|||0.0000|0.0000|-3200.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 3400 m|||0.0000|0.0000|-3400.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 3600 m|||0.0000|0.0000|-3600.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 3800 m|||0.0000|0.0000|-3800.0000
+    L|20.9603|0.0000|0.0000|2.0617|0.0589|painted|NightIllumination
+   G|OFL 4000 m|||0.0000|0.0000|-4000.0000
+    L|21.9421|0.0000|0.0000|4.0252|0.0687|painted|NightIllumination
+    T|40|25.3291|0.0000|8.0000|painted|NightIllumination
+ T|12.7|-33.3794|-2.3562|8.0000|painted|NightIllumination
+ T|OECC|-21.6966|-2.3562|8.0000|painted|NightIllumination
+ T|OFL|22.6784|-2.3562|8.0000|painted|NightIllumination
+ L|-28.7652|-0.2454|-157.3801|1.2763|0.0687|painted|NightIllumination
+ L|-28.7652|-0.7363|-22.6199|1.2763|0.0687|painted|NightIllumination
+ L|-17.7696|1.2861|-157.3801|1.2763|0.0687|painted|NightIllumination
+ L|-17.7696|0.7952|-22.6198|1.2763|0.0687|painted|NightIllumination
+ L|18.6532|-0.6087|-22.6199|1.2763|0.0687|painted|NightIllumination
+ L|18.6532|-1.0996|-157.3801|1.2763|0.0687|painted|NightIllumination
+ L|36.8155|-1.9635|0.0000|3.1416|0.0589|painted|NightIllumination
+ L|36.4719|-1.4726|0.0000|2.4544|0.0589|painted|NightIllumination
+ L|36.4719|-0.9817|0.0000|2.4544|0.0589|painted|NightIllumination
+ L|36.4719|-0.4909|0.0000|2.4544|0.0589|painted|NightIllumination
+ L|36.8155|0.0000|0.0000|3.1416|0.0589|painted|NightIllumination
+ L|36.4719|0.4909|0.0000|2.4544|0.0589|painted|NightIllumination
+ L|36.4719|0.9817|0.0000|2.4544|0.0589|painted|NightIllumination
+ L|36.4719|1.4726|0.0000|2.4544|0.0589|painted|NightIllumination
+ L|36.8155|1.9635|0.0000|3.1416|0.0589|painted|NightIllumination
+ T|2|39.1717|1.9635|7.0000|painted|NightIllumination
+ T|0|39.1717|0.0000|7.0000|painted|NightIllumination
+ T|2|39.1717|-1.9635|7.0000|painted|NightIllumination
+ L|33.9685|0.2454|-22.6199|1.2763|0.0687|painted|NightIllumination
+ L|33.9685|-0.2454|-157.3801|1.2763|0.0687|painted|NightIllumination
+screen|HL 130 day display
+S|rect|box|centre|0.5400|-14.0400|19.9300|8.8400|0.0000|0.0000|0|||center|0.0350,0.0300,0.0250,0.9300
+S|readout|range|centre|-5.6000|-12.6000|7.0000|2.4000|2.1000|0.0000|0|0000|Soviet7SegmentFont SDF|center|0.4200,1.0000,0.3800,1.0000
+S|readout|hf|centre|-5.6000|-12.6000|7.0000|2.4000|2.1000|0.0000|0|HF|LiberationSans SDF|center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|0.4000|-12.6000|2.2000|0.1800|0.0000|90.0000|0|||center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|0.1250|-11.7750|0.9301|0.1800|0.0000|-126.2538|0|||center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|0.6750|-11.7750|0.9301|0.1800|0.0000|-53.7462|0|||center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|5.4000|-11.4000|2.2000|0.1500|0.0000|0.0000|0|||center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|5.4000|-13.8000|2.2000|0.1500|0.0000|0.0000|0|||center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|4.3000|-12.6000|2.4000|0.1500|0.0000|-90.0000|0|||center|0.4200,1.0000,0.3800,1.0000
+S|seg|seg|centre|6.5000|-12.6000|2.4000|0.1500|0.0000|-90.0000|0|||center|0.4200,1.0000,0.3800,1.0000
+S|readout|ammo|centre|5.4000|-12.6000|2.2000|2.4000|2.1000|0.0000|0|F|LiberationSans SDF|center|0.4200,1.0000,0.3800,1.0000
+S|rect|ready|centre|8.6000|-12.4000|1.8000|1.8000|0.0000|0.0000|0|||center|0.4200,1.0000,0.3800,1.0000

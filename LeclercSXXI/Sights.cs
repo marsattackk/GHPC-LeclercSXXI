@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using GHPC;
 using GHPC.Camera;
 using GHPC.Equipment.Optics;
@@ -16,69 +14,82 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace LeclercSXXI
 {
-	internal static class Sights
+	internal static partial class Sights
 	{
 		const string Tag = LeclercSXXIMod.FriendlyName;
 		const string HeadGroup = "HL120_HEAD";
+		// On the roof window. The outlet is inferred from the centre of the two apertures in the visual model, 23 mm ahead of
+		// the shield. The two channels and laser share the same point in GHPC.
 		internal static readonly Vector3 GunnerEye = new Vector3(0.563f, 2.203f, 0.804f);
+		// The window in the rotating head, a little ahead of its front face.
 		internal static readonly Vector3 CommanderEye = new Vector3(-0.478f, 2.715f, 0.056f);
-		const float CommanderViewRaise = 0.15f;
+		const float CommanderViewRaise = 0.15f;   // metres above CommanderHead: eye height over the hatch ring
+		// The commander's hatch ring, my estimate from the model's commander hatch (War Thunder's hatch_01, turret left).
 		static readonly Vector3 CommanderHead = new Vector3(-0.735f, 2.565f, -0.895f);
-		const float CommanderViewClear = 0.20f;
-		const float HeadTopFallback = 2.902f;
-		const float DayWide = 17.5f, DayNarrow = 5.5f;
-		const float CommanderWide = 20f, CommanderNarrow = 5f;
-		const float ThermalWide = 6f, ThermalNarrow = 2f, ThermalZoom = 1f;
+		const float CommanderViewClear = 0.20f;   // metres the free-look eye sits above the HL 120 head's top
+		const float HeadTopFallback = 2.902f;     // HL 120 top from its damage box (modules_built.json) when no mesh is found
+		const float DayWide = 17.5f, DayNarrow = 5.5f;   // French Wikipedia, Leclerc
+		const float CommanderWide = 20f, CommanderNarrow = 5f;   // the HL 70 day fields borrowed for the HL 120
+		const float ThermalWide = 6f, ThermalNarrow = 2f, ThermalZoom = 1f;   // vertical angles; x20 is inferred
+		// Iris: 576 lines. Render at 16:9 with the M1IP's scope and the shared clean thermal image.
 		const int ThermalWidth = 1024, ThermalHeight = 576;
-		static readonly Vector2 CommanderPitch = new Vector2(-10f, 25f);
-		static readonly GunnerFcs.Settings FcsSettings = new GunnerFcs.Settings
+		// The HL 130's displays (from pictures of the real sight, HlDisplay): the day box's green seven segments (02, 06), the thermal row.
+		const string DayDisplay = "hl130_day.jsonc", ThermalDisplay = "hl130_thermal.jsonc";
+		// The green of the pictures' seven segments; the exact shade is my choice.
+		static readonly Color DayLit = new Color(0.42f, 1f, 0.38f);
+		static readonly Vector2 CommanderPitch = new Vector2(-10f, 25f);   // inferred; HL 120 mirror travel not sourced
+		static readonly GunnerFcs.Settings Settings = new GunnerFcs.Settings
 		{
-			LaserMax = 6000f,
+			Tag = Tag,
+			LaserMax = 6000f,                  // my choice: no source gives the HL 130's laser range
+			// Relative to the turret (MountOnTurret), inferred: the gun's -8 / +20 with room below.
 			LineOfSightLimits = new Vector2(-10f, 20f),
-			LineOfSightAzimuth = 5f,
+			LineOfSightAzimuth = 5f,           // inferred; keep the lead and laser within the forward window
 			ViewStopsAtAzimuth = true,
 			LeadLimit = 5f,
-			ManualMode = false,
+			LeadLikeM1 = true,                 // the vanilla M1's lead: Smooth Aim held at the lase, dropped when let go
+			ManualMode = false,                // the M1IP's cross stays on the line of sight at a hand-set range
 		};
 
-		static readonly FieldInfo Reparent = Reflect.Field(typeof(CameraSlot), "_reparentTarget");
-		static readonly FieldInfo FovItems = Reflect.Field(typeof(UsableOptic), "FovLimitedItems");
-		static readonly FieldInfo ExtraReticles = Reflect.Field(typeof(UsableOptic), "AdditionalReticleMeshes");
+		static readonly System.Reflection.FieldInfo Reparent = Reflect.Field(typeof(CameraSlot), "_reparentTarget");
+		static readonly System.Reflection.FieldInfo FovItems = Reflect.Field(typeof(UsableOptic), "FovLimitedItems");
+		static readonly System.Reflection.FieldInfo ExtraReticles = Reflect.Field(typeof(UsableOptic), "AdditionalReticleMeshes");
 
 		internal sealed class Fitted : RemoteMg.Station
 		{
 			internal FireControlSystem Fcs;
-			internal UsableOptic CommanderDay, CommanderThermal;
-			internal CameraSlot ObserveDay, ObserveThermal;
-			internal UsableOptic Secours;
-			// A view added after spawn is in Cycle View only if it is listed here.
-			internal override IEnumerable<CameraSlot> Sights => new[] { CommanderDay?.slot, Secours?.slot }.Where(s => s != null);
+			internal Transform Turret, Laser;   // set at spawn (Apply), read when the views are fitted (Fit)
+			internal UsableOptic GunnerDay, GunnerThermal, CommanderDay, CommanderThermal;
+			internal CameraSlot ObserveDay, ObserveThermal;   // the HL 120's own observation, the gun left where it is
+			internal UsableOptic Secours;   // the HL 120 slaved to the gun, emergency reticle (FitSecours)
+			internal Transform Head;
+			internal CommanderCupola HeadDrive;
+			// The views made after Unit.Awake listed the unit's camera slots: without this list (RemoteMg.LateSetup and the
+			// camera manager patch) Cycle View never reaches them (the HL 120 secours). A view added after spawn is in Cycle
+			// View only if it is listed here.
+			internal override IEnumerable<CameraSlot> Sights => new[] { CommanderDay?.slot, Secours?.slot }.Where(slot => slot != null);
 		}
 
-		static ReticleSO _dayMarks, _thermalMarks, _thermalWideMarks;
+		static ReticleSO _dayMarks;   // the M1IP's: the HL 120 secours view's, and the HL 130's if its own can't be built
 		static CameraSpriteManager.SpriteType _dayMask, _thermalMask;
 		static PostProcessProfile _dayPicture;
 		static float _dayPicturePriority;
 
 		internal static void WarmDonors()
-			=> DonorParts.WarmAtMenu(Tag, () => LoadMarks(), () => ThermalSight.WarmDonor(Tag), Voices.WarmDonor, Coax.WarmDonor,
-				() => SmokeGrenadeDonor.Warm(Tag, LeclercSXXIMod.SmokeFrom));
+			=> DonorParts.WarmAtMenu(Tag, () => LoadMarks(), () => ThermalSight.WarmDonor(Tag), ConversionVoices.WarmDonor, Coax.WarmDonor,
+				() => SmokeGrenadeDonor.Warm(Tag, Countermeasures.SmokeFrom));
 
 		static bool LoadMarks()
 		{
-			if (_dayMarks != null && _thermalMarks != null) return true;
+			if (_dayMarks != null) return true;
 			var donor = DonorParts.Prefab("M1IP");
-			var main = donor?.GetComponent<WeaponsManager>()?.Weapons?.FirstOrDefault(w => w?.Role == WeaponSystemRole.MainGun)?.FCS;
+			var main = donor?.GetComponent<WeaponsManager>()?.Weapons?.FirstOrDefault(info => info?.Role == WeaponSystemRole.MainGun)?.FCS;
 			var optics = donor?.GetComponentsInChildren<UsableOptic>(true);
-			var day = optics?.FirstOrDefault(o => o.FCS == main && o.slot != null && o.slot.LinkedNightSight != null);
-			var night = optics?.FirstOrDefault(o => day != null && o.slot == day.slot.LinkedNightSight);
+			var day = optics?.FirstOrDefault(optic => optic.FCS == main && optic.slot != null && optic.slot.LinkedNightSight != null);
+			var night = optics?.FirstOrDefault(optic => day != null && optic.slot == day.slot.LinkedNightSight);
 			var daySource = day?.reticleMesh?.reticleSO;
-			var nightSource = night?.reticleMesh?.reticleSO;
-			if (daySource == null || nightSource == null) return false;
+			if (daySource == null || night?.slot == null) return false;
 			_dayMarks = OwnMarks(daySource);
-			_thermalMarks = OwnMarks(nightSource);
-			var wide = night.GetComponentsInChildren<ReticleMesh>(true).FirstOrDefault(m => m.reticleSO != null && m.reticleSO.name == "WFOV");
-			_thermalWideMarks = wide != null ? OwnMarks(wide.reticleSO) : _thermalMarks;
 			_dayMask = day.slot.SpriteType;
 			_thermalMask = night.slot.SpriteType;
 			_dayPicture = day.post?.sharedProfile;
@@ -88,140 +99,102 @@ namespace LeclercSXXI
 
 		static ReticleSO OwnMarks(ReticleSO source)
 		{
+			// GHPC caches generated reticle meshes by name.
 			var copy = UnityEngine.Object.Instantiate(source);
 			copy.name = "Leclerc SXXI (" + source.name + ")";
 			return copy;
 		}
 
+		// At spawn, after moving the rig's axes, with the turret at rest: the HL 130's laser window. The views are fitted two
+		// frames later (Fit, a late step), once the base optics have started.
 		internal static void Apply(Vehicle vehicle)
 		{
 			var turret = vehicle.transform.Find("T80B_rig/HULL/TURRET");
-			var main = vehicle.GetComponent<WeaponsManager>()?.Weapons?.FirstOrDefault(w => w?.Role == WeaponSystemRole.MainGun)?.FCS;
+			var main = vehicle.GetComponent<WeaponsManager>()?.Weapons?.FirstOrDefault(info => info?.Role == WeaponSystemRole.MainGun)?.FCS;
 			if (turret == null || main == null)
 			{
 				MelonLogger.Warning($"{Tag}: no turret or main gun fire control; sights left as they were.");
-				try { Interior.Modules.Wire(vehicle); }
-				catch (Exception e) { MelonLogger.Error($"{Tag}: modules failed: {e}"); }
 				return;
 			}
 			if (vehicle.GetComponentInChildren<Fitted>(true) != null) return;
 			var fitted = vehicle.gameObject.AddComponent<Fitted>();
 			fitted.Fcs = main;
-			var laser = GunnerFcs.LaserWindow(vehicle.transform, main, turret, GunnerEye, "HL 130 laser window");
-			MelonCoroutines.Start(FitWhenReady(vehicle, turret, laser, fitted));
+			fitted.Turret = turret;
+			fitted.Laser = GunnerFcs.LaserWindow(vehicle.transform, main, turret, GunnerEye, "HL 130 laser window");
 		}
 
-		static IEnumerator FitWhenReady(Vehicle vehicle, Transform turret, Transform laser, Fitted st)
+		// Two frames after the spawn (Conversion.LateSteps): the HL 130's and HL 120's views on the base optics.
+		internal static void Fit(Vehicle vehicle)
 		{
-			yield return null;
-			yield return null;
-			if (vehicle == null) yield break;
-			try { Fit(vehicle, turret, laser, st); }
-			catch (Exception e) { MelonLogger.Error($"{Tag}: sight setup failed: {e}"); }
-			try { Interior.Modules.Wire(vehicle); }
-			catch (Exception e) { MelonLogger.Error($"{Tag}: modules failed: {e}"); }
-			try
+			var fitted = vehicle.GetComponent<Fitted>();
+			if (fitted != null) Fit(vehicle, fitted.Turret, fitted.Laser, fitted);   // none: Apply said why
+		}
+
+		// After the module wiring (Conversion.LateSteps): the HL 120 head lost (the hl120 module) takes its emergency view with it.
+		internal static void EndSecoursWithHead(Vehicle vehicle)
+		{
+			var fitted = vehicle.GetComponent<Fitted>();
+			var head = vehicle.GetComponentsInChildren<ModuleBuilder.ModuleSet>(true).SelectMany(set => set.Built)
+				.FirstOrDefault(built => built.m.Id == "hl120").dc;
+			var view = fitted?.Secours?.slot;
+			if (head != null && view != null)
 			{
-				var head = vehicle.GetComponentsInChildren<ModuleBuilder.ModuleSet>(true).SelectMany(s => s.Built)
-					.FirstOrDefault(b => b.m.Id == "hl120").dc;
-				var view = st.Secours?.slot;
-				if (head != null && view != null) head.Destroyed += _ => { if (view != null) view.ForceDamage(); };
+				head.Destroyed += _ =>
+				{
+					if (view != null) view.ForceDamage();
+				};
 			}
-			catch (Exception e) { MelonLogger.Error($"{Tag}: HL 120 secours hit zone failed: {e}"); }
+			DevFitted(vehicle, fitted);
 		}
 
-		static void FitSecours(Vehicle v, Transform turret, Fitted st, UsableOptic gunnerDay, UsableOptic gunnerNight)
+		static void Fit(Vehicle vehicle, Transform turret, Transform laser, Fitted fitted)
 		{
-			var root = v.transform;
-			var window = new GameObject("HL 120 secours window").transform;
-			window.SetParent(turret, false);
-			window.SetPositionAndRotation(root.TransformPoint(CommanderEye), root.rotation);
-			var weapons = v.GetComponent<WeaponsManager>().Weapons.Where(w => w.Role == WeaponSystemRole.MainGun || w.Role == WeaponSystemRole.Coaxial)
-				.Select(w => w.Weapon).Where(w => w != null).ToArray();
-			var holder = new GameObject("HL 120 secours setup");
-			holder.SetActive(false);
-			var go = UnityEngine.Object.Instantiate(gunnerNight.gameObject, holder.transform, false);
-			go.name = "HL 120 secours";
-			DonorParts.Scrub(go, root);
-			foreach (var c in go.GetComponentsInChildren<Collider>(true)) UnityEngine.Object.DestroyImmediate(c);
-			var o = go.GetComponent<UsableOptic>();
-			if (o?.slot == null || !o.slot.transform.IsChildOf(go.transform))
-			{
-				MelonLogger.Warning($"{Tag}: the base night optic's view is not inside it; no HL 120 emergency view.");
-				UnityEngine.Object.Destroy(holder);
-				return;
-			}
-			o.FCS = st.Fcs;
-			o.RegisterAtStart = false;
-			o.Alignment = OpticAlignment.BoresightStabilized;
-			o.RotateElevation = o.RotateAzimuth = true;
-			o.CantCorrect = false;
-			o.ForceHorizontalReticleAlign = true;
-			o.LocalElevationLimits = CommanderPitch;
-			o.LocalAzimuthLimits = Vector2.zero;
-			o.OverrideRangeLimits = Vector2.zero;
-			o.OverrideRangeStep = 0;
-			o.Mounts = Array.Empty<AimablePlatform>();
-			o.postAdditional = Array.Empty<PostProcessVolume>();
-			o.AltNightPost = null;
-			o.transform.SetParent(window, false);
-			o.transform.localPosition = Vector3.zero;
-			o.transform.localRotation = Quaternion.identity;
-			var s = o.slot;
-			s.transform.SetPositionAndRotation(window.position, window.rotation);
-			Reparent?.SetValue(s, s.transform == o.transform ? window : s.transform.parent);
-			s.ExclusiveWeapons = weapons;
-			s.ExclusiveItems = Array.Empty<GameObject>();
-			s.ZeroScaleItems = Array.Empty<Transform>();
-			s.SlotToUseOnDestroy = null;
-			s.HitZone = null;
-			s.AllowFreeLook = false;
-			s.IsExterior = false;
-			s.DirectAttachOnly = false;
-			s.LinkedNightSight = null;
-			s.VisionType = NightVisionType.None;
-			s.BaseBlur = gunnerDay.slot.BaseBlur;
-			s.VibrationPreBlur = gunnerDay.slot.VibrationPreBlur;
-			var oldMarks = o.reticleMesh != null ? o.reticleMesh.gameObject : null;
-			o.reticleMesh = UnityEngine.Object.Instantiate(gunnerDay.reticleMesh.gameObject, o.transform, false).GetComponent<ReticleMesh>();
-			o.reticleMesh.transform.localPosition = Vector3.zero;
-			if (oldMarks != null) UnityEngine.Object.DestroyImmediate(oldMarks);
-			ConfigureDay(o, CommanderWide, CommanderNarrow, _dayMarks, copy: true);
-			GunnerFcs.AimClamp.Register(st.Fcs, o);
-			go.SetActive(true);
-			go.transform.SetParent(window, false);
-			UnityEngine.Object.Destroy(holder);
-			st.Secours = o;
-			EmergencySight.Attach(v, o, st.Fcs);
-		}
-
-		static void Fit(Vehicle v, Transform turret, Transform laser, Fitted st)
-		{
-			var optics = v.GetComponentsInChildren<UsableOptic>(true);
-			var fcs = st.Fcs;
-			var day = optics.FirstOrDefault(o => o.FCS == fcs && o.RegisterAtStart && o.slot != null && o.slot.LinkedNightSight != null);
-			var night = optics.FirstOrDefault(o => day != null && o.slot == day.slot.LinkedNightSight);
+			var optics = vehicle.GetComponentsInChildren<UsableOptic>(true);
+			var fcs = fitted.Fcs;
+			var day = optics.FirstOrDefault(optic => optic.FCS == fcs
+				&& optic.RegisterAtStart
+				&& optic.slot != null
+				&& optic.slot.LinkedNightSight != null);
+			var night = optics.FirstOrDefault(optic => day != null && optic.slot == day.slot.LinkedNightSight);
 			if (day == null || night == null || !LoadMarks())
 			{
 				MelonLogger.Warning($"{Tag}: no gunner optic pair or M1IP reticles; sight conversion skipped.");
 				return;
 			}
 
-			try { FitSecours(v, turret, st, day, night); }
-			catch (Exception e) { MelonLogger.Error($"{Tag}: HL 120 emergency view failed: {e}"); }
-			try { RemoteMg.LateSetup(v); }
-			catch (Exception e) { MelonLogger.Error($"{Tag}: HL 120 emergency view not added to Cycle View: {e}"); }
+			// First, from the base optics as they came (the HL 130's own setup below moves its slots onto the turret).
+			try { FitSecours(vehicle, turret, fitted, day, night); }
+			catch (Exception exception) { MelonLogger.Error($"{Tag}: HL 120 emergency view failed: {exception}"); }
+			// Into the unit's camera slots, so Cycle View reaches it (FitCommander's own call is skipped: static head).
+			try { RemoteMg.LateSetup(vehicle); }
+			catch (Exception exception) { MelonLogger.Error($"{Tag}: HL 120 emergency view not added to Cycle View: {exception}"); }
+
+			fitted.GunnerDay = day;
 			day.name = "HL 130 day";
-			ConfigureDay(day, DayWide, DayNarrow, GunnerDayReticle.Fit(v, day, _dayMarks));
-			GunnerFcs.Apply(day, FcsSettings);
+			var dayMarks = GunnerDayReticle.Fit(vehicle, day, _dayMarks);
+			ConfigureDay(day, DayWide, DayNarrow, dayMarks);
+			// The reticle is drawn at its angular size, so the wide field shrinks it 3x: its lines keep the narrow field's
+			// width on the screen there (the marks keep their place and size).
+			ReticleWidth.Attach(day, 1f);
+			// The display box under the cross, with the HL 130's own reticle only (after ConfigureDay: it clears the display).
+			if (dayMarks != _dayMarks) HlDisplay.Attach(day, DayDisplay, turret, DayLit);
+			GunnerFcs.Apply(day, Settings);
 			GunnerFcs.HeadView(Tag, laser, day.slot.transform, night.slot.transform, fcs.ReferenceTransform);
-			GunnerFcs.MountOnTurret(Tag, v.transform, turret, day.slot.transform, night.slot.transform);
-			GunnerFcs.LaserAim.Register(fcs, day, FcsSettings);
+			// The HL 130 head is on the turret roof: its views don't ride the gun (the reload dip dragged them).
+			GunnerFcs.MountOnTurret(Tag, vehicle.transform, turret, day.slot.transform, night.slot.transform);
+			GunnerFcs.LaserAim.Register(fcs, day, Settings);
 			GunnerFcs.Parallax.Register(fcs);
-			try { FitCommander(v, turret, st, day, night, laser); }
-			catch (Exception e) { MelonLogger.Error($"{Tag}: commander sight setup failed: {e}"); }
-			if (ConfigureThermal(day, night, "HL 130", day.LocalElevationLimits)) ThermalSight.SetUnitNightVision(v, night.slot);
-			var fallback = st.CommanderDay?.slot ?? st.Secours?.slot;
+			// Clone the base night optic before replacing its image chain and attaching the gunner's thermal components.
+			try { FitCommander(vehicle, turret, fitted, day, night, laser); }
+			catch (Exception exception) { MelonLogger.Error($"{Tag}: commander sight setup failed: {exception}"); }
+			if (ConfigureThermal(day, night, "HL 130", day.LocalElevationLimits, turret))
+			{
+				fitted.GunnerThermal = night;
+				ThermalSight.SetUnitNightVision(vehicle, night.slot);
+			}
+			// The HL 130 head lost (the hl130 module): the gunner goes to the commander's HL 120, which lays the same gun. With
+			// the HL 120's gun-laying views off (static head), its emergency view.
+			var fallback = fitted.CommanderDay?.slot ?? fitted.Secours?.slot;
 			if (fallback != null)
 			{
 				day.slot.SlotToUseOnDestroy = fallback;
@@ -231,34 +204,41 @@ namespace LeclercSXXI
 
 		static void ConfigureDay(UsableOptic day, float wide, float narrow, ReticleSO marks, bool copy = false)
 		{
-			var s = day.slot;
-			s.DefaultFov = wide;
-			s.OtherFovs = new[] { narrow };
-			s.fovAspect = true;
-			s.AllowFreeZoom = false;
-			s.WrapFovLevels = false;
-			s.SpriteType = _dayMask;
+			var slot = day.slot;
+			slot.DefaultFov = wide;
+			slot.OtherFovs = new[] { narrow };
+			slot.fovAspect = true;                // day fields across the view
+			slot.AllowFreeZoom = false;
+			slot.WrapFovLevels = false;
+			slot.SpriteType = _dayMask;
 			if (day.post != null && _dayPicture != null)
 			{
 				day.post.sharedProfile = _dayPicture;
 				day.post.priority = _dayPicturePriority;
 			}
 			ReplaceReticle(day, marks, copy);
-			SightMotion.Stabilised(s);
+			SightMotion.Stabilised(slot);
 		}
 
-		static bool ConfigureThermal(UsableOptic day, UsableOptic night, string name, Vector2 pitch, bool copy = false)
+		static bool ConfigureThermal(UsableOptic day, UsableOptic night, string name, Vector2 pitch, Transform turret)
 		{
 			if (!ThermalSight.Apply(day, night, new ThermalSight.Settings
 			{
-				Tag = Tag, Name = name + " Iris",
-				WideFov = ThermalWide, OtherFovs = new[] { ThermalNarrow, ThermalZoom }, ElectronicFov = ThermalZoom,
-				Width = ThermalWidth, Height = ThermalHeight, ElevationLimits = pitch,
+				Tag = Tag,
+				Name = name + " Iris",
+				WideFov = ThermalWide,
+				OtherFovs = new[] { ThermalNarrow, ThermalZoom },
+				ElectronicFov = ThermalZoom,
+				Width = ThermalWidth,
+				Height = ThermalHeight,
+				ElevationLimits = pitch,
 				Crt = false,
-				Reticle = o =>
+				// The Iris's marks are electronic, the same size in every field: screen items only (hl130_thermal), no reticle.
+				Reticle = optic =>
 				{
-					ReplaceReticle(o, o.slot.FovIndex == 0 ? _thermalWideMarks : _thermalMarks, copy);
-					ZoomReticles.Attach(o, new[] { _thermalWideMarks, _thermalMarks, _thermalMarks }, new GameObject[3][]);
+					ClearDisplay(optic);
+					if (optic.reticleMesh != null) optic.reticleMesh.gameObject.SetActive(false);
+					HlDisplay.Attach(optic, ThermalDisplay, turret, Color.white);
 				},
 			})) return false;
 			night.name = name + " Iris thermal";
@@ -272,6 +252,20 @@ namespace LeclercSXXI
 		{
 			var mesh = optic.reticleMesh;
 			if (mesh == null) return;
+			ClearDisplay(optic);
+			mesh.reticleSO = marks;
+			ReticleBuild.PrepareCopy(mesh);
+			mesh.gameObject.SetActive(true);
+			// The existing optic has already run Start even when out of view, so rebuild its mesh now.
+			// The commander copies load on their first activation.
+			if (!copy) mesh.Load();
+		}
+
+		// The base optic's own marks and indicators off: every reticle renderer but the primary one, its in-scope display.
+		static void ClearDisplay(UsableOptic optic)
+		{
+			var mesh = optic.reticleMesh;
+			// The 1G42's other reticle objects belong to the Soviet optic. Keep only the primary renderer.
 			foreach (var other in optic.GetComponentsInChildren<ReticleMesh>(true))
 			{
 				if (other == mesh || other.GetComponentInParent<UsableOptic>(true) != optic) continue;
@@ -280,6 +274,8 @@ namespace LeclercSXXI
 			}
 			ExtraReticles?.SetValue(optic, Array.Empty<ReticleMesh>());
 			FovItems?.SetValue(optic, Array.CreateInstance(FovItems.FieldType.GetElementType(), 0));
+			// The T-80B's in-scope indicators are part of its own display. Use GHPC's range HUD with the borrowed marks.
+			// The weapon's ammo-type exclusives can switch the Cyrillic text on again, so turn off its parent canvas.
 			var oldDisplay = optic.transform.Find("1G42 Canvas");
 			if (oldDisplay != null) oldDisplay.gameObject.SetActive(false);
 			if (optic.RangeText != null) optic.RangeText.gameObject.SetActive(false);
@@ -288,209 +284,6 @@ namespace LeclercSXXI
 			optic.RangeText = null;
 			optic.ReadyToFireObject = null;
 			optic.OverridingObject = null;
-			mesh.reticleSO = marks;
-			ReticleBuild.PrepareCopy(mesh);
-			mesh.gameObject.SetActive(true);
-			if (!copy) mesh.Load();
-		}
-
-		static void FitCommander(Vehicle v, Transform turret, Fitted st, UsableOptic gunnerDay, UsableOptic gunnerNight, Transform gunnerLaser)
-		{
-			var lookSlot = v.GetComponentsInChildren<CameraSlot>(true).FirstOrDefault(s => s.name == "commander head");
-			if (lookSlot != null)
-			{
-				var eye = v.transform.TransformPoint(CommanderHead + Vector3.up * CommanderViewRaise);
-				var headTop = turret.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == HeadGroup)?
-					.GetComponentsInChildren<Renderer>(true).Select(r => r.bounds.max.y).DefaultIfEmpty(float.NaN).Max() ?? float.NaN;
-				if (float.IsNaN(headTop)) headTop = v.transform.TransformPoint(new Vector3(0f, HeadTopFallback, 0f)).y;
-				eye.y = Mathf.Max(eye.y, headTop + CommanderViewClear);
-				lookSlot.transform.position = eye;
-				if (lookSlot.LinkedNightSight != null) lookSlot.LinkedNightSight.transform.position = eye;
-			}
-			return;
-			var root = v.transform;
-			var mount = LeclercSXXIMod.Rig?.Mounts.FirstOrDefault(m => m.Group == HeadGroup);
-			var head = turret.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == HeadGroup);
-			if (mount == null || head == null)
-			{
-				MelonLogger.Warning($"{Tag}: no HL 120 head in the bundle; commander's sights left as they were.");
-				return;
-			}
-
-			var slots = v.GetComponentsInChildren<CameraSlot>(true);
-			var free = slots.FirstOrDefault(s => s.name == "commander head");
-			var nods = free?.LinkedNightSight;
-			if (free != null) free.transform.position = root.TransformPoint(CommanderHead);
-			if (nods != null) nods.transform.position = root.TransformPoint(CommanderHead);
-			var eyes = new GameObject("HL 120 optic frame").transform;
-			eyes.SetParent(turret, false);
-			eyes.SetPositionAndRotation(root.TransformPoint(CommanderEye), root.rotation);
-			var window = new GameObject("HL 120 laser window").transform;
-			window.SetParent(head, false);
-			window.position = root.TransformPoint(CommanderEye);
-
-			var weapons = v.GetComponent<WeaponsManager>().Weapons.Where(w => w.Role == WeaponSystemRole.MainGun || w.Role == WeaponSystemRole.Coaxial)
-				.Select(w => w.Weapon).Where(w => w != null).ToArray();
-			var holder = new GameObject("HL 120 setup");
-			holder.SetActive(false);
-			UsableOptic Copy(UsableOptic src, string name)
-			{
-				var go = UnityEngine.Object.Instantiate(src.gameObject, holder.transform, false);
-				go.SetActive(false);
-				go.name = name;
-				DonorParts.Scrub(go, root);
-				foreach (var c in go.GetComponentsInChildren<Collider>(true)) UnityEngine.Object.DestroyImmediate(c);
-				var o = go.GetComponent<UsableOptic>();
-				o.FCS = st.Fcs;
-				o.RegisterAtStart = false;
-				o.Alignment = OpticAlignment.BoresightStabilized;
-				o.RotateElevation = o.RotateAzimuth = true;
-				o.CantCorrect = true;
-				o.ForceHorizontalReticleAlign = true;
-				o.LocalElevationLimits = CommanderPitch;
-				o.LocalAzimuthLimits = Vector2.zero;
-				o.OverrideRangeLimits = Vector2.zero;
-				o.OverrideRangeStep = 0;
-				o.Mounts = Array.Empty<AimablePlatform>();
-				o.postAdditional = o.postAdditional?.Where(p => p != null).ToArray() ?? Array.Empty<PostProcessVolume>();
-				o.transform.SetParent(eyes, false);
-				o.transform.localPosition = Vector3.zero;
-				o.transform.localRotation = Quaternion.identity;
-				var s = o.slot;
-				s.transform.SetPositionAndRotation(eyes.position, eyes.rotation);
-				Reparent?.SetValue(s, s.transform == o.transform ? eyes : s.transform.parent);
-				s.ExclusiveWeapons = weapons;
-				s.ExclusiveItems = Array.Empty<GameObject>();
-				s.ZeroScaleItems = Array.Empty<Transform>();
-				s.SlotToUseOnDestroy = gunnerDay.slot;
-				s.AllowFreeLook = false;
-				s.IsExterior = false;
-				s.DirectAttachOnly = false;
-				s.LinkedNightSight = null;
-				return o;
-			}
-			var day = Copy(gunnerNight, "HL 120 day");
-			var night = Copy(gunnerNight, "HL 120 Iris thermal");
-			var oldMarks = day.reticleMesh.gameObject;
-			day.reticleMesh = UnityEngine.Object.Instantiate(gunnerDay.reticleMesh.gameObject, day.transform, false).GetComponent<ReticleMesh>();
-			day.reticleMesh.transform.localPosition = Vector3.zero;
-			UnityEngine.Object.DestroyImmediate(oldMarks);
-			day.AltNightPost = null;
-			day.slot.VisionType = NightVisionType.None;
-			day.slot.BaseBlur = gunnerDay.slot.BaseBlur;
-			day.slot.VibrationPreBlur = gunnerDay.slot.VibrationPreBlur;
-			ConfigureDay(day, CommanderWide, CommanderNarrow, _dayMarks, copy: true);
-			GunnerFcs.AimClamp.Register(st.Fcs, day);
-			st.CommanderDay = day;
-			if (ConfigureThermal(day, night, "HL 120", CommanderPitch, copy: true))
-			{
-				day.slot.LinkedNightSight = night.slot;
-				st.CommanderThermal = night;
-				night.gameObject.SetActive(true);
-			}
-			else UnityEngine.Object.Destroy(night.gameObject);
-			day.gameObject.SetActive(true);
-			UnityEngine.Object.Destroy(holder);
-			GunnerFcs.HeadView(Tag, window, day.slot.transform, st.CommanderThermal?.slot.transform);
-			GunnerFcs.LaserAim.FromWhile(st.Fcs, day.slot, window, FcsSettings.LaserMax);
-			if (st.CommanderThermal != null) GunnerFcs.LaserAim.FromWhile(st.Fcs, night.slot, window, FcsSettings.LaserMax);
-			var reference = st.Fcs.ReferenceTransform?.GetComponent<GunnerFcs.HeadPoint>();
-			void SwitchReference(bool active)
-			{
-				if (reference == null) return;
-				var point = active ? window : gunnerLaser;
-				reference.Turret = point.parent;
-				reference.Local = point.localPosition;
-				reference.Put();
-			}
-			day.slot.ActiveChanged += SwitchReference;
-			if (st.CommanderThermal != null) night.slot.ActiveChanged += SwitchReference;
-			try { FitObserve(st, free, window, day, st.CommanderThermal); }
-			catch (Exception e) { MelonLogger.Error($"{Tag}: HL 120 observation views failed: {e}"); }
-			var link = TargetDesignation.Register(v, st.Fcs, new[] { free, nods, st.ObserveDay, st.ObserveThermal });
-			CommanderCupola.Apply(v, new CommanderCupola.Settings
-			{
-Bone = head, Pivot = mount.Pivot, Axis = mount.Axis,
-				Speed = 90f,
-				Look = new[] { free, nods, day.slot, st.CommanderThermal?.slot, st.ObserveDay, st.ObserveThermal }.Where(s => s != null).ToArray(),
-				Cu = link,
-			});
-			RemoteMg.LateSetup(v);
-		}
-
-		static void FitObserve(Fitted st, CameraSlot free, Transform window, UsableOptic day, UsableOptic night)
-		{
-			if (free == null) { MelonLogger.Warning($"{Tag}: no free-look commander view; no HL 120 observation views."); return; }
-			CameraSlot Make(string name, CameraSlot like, float fov, float[] others)
-			{
-				var go = new GameObject(name) { layer = free.gameObject.layer };
-				go.SetActive(false);
-				go.transform.SetParent(window, false);
-				var s = go.AddComponent<CameraSlot>();
-				s.AllowFreeLook = true;
-				s.AllowFreeZoom = false;
-				s.DefaultFov = fov;
-				s.OtherFovs = others ?? Array.Empty<float>();
-				s.fovAspect = like.fovAspect;
-				s.WrapFovLevels = false;
-				s.BaseBlur = like.BaseBlur;
-				s.VibrationBlurScale = like.VibrationBlurScale;
-				s.VibrationPreBlur = like.VibrationPreBlur;
-				s.VibrationShakeMultiplier = like.VibrationShakeMultiplier;
-				s.SpriteType = like.SpriteType;
-				s.ZeroScaleItems = Array.Empty<Transform>();
-				s.ExclusiveItems = Array.Empty<GameObject>();
-				s.ExclusiveWeapons = Array.Empty<WeaponSystem>();
-				s.ZoomInAudioEvent = like.ZoomInAudioEvent;
-				s.ZoomOutAudioEvent = like.ZoomOutAudioEvent;
-				s.SlotToUseOnDestroy = free;
-				s.IsExterior = false;
-				return s;
-			}
-			var d = Make("HL 120 observe day", day.slot, CommanderWide, new[] { CommanderNarrow });
-			Posts(d, day);
-			if (night != null)
-			{
-				var ns = night.slot;
-				var t = Make("HL 120 observe Iris thermal", ns, ns.DefaultFov, ns.OtherFovs);
-				t.VisionType = NightVisionType.Thermal;
-				t.OverrideFLIRResolution = true;
-				t.FLIRWidth = ns.FLIRWidth;
-				t.FLIRHeight = ns.FLIRHeight;
-				t.FLIRFilterMode = ns.FLIRFilterMode;
-				t.FLIRBlitMaterialOverride = ns.FLIRBlitMaterialOverride;
-				t.CanToggleFlirPolarity = ns.CanToggleFlirPolarity;
-				t.FLIRPolarityOnAudioEvent = ns.FLIRPolarityOnAudioEvent;
-				t.FLIRPolarityOffAudioEvent = ns.FLIRPolarityOffAudioEvent;
-				t.SlotToUseOnDestroy = free;
-				Posts(t, night);
-				t.gameObject.AddComponent<ThermalSight.Resolution>().Init(t, ThermalZoom, ThermalWidth, ThermalHeight);
-				d.LinkedNightSight = t;
-				d.NightSightAtNightOnly = false;
-				t.gameObject.SetActive(true);
-				st.ObserveThermal = t;
-			}
-			d.gameObject.SetActive(true);
-			st.ObserveDay = d;
-		}
-
-		static void Posts(CameraSlot s, UsableOptic from)
-		{
-			var vols = new List<PostProcessVolume>();
-			foreach (var p in new[] { from.post }.Concat(from.postAdditional ?? Array.Empty<PostProcessVolume>()))
-			{
-				if (p == null) continue;
-				var go = new GameObject(p.name) { layer = p.gameObject.layer };
-				go.transform.SetParent(s.transform, false);
-				var v = go.AddComponent<PostProcessVolume>();
-				v.isGlobal = true;
-				v.weight = p.weight;
-				v.priority = p.priority;
-				v.sharedProfile = p.sharedProfile;
-				v.enabled = false;
-				vols.Add(v);
-			}
-			s.ActiveChanged += on => { foreach (var v in vols) if (v != null) v.enabled = on; };
 		}
 	}
 }
