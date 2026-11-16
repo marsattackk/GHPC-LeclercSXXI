@@ -97,10 +97,11 @@ everything else still on. That's the way to shoot with the laser gone, or into s
 range without the laser, the curved stadia lines on the plate are for a target 6 m long, marked 10, 20 and 30 for
 1000, 2000 and 3000 m.
 
-**Lead.** It works like the M1's. Hold Smooth Aim, track the target and lase while you're still tracking. From then on
-the lead follows the last half second of your tracking, up and down as well as sideways, for as long as you keep Smooth
-Aim held. Let go and it's gone. Lase without Smooth Aim held and you get no lead at all. The gun can lead up to 5° ahead
-of the sight, which only a fast target close in will run out of.
+**Lead.** It works like the M1's. Hold the palm switch, listed as Aim (Palm Switch) in the controls and the right mouse
+button by default, so you're already holding it to aim with the mouse. Track the target and lase while you're still
+tracking. From then on the lead follows the last half second of your tracking, up and down as well as sideways, for as
+long as you keep the button held. Let go before you fire and the lead's gone, and a lase without it held gives no lead
+at all. The gun can lead up to 5° ahead of the sight, which only a fast target close in will run out of.
 
 **Firing when laid.** After a lase the gun won't fire until it has climbed to the elevation the computer set. On a long
 shot you'll feel it as a short pause before the round goes. There's no setting for it.
