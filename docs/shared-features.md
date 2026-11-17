@@ -1,7 +1,7 @@
 # Shared features in LeclercSXXI
 
 `Common\` is code my GHPC mods share. A file is the same wherever it appears, but each tank gets only the files it needs:
-LeclercSXXI has 111. It is stamped into each repo and never edited here: to change it, open an issue or a pull request on this repo
+LeclercSXXI has 112. It is stamped into each repo and never edited here: to change it, open an issue or a pull request on this repo
 describing the change, and I apply it to the shared copy and stamp every mod again. Some of these files hold features
 LeclercSXXI does not switch on; this page says which those are and what each feature is. A feature counts as on when a file in the tank
 folder names it.
@@ -16,10 +16,10 @@ folder names it.
 | Camouflage nets | Net screens that spoil a hit and are cut away where an ERA block went off. | `NetCut.cs` | no: the code is here, nothing in the tank folder uses it |
 | Remote machine-gun station | A remotely fired machine gun with its belt, brass and fire control, cloned from a donor vehicle. | `RemoteMg.cs`, `KordBelt.cs`, `KordBrass.cs` | yes, named in `Firepower.Coax.cs`, `Sights.Hl120.cs`, `Sights.cs` |
 | Thermal sights | Thermal imaging sights: the thermal view, the heat patches on the model and the sight setup. | `ThermalSight.cs`, `ThermalHeat.cs` | yes, named in `Conversion.cs`, `Sights.Hl120.cs`, `Sights.cs` |
-| Gunner's fire control and sights | The stabilised sight, its aim limits, the laser, the fire gate and the readouts. | `GunnerFcs.cs`, `FcsMath.cs`, `SightReadout.cs`, `SightMotion.cs`, `TraverseLimits.cs` | yes, named in `Sights.Hl120.cs`, `Sights.Secours.cs`, `Sights.cs` |
+| Gunner's fire control and sights | The stabilised sight, its aim limits, the laser, the fire gate and the readouts. | `GunnerFcs.cs`, `FcsMath.cs`, `SightReadout.cs`, `SightMotion.cs`, `TraverseLimits.cs` | yes, named in `Sights.Hl120.cs`, `Sights.Hl130.cs`, `Sights.Secours.cs`, `Sights.cs` |
 | Commander's cupola | The commander's hatch block turned about its own axis with his line of sight, as the real cupola turns, following the sight in use. | `CommanderCupola.cs` | yes, named in `Sights.Hl120.cs`, `Sights.cs` |
 | Target designation | The commander puts the gun's aim on his own line of sight: the turret slews there and the gunner's sight follows. | `TargetDesignation.cs` | yes, named in `Sights.Hl120.cs` |
-| Reticles | Reticles built from text: the elements, expressions, meshes and the zoom reticles. | `PortReticles.cs`, `ReticleSpec.cs`, `ReticleSpec.Elements.cs`, `ReticleSpec.Expressions.cs`, `ReticleSpec.Json.cs`, `ReticleBuild.cs`, `ReticleMeshes.cs`, `ZoomReticles.cs`, `GuidanceBeam.cs` | yes, named in `Reticles.cs` |
+| Reticles | Reticles built from text: the elements, expressions, meshes and the zoom reticles. | `PortReticles.cs`, `ReticleSpec.cs`, `ReticleSpec.Elements.cs`, `ReticleSpec.Expressions.cs`, `ReticleSpec.Json.cs`, `ReticleBuild.cs`, `ReticleMeshes.cs`, `ReticleWidth.cs`, `ZoomReticles.cs`, `GuidanceBeam.cs` | yes, named in `Reticles.cs` |
 | Main gun and rounds | The gun's values, its own rounds built from vanilla ones, the ammunition menu and the reload rules. | `GunSetup.cs`, `PortAmmo.cs`, `PortAmmo.Menu.cs`, `PortAmmo.Models.cs`, `PortAmmo.Spawn.cs`, `ReloadRules.cs`, `BeltShape.cs` | yes, named in `Firepower.Autoloader.cs`, `Firepower.Gun.cs`, `Firepower.cs`, `Mod.cs` ... |
 | Gun-shot sound | The tank's own gun sound in place of the game's, one recording for the view from inside and one for outside, on the player's gun and the AI's. | `GunShotSound.cs`, `GunShotRules.cs` | yes, named in `Firepower.Sounds.cs` |
 | Reload sound | The tank's own reload sound in place of the base gun's, kept on the game's reload clock so its end lands on the end of the reload, also when loaders are lost. | `ReloadSound.cs` | yes, named in `Firepower.Sounds.cs`, `Firepower.StorageLoad.cs` |

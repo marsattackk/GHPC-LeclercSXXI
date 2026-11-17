@@ -72,6 +72,7 @@ namespace LeclercSXXI.Common
 			public string SourceUnit = "T80B";
 			public Round[] Apfsds = new Round[0];
 			public Func<string> DefaultApfsds;
+			public Func<bool> ForceApfsds;
 			public string ApfsdsListName;
 			public string MenuSuffix;
 			public string FixedHeat = "clip_3BK18M";
@@ -288,6 +289,8 @@ namespace LeclercSXXI.Common
 	internal static class TandemEraPatch
 	{
 		static readonly AccessTools.FieldRef<LiveRound, bool> Sacrificed = Reflect.FieldRefAccess<LiveRound, bool>("_sacrificedWarhead");
+
+		static bool Prepare() => Sacrificed != null;
 
 		// Never throw out of a penCheck patch: the round fails every frame after, and in its first frame no new round flies.
 		static void Prefix(LiveRound __instance, Collider __0)

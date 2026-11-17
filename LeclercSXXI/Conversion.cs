@@ -50,6 +50,13 @@ namespace LeclercSXXI
 			// Before the interior (its bustle compartment becomes the box) and before PortAxes moves the pivots, with the rig at rest.
 			new ConversionStep<Parts> { What = "armour", Otherwise = "the T-80B's armour stays", Run = ApplyArmour },
 			new ConversionStep<Parts> { What = "base visuals", Otherwise = "the T-80B's body stays drawn", Run = HideBase },
+			new ConversionStep<Parts>
+			{
+				What = "T-80B Luna out",
+				Otherwise = "the hidden T-80B Luna lights the ground in night sights",
+				Run = p => BaseStrip.TakeOutLuna(p.Vehicle, LeclercSXXIMod.FriendlyName),
+				SpawnOnly = true,
+			},
 			new ConversionStep<Parts> { What = "visuals", Otherwise = "no Leclerc model is drawn", Run = AttachVisuals },
 			// After the armour and the visuals (the box's blow-off lids are visual parts, looked up by name), before the racks fill.
 			new ConversionStep<Parts>

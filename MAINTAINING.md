@@ -186,6 +186,8 @@ descriptions of three settings live in `Common` (`Weathered paint`, `Campaign pr
 | `Enabled` | `Mod.cs` | everything, off means the mod does nothing |
 | `Add to campaign roster`, `Campaign prevalence`, `Campaign unlock after missions` | `LeclercSXXI\Mod.cs`, `Common\UnitRegistry.cs` (`CampaignConfig`, made for the "American" side) | the American side's campaign roster, re-read at each mission load |
 | `Weathered paint` | `LeclercSXXI\Mod.cs`, `Common\PaintFinish.cs` | `Conversion` (the paint step) |
+| `APFSDS` | `LeclercSXXI\Mod.cs` | `Firepower`, the default round where the game doesn't pick one |
+| `Force APFSDS` | `LeclercSXXI\Mod.cs` | `Firepower` (`ForceApfsds`): the campaign's roll gives the `APFSDS` round |
 | `Check for updates` | `Common\UpdateCheck.cs` | asks GitHub once per start, one console line |
 | `ConfigVersion` | `LeclercSXXI\Mod.cs`, `Common\PortSettings.cs` | hidden, the version that last wrote the section |
 

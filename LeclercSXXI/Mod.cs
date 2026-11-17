@@ -4,7 +4,7 @@ using MelonLoader;
 using MelonLoader.Utils;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(LeclercSXXI.LeclercSXXIMod), "Leclerc SXXI", "0.2.1", "marsattackk")]
+[assembly: MelonInfo(typeof(LeclercSXXI.LeclercSXXIMod), "Leclerc SXXI", "0.2.2", "marsattackk")]
 [assembly: MelonGame("Radian Simulations LLC", "GHPC")]
 
 namespace LeclercSXXI
@@ -31,6 +31,8 @@ namespace LeclercSXXI
 		internal static MelonPreferences_Entry<bool> Enabled;
 		internal static CampaignConfig Campaign;
 		internal static MelonPreferences_Entry<bool> WeatheredPaint;
+		internal static MelonPreferences_Entry<string> Apfsds;
+		internal static MelonPreferences_Entry<bool> ForceApfsds;
 
 		const string Repo = "marsattackk/GHPC-LeclercSXXI";
 		// A changed default needs a rule here. MelonLoader keeps the saved one. None yet.
@@ -56,6 +58,8 @@ namespace LeclercSXXI
 			// Rare (0.25), after two missions, on the side that fields the M60A1 (the American one).
 			Campaign = CampaignConfig.Create(cfg, FriendlyName, 0.25f, 2, "American");
 			WeatheredPaint = PaintFinish.Create(cfg, FriendlyName);   // "Weathered paint" (PaintFinish, as the T-90s / T-80UM2)
+			Apfsds = cfg.CreateEntry("APFSDS", "OFLF2", description: SettingText.Apfsds);
+			ForceApfsds = cfg.CreateEntry("Force APFSDS", false, description: SettingText.ForceApfsds);
 			UpdateCheck.Config(cfg, FriendlyName, Info.Version, Repo);
 			DevInit(cfg);
 			PortSettings.Finish(cfg, Info.Version, Migrations);

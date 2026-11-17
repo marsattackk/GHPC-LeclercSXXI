@@ -71,7 +71,8 @@ namespace LeclercSXXI
 			if (IsCoax(feed)) return;
 			var gun = RigBones.Gun(vehicle.transform);
 			WarmDonor();
-			if (rack == null || rack.UseVisibleRounds || gun == null || _pattern == null)
+			if (rack == null || rack.UseVisibleRounds || gun == null || _pattern == null || InitialClipCounts == null
+				|| Codex == null || CycleTime == null || Muzzle == null || MuzzleEffects == null || LockedBelt == null)
 			{
 				DonorParts.WarnOnce(Tag, $"{Tag}: could not fit the M2HB coax and its ammunition.");
 				return;
@@ -133,14 +134,18 @@ namespace LeclercSXXI
 		{
 			static void Prefix(AmmoFeed __instance)
 			{
-				if (!IsCoax(__instance)) return;
-				ref var queued = ref LockedBelt(__instance);
-				foreach (var belt in __instance.ReadyRack.StoredClips)
+				if (LockedBelt == null || !IsCoax(__instance)) return;
+				try
 				{
-					if (!belt.Equals(queued)) continue;
-					queued = belt;
-					break;
+					ref var queued = ref LockedBelt(__instance);
+					foreach (var belt in __instance.ReadyRack.StoredClips)
+					{
+						if (!belt.Equals(queued)) continue;
+						queued = belt;
+						break;
+					}
 				}
+				catch (Exception exception) { PatchGuard.Failed("Leclerc coax belt load", exception); }
 			}
 		}
 

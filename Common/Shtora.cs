@@ -329,7 +329,7 @@ namespace LeclercSXXI.Common
 				flight = new Flight { Launch = r.transform.position, Noise = Draw() * 100f };
 				Flights[r] = flight;
 				if (Flights.Count > 64)
-					foreach (var staleRound in Flights.Keys.Where(round => round == null || round.IsDestroyed).ToList())
+					foreach (var staleRound in Flights.Keys.Where(x => x == null || x.IsDestroyed).ToList())
 						Flights.Remove(staleRound);
 			}
 			flight.Seen = r.TimeTraveled;

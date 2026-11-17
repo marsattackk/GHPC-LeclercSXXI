@@ -109,6 +109,7 @@ namespace LeclercSXXI.Common
 					if (!Sights.TryGetValue(__instance, out var optics)) return;
 					var mode = __instance.CurrentStabMode;
 					if (mode != StabilizationMode.Vector && mode != StabilizationMode.None) return;
+					if (mode == StabilizationMode.None && SetAim == null) return;
 					UsableOptic activeOptic = null;
 					foreach (var optic in optics)
 						if (optic != null && optic.slot != null && optic.slot.IsActive)
@@ -235,6 +236,7 @@ namespace LeclercSXXI.Common
 		// GHPC's DegreesOffset gate reads 0 outside the drive's stabilised mode and when the goal is clipped to the barrel:
 		// the gun fires wherever it is. Measure the lay yourself.
 		// Range 0 crept up by hull jitter froze the gun: the goal became range x aim, a vector Unity takes for zero.
+		// It creeps before the port registers the fire control too: put back any range under NoRange, not only one leaving 0.
 		internal static class NoRangeDeltaD
 		{
 			internal static readonly HashSet<FireControlSystem> Fcs = new HashSet<FireControlSystem>();
@@ -243,13 +245,11 @@ namespace LeclercSXXI.Common
 			[HarmonyPatch(typeof(FireControlSystem), "Update")]
 			static class Patch
 			{
-				static void Prefix(FireControlSystem __instance, out float __state) => __state = __instance.TargetRange;
-
-				static void Postfix(FireControlSystem __instance, float __state)
+				static void Postfix(FireControlSystem __instance)
 				{
 					try
 					{
-						if (__state != 0f || !Fcs.Contains(__instance) || !__instance.ActiveDeltaD) return;
+						if (!Fcs.Contains(__instance) || !__instance.ActiveDeltaD) return;
 						float range = __instance.TargetRange;
 						if (range > 0f && range < NoRange)
 						{

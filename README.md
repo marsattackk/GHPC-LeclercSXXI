@@ -243,6 +243,8 @@ before editing it.
 | `Campaign prevalence` | how common it is (1 = as common as a typical tank) | 0.25 |
 | `Campaign unlock after missions` | number | 2 |
 | `Weathered paint` | true / false (clean factory paint) | true |
+| `APFSDS` | `"OFLF2"` / `"OFLF1"`, where the game doesn't pick one itself | OFLF2 |
+| `Force APFSDS` | true: the campaign gives every Leclerc the `APFSDS` round instead of drawing one from its ammo supply | false |
 | `Check for updates` | true / false | true |
 
 Most of them apply to Leclercs spawned after the change. Leave the `ConfigVersion` line at the end alone. It's how the

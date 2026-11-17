@@ -224,7 +224,7 @@ namespace LeclercSXXI.Tests
 			Assert.True(GunnerFcsMath.HasAimLimits(0f, 30f, 0f));
 		}
 
-		// Emitters 2 m up on the turret, the Leclerc SXXI's sector: 20 deg either side, 2.25 up and down.
+		// Emitters 2 m up on the turret, the T-90A's sector: 20 deg either side, 2.25 up and down.
 		static readonly V3 Emitters = new V3(0f, 2f, 0f);
 
 		static (float az, float el) Bearing(V3 offset, V3 forward, V3 turretUp)

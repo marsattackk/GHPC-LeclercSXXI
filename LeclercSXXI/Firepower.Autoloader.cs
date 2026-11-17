@@ -43,7 +43,7 @@ namespace LeclercSXXI
 		internal static void Configure(Vehicle vehicle)
 		{
 			var feed = vehicle.GetComponent<WeaponsManager>()?.Weapons[0]?.Weapon?.Feed;
-			if (feed == null) return;
+			if (feed == null || Duration == null) return;
 			// The stage seconds are my estimate: they add up to the maker's 6 s for the same round, and GunSetup stretches them to
 			// the reload time (8 s when the round changes).
 			float[] seconds = { 2f, 0.64f, 1.2f, 0.96f, 0.6f, 0.48f, 0.12f };

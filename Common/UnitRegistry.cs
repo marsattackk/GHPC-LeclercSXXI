@@ -155,7 +155,7 @@ namespace LeclercSXXI.Common
 				});
 				lookup.AllUnits = units.ToArray();
 				var spawner = UnitSpawner.Instance;
-				if (spawner != null) Reflect.Field(typeof(UnitSpawner), "_prefabLookupCached").SetValue(spawner, null);
+				if (spawner != null) Reflect.Field(typeof(UnitSpawner), "_prefabLookupCached")?.SetValue(spawner, null);
 				MenuListPatch.ClearCache();
 			}
 			return all;
@@ -260,6 +260,7 @@ namespace LeclercSXXI.Common
 
 			static void Prefix(MissionConfigMenuPanel __instance)
 			{
+				if (AllUnits == null) return;
 				var lookup = AllUnits(__instance);
 				if (lookup?.AllUnits == null) return;
 				if (Units.Any(d => d.Enabled()

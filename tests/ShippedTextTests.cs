@@ -10,6 +10,10 @@ namespace LeclercSXXI.Tests
 	// The dm_armour.txt in Resources\ as it ships: every line reads, and the figures are the kind the damage model takes.
 	public class ShippedTextTests : IDisposable
 	{
+		// What this tank's table holds: its number of pieces, and whether any of them is reactive armour.
+		const int Pieces = 193;
+		const bool Reactive = false;
+
 		readonly List<string> _warnings = new List<string>();
 		readonly Action<string> _keep = BundleText.Warn;
 
@@ -24,7 +28,7 @@ namespace LeclercSXXI.Tests
 		{
 			var armour = Shipped();
 			Assert.Empty(_warnings);
-			Assert.Equal(193, armour.Entries.Count);
+			Assert.Equal(Pieces, armour.Entries.Count);
 			Assert.Equal(armour.Entries.Count, armour.Entries.Select(e => e.Piece).Distinct().Count());
 		}
 
@@ -40,13 +44,12 @@ namespace LeclercSXXI.Tests
 		}
 
 		[Fact]
-		public void The_figures_are_positive_and_the_leclerc_has_no_reactive_armour()
+		public void The_figures_are_positive_and_reactive_armour_is_where_the_tank_has_it()
 		{
-			foreach (var entry in Shipped().Entries.Where(e => !e.Drawn))
-			{
+			var entries = Shipped().Entries.Where(e => !e.Drawn).ToList();
+			foreach (var entry in entries)
 				Assert.True(entry.Ke > 0f && entry.Ce > 0f, $"{entry.Piece}: {entry.Ke} / {entry.Ce}");
-				Assert.False(entry.Era, $"{entry.Piece}: reactive piece");
-			}
+			Assert.Equal(Reactive, entries.Any(e => e.Era));
 		}
 	}
 }

@@ -100,7 +100,8 @@ namespace LeclercSXXI
 					Prevalence = 1f,   // gameplay setting of mine, no source
 				},
 			},
-			DefaultApfsds = () => "OFLF2",
+			DefaultApfsds = () => LeclercSXXIMod.Apfsds?.Value,
+			ForceApfsds = () => LeclercSXXIMod.ForceApfsds?.Value == true,
 			ApfsdsListName = "120mm APFSDS (Leclerc SXXI)",
 			MenuSuffix = " (Leclerc SXXI)",
 			Heat = new PortAmmo.Round
