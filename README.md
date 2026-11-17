@@ -188,7 +188,7 @@ bustle roof, its two blow-off panels on the left and the GALIX tubes along the s
 
 Straight from the front, in mm of steel:
 
-| | Leopard 2A0 to A3 (vanilla) | M1IP (vanilla) | **Leclerc SXXI (this mod)** | [T-90A 0.5.0](https://github.com/marsattackk/GHPC-T90A) (my mod) |
+| | Leopard 2A0 to A3 (vanilla) | M1IP (vanilla) | **Leclerc SXXI (this mod)** | [T-90A](https://github.com/marsattackk/GHPC-T90A) (my mod) |
 |---|---|---|---|---|
 | Turret front (vs APFSDS / HEAT) | 403 / 771 | 516 / 999 | **700 / 1100** | 690 / 819, plus Kontakt-5 (about +140 / +550) |
 | Upper glacis (vs APFSDS / HEAT) | 317 / 661 | 348 / 361 | **500 / 800** | 549 / 748 |
