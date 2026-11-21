@@ -7,13 +7,13 @@ using GHPC.Vehicle;
 using GHPC.Weapons;
 using HarmonyLib;
 using LeclercSXXI.Common;
-using MelonLoader;
 using UnityEngine;
 
 namespace LeclercSXXI
 {
 	// The loading dip: while the autoloader loads, the CN120-26 goes to its loading angle (LoadAngle, against the turret)
-	// and the reload's clock waits until the gun is there; the HL 130 keeps the aim meanwhile.
+	// and the reload's clock waits until the gun is there, while the HL 130 keeps the aim. Over the rear deck, where
+	// the gun can't get down to LoadAngle, it loads at the lowest angle the deck allows instead of waiting for the turret.
 	internal sealed partial class ReloadDip : MonoBehaviour
 	{
 		internal const float LoadAngle = -1.8f;   // elevation relative to the turret
@@ -36,7 +36,9 @@ namespace LeclercSXXI
 			var turret = main?.FCS?.TurretPlatform?.Transform;
 			if (feed == null || gun == null || turret == null || main.Weapon.MuzzleIdentity == null)
 			{
-				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: main gun mount or feed missing, could not fit the reload dip.");
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: main gun mount or feed missing, could not fit the reload dip.");
 				return;
 			}
 
@@ -64,9 +66,10 @@ namespace LeclercSXXI
 			if (_gun.CurrentLock != null && _gun.CurrentLock != _lock) return false;
 
 			float min = _clearance != null ? _clearance.MinAt(_clearance.Yaw()) : _gun.LocalEulerLimits.x;
-			_lock.PitchLockValue = Mathf.Max(LoadAngle, min);
+			float angle = Mathf.Max(LoadAngle, min);
+			_lock.PitchLockValue = angle;
 			if (_gun.CurrentLock != _lock) _gun.SetLock(_lock);
-			return min <= LoadAngle && Mathf.Abs(Elevation - LoadAngle) <= AlignmentTolerance;
+			return Mathf.Abs(Elevation - angle) <= AlignmentTolerance;
 		}
 
 		void OnDisable() => Release();

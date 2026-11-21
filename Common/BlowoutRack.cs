@@ -43,6 +43,7 @@ namespace LeclercSXXI.Common
 				ResidualTemp = 600f;
 			public float FireScale = 1f;
 			public string ReplaceCompartment;
+			public string[] HolderPaths = new string[0];
 		}
 #pragma warning restore CS0649
 
@@ -59,7 +60,7 @@ namespace LeclercSXXI.Common
 		[HarmonyPatch(typeof(CompartmentExit), nameof(CompartmentExit.SetFireRatioByFlameHeight))]
 		static class FireScalePatch
 		{
-			// The drawn flames only, the height that throws the lids and heats the box stays GHPC's.
+			// The drawn flames only. The height that throws the lids and heats the box stays GHPC's.
 			static void Prefix(CompartmentExit __instance, ref float __0)
 			{
 				if (ExitCompartment == null) return;
@@ -70,7 +71,7 @@ namespace LeclercSXXI.Common
 			}
 		}
 
-		// GHPC's cook-off blast is a sphere that hits its own tank through the floor, it took the engine out 1.4 m below.
+		// GHPC's cook-off blast is a sphere that hits its own tank through the floor (it took the engine out 1.4 m below).
 		// Own parts hidden while the box updates, so it goes up and out like the panels are meant to send it.
 		[HarmonyPatch(typeof(Compartment), nameof(Compartment.DoUpdate))]
 		static class VentPatch
@@ -128,6 +129,55 @@ namespace LeclercSXXI.Common
 		static readonly AccessTools.FieldRef<FlammablesCluster, Transform> ClusterMarker =
 			Reflect.FieldRefAccess<FlammablesCluster, Transform>("_fireMarker");
 
+		internal static string Remove(Vehicle vehicle, Settings s, List<string> problems)
+		{
+			var rackTransform = InteriorMap.Find(vehicle.transform, s.RackPath);
+			var rack = rackTransform != null ? rackTransform.GetComponent<GHPC.Weapons.AmmoRack>() : null;
+			if (rack == null)
+			{
+				problems.Add($"rack '{s.RackPath}' not found");
+				return null;
+			}
+			var loadout = vehicle.GetComponent<GHPC.Weapons.LoadoutManager>();
+			int taken = 0;
+			foreach (var clip in rack.StoredClips.ToList())
+			{
+				if (!rack.RetrieveClipWithPattern(clip)) continue;
+				taken += clip.Capacity;
+				int index = loadout != null ? loadout.GetAmmoIndexByType(clip) : -1;
+				if (index >= 0 && loadout.TotalAmmoCounts != null && index < loadout.TotalAmmoCounts.Length)
+					loadout.TotalAmmoCounts[index] = Mathf.Max(0, loadout.TotalAmmoCounts[index] - clip.Capacity);
+			}
+			if (!rack.IsEmpty) problems.Add($"rack '{rack.Name}' still holds {rack.StoredClips.Count} round(s)");
+			int holders = 0;
+			foreach (var path in s.HolderPaths ?? new string[0])
+			{
+				var holder = InteriorMap.Find(vehicle.transform, path);
+				if (holder == null)
+				{
+					problems.Add($"holder '{path}' not found");
+					continue;
+				}
+				holder.gameObject.SetActive(false);
+				holders++;
+			}
+			var manager = vehicle.GetComponent<FlammablesManager>();
+			var compartment = manager != null && manager.Compartments != null
+				? manager.Compartments.FirstOrDefault(c => c != null
+					&& c.Name == s.CompartmentName
+					&& c.GetComponent<Isolated>() != null)
+				: null;
+			if (compartment == null)
+			{
+				problems.Add($"compartment '{s.CompartmentName}' not found (already gone?)");
+				return $"{taken} round(s) taken out of '{rack.Name}'; {holders} holders off";
+			}
+			manager.Compartments = manager.Compartments.Where(c => c != compartment).ToArray();
+			compartment.gameObject.SetActive(false);
+			return $"{taken} round(s) taken out of '{rack.Name}'; {holders} holders off; compartment '{s.CompartmentName}' switched off "
+				+ $"({compartment.Exits.Count} vents, {compartment.Detachables.Count} lids)";
+		}
+
 		internal static string Apply(Vehicle vehicle, Settings s, Mesh volume, Transform bone, List<string> problems)
 		{
 			var root = vehicle.transform;
@@ -183,7 +233,7 @@ namespace LeclercSXXI.Common
 				return null;
 			}
 
-			// Built inactive, Compartment.Awake has to see every field set.
+			// Built inactive because Compartment.Awake has to see every field set.
 			var volumeObject = new GameObject(s.VolumeName);
 			volumeObject.SetActive(false);
 			if (replaced != null)

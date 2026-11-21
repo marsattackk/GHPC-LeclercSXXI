@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Globalization;
+using GHPC.Camera;
 using GHPC.Equipment.Optics;
 using GHPC.Weapons;
 using LeclercSXXI.Common;
-using MelonLoader;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,29 +11,30 @@ using UnityEngine.UI;
 namespace LeclercSXXI
 {
 	// The HL 130's display (from the same pictures): the day box under the cross (Resources\hl130_day.jsonc) and the thermal row
-	// (hl130_thermal.jsonc). The range in metres, «HF» when none is set (02, 04), the round's letter, the ready-to-fire mark,
+	// (hl130_thermal.jsonc). The range in metres, «HF» when none is set, the round's letter, the ready-to-fire mark,
 	// and the hull's direction (hl130_chassis.jsonc) turned by the hull's angle to the turret.
 	internal sealed partial class HlDisplay : MonoBehaviour
 	{
 		const string Tag = LeclercSXXIMod.FriendlyName;
 		const string ChassisFile = "hl130_chassis.jsonc";
-		const float RangeStep = 5f;   // 04 reads 0775 and 0760
+		const float RangeStep = 5f;   // the pictures read 0775 and 0760
 
 		FireControlSystem _fcs;
+		CameraSlot _view;
 		TextMeshProUGUI _range, _hf;
 		RectTransform _hull;
 		Transform _turret;
 		float _shownRange = -1f;
 
-		// The round's letter: 09 shows «F» in its box, 04 «C» (an OECC fired). F flèche (OFL), C charge creuse (OECC);
-		// E explosif for the HE round is inferred (no picture shows it).
+		// The round's letter: one picture has «F» in its box, another «C» after an OECC was fired. F flèche (OFL), C charge
+		// creuse (OECC). E explosif for the HE round is inferred (no picture shows it).
 		static string Letter(AmmoType ammo) =>
 			ammo.Caliber < 20f ? ""
 			: ammo.Category == AmmoType.AmmoCategory.Penetrator ? "F"
 			: ammo.Category == AmmoType.AmmoCategory.ShapedCharge ? "C"
 			: "E";
 
-		// Builds the display file's screen items under the optic and binds them; tint colours the hull symbol (drawn white).
+		// Builds the display file's screen items under the optic and binds them. The tint colours the hull symbol (drawn white).
 		internal static void Attach(UsableOptic optic, string file, Transform turret, Color tint)
 		{
 			var problems = new List<string>();
@@ -63,13 +64,20 @@ namespace LeclercSXXI
 			}
 			else problems.Add("no 'ready' mark");
 			var hull = Hull(spec, optic.transform, fov, tint, problems);
-			display.Init(optic.FCS, turret, range, noRange, hull);
-			foreach (var problem in problems) MelonLogger.Warning($"{Tag}: {file}: {problem}.");
+			display.Init(optic.FCS, optic.slot, turret, range, noRange, hull);
+			foreach (var problem in problems) DonorParts.WarnOnce(Tag, $"{Tag}: {file}: {problem}.");
 		}
 
-		void Init(FireControlSystem fcs, Transform turret, TextMeshProUGUI range, TextMeshProUGUI noRange, RectTransform hull)
+		void Init(
+			FireControlSystem fcs,
+			CameraSlot view,
+			Transform turret,
+			TextMeshProUGUI range,
+			TextMeshProUGUI noRange,
+			RectTransform hull)
 		{
 			_fcs = fcs;
+			_view = view;
 			_turret = turret;
 			_range = range;
 			_hf = noRange;
@@ -104,7 +112,8 @@ namespace LeclercSXXI
 
 		void LateUpdate()
 		{
-			if (_fcs == null) return;
+			// Every Leclerc carries two of these, AI ones too: only the one being looked through is kept up to date.
+			if (_fcs == null || (_view != null && !_view.IsActive)) return;
 			float range = _fcs.CurrentRange;
 			bool fixedSight = range < 1f || Mathf.Approximately(range, _fcs.DefaultRange);
 			float shown = fixedSight ? 0f : Mathf.Round(range / RangeStep) * RangeStep;

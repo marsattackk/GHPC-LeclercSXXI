@@ -107,7 +107,8 @@ by the `Round` variable the code sets, so the rows follow the round in the gun.
 1. Measure the source drawing in mrad and write the numbers and where they come from as comments.
 2. Put the marks under the group whose alignment moves them right: fixed marks under `Boresight`, range scales under
    `VerticalRange` or `Impact`, ballistic scales as `ballistic` groups below those.
-3. Run the tests. A changed file fails `ShippedReticleTests` until its expansion is written again: set
-   `LeclercSXXI_UPDATE_EXPANDED=1`, run once, read the diff of `tests\expanded\`, then commit both.
+3. Run the tests. A changed file fails `ShippedReticleTests` until its expansion is written again. In PowerShell,
+   `$env:LeclercSXXI_UPDATE_EXPANDED = "1"; dotnet test tests; Remove-Item Env:LeclercSXXI_UPDATE_EXPANDED` does that once.
+   Read the diff of `tests\expanded\`, then commit both.
 4. Check it in game: problems in a file show as warnings in the MelonLoader console, and the reticle is drawn without
    the broken part.

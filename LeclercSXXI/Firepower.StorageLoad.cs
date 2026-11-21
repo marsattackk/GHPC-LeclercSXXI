@@ -19,7 +19,7 @@ namespace LeclercSXXI
 			"event:/Vehicles/M1_Abrams/Elements/Element1",
 			"event:/Vehicles/M1_Abrams/Elements/Element2",
 		};
-		// The M1IP feed's own stage seconds in the game (6 s together); the cues are stretched to the Leclerc's reload time.
+		// The M1IP feed's own stage seconds in the game (6 s together), which the cues stretch to the Leclerc's reload time.
 		static readonly float[] StageSeconds = { 0.5f, 3.25f, 2.25f };
 
 		static readonly System.Reflection.FieldInfo Clock = Reflect.Field(typeof(AmmoFeed), "_clipFeedTime");
@@ -49,7 +49,7 @@ namespace LeclercSXXI
 			if (_next < 0 || _feed == null) return;
 			if (!_feed.Reloading)
 			{
-				// A finished load lets its last sound ring out; a cancelled one (no round in the breech) stops.
+				// A finished load lets its last sound ring out, but a cancelled one (no round in the breech) stops.
 				if (_feed.AmmoTypeInBreech == null) Stop();
 				_next = -1;
 				return;
@@ -100,7 +100,6 @@ namespace LeclercSXXI
 					if (__instance.GetComponent<ConveyorLoader>() == null) return;
 					var queued = LockedIn.GetValue(__instance) as AmmoType.AmmoClip;
 					if (queued == null || __instance.ReadyRack == null || __instance.ReadyRack.HasClipWithPattern(queued)) return;
-					// Fitted by ConveyorLoader.Attach.
 					var sound = __instance.GetComponent<StorageLoadSound>() ?? __instance.gameObject.AddComponent<StorageLoadSound>();
 					sound.Watch(__instance);
 					sound.Begin();

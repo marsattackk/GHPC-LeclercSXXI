@@ -51,7 +51,7 @@ namespace LeclercSXXI
 			float cycle = RemoteMg.StagesSum(donor.Feed.RoundCycleStages);
 			if (cycle <= 0f) return;
 
-			// Copy the Browning's effects and retain its ammo assets and timing before the donor prefab can be unloaded.
+			// Copy the Browning's effects and keep its ammo assets and timing before the donor prefab can be unloaded.
 			var flash = donor.MuzzleEffects?.FirstOrDefault(effect => effect != null);
 			if (flash != null)
 				_flash = DonorParts.Copy(prefab, "Leclerc coax muzzle flash", flash.gameObject).GetChild(0).gameObject;

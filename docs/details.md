@@ -228,7 +228,8 @@ like to see it.
   the rear deck comes from the model: the barrel stays 1 cm off the hull, down to -1.6° at worst, 166° right of the nose.
 - The drives are 40°/s and 30°/s, with medium confidence, from Ferrard and Turbé's book via the French wiki.
 - The reload is 6 s for the same type and 8 s on a change, from the same book's "under 6" and "under 8". The gun dips to -1.8°
-  while loading and returns to the fire control's aim.
+  while loading and returns to the fire control's aim. Over the rear deck, where it can't reach -1.8°, it loads at the
+  deck's limit. That part is my choice, because no source says what the real loader does there.
 - The stabiliser and the spread (inertia 0.95, deviation 0.005°) are GHPC's Leopard 2A3 and M1IP, because no source gives
   a usable figure.
 - The recoil stroke is 0.40 m, from the sourced "limited to 400 mm". The barrel sits on the T-80B's recoil bone, which has
@@ -297,8 +298,8 @@ like to see it.
 **Not seen in game yet**
 
 Built and checked offline, but I haven't seen or heard these in a game yet: the gun's shot sound, the autoloader's
-sound, the lettering on the round cases, the acceleration since I changed it, the rear deck's heat in a thermal sight
-and the secours view at night. The switch to the secours after the HL 130 is lost I have seen work.
+sound, the lettering on the round cases, the acceleration since I changed it, the rear deck's heat in a thermal sight,
+a reload with the gun over the rear deck and the secours view at night. The switch to the secours after the HL 130 is lost I have seen work.
 
 **Sources**
 

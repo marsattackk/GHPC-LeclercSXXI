@@ -5,7 +5,6 @@ using GHPC.Vehicle;
 using GHPC.Weapons;
 using HarmonyLib;
 using LeclercSXXI.Common;
-using MelonLoader;
 using UnityEngine;
 
 namespace LeclercSXXI
@@ -26,13 +25,15 @@ namespace LeclercSXXI
 			var feed = vehicle.GetComponent<WeaponsManager>()?.Weapons[0]?.Weapon?.Feed;
 			if (loadout == null || feed == null || CrewAvailable == null)
 			{
-				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: could not give the main gun priority over restocking.");
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: could not give the main gun priority over restocking.");
 				return;
 			}
 
 			var priority = loadout.GetComponent<RestockPriority>() ?? loadout.gameObject.AddComponent<RestockPriority>();
 			priority.Init(vehicle, feed);
-			// StartRestock switches the stabilizer off in its non-locking branch. The lock branch with no lock
+			// StartRestock switches the stabiliser off in its non-locking branch. The lock branch with no lock
 			// leaves the fire control alone and imposes no angle requirement on the transfer.
 			loadout.RequireAzimuthLock = true;
 			loadout.AzimuthLock = null;

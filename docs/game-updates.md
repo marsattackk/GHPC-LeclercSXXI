@@ -25,14 +25,16 @@ Then, in this order:
 4. Check the Leclerc is in Instant Action, the mission customiser and the American side's campaign.
 5. Spawn one and read the log again. Conversion runs at spawn, so most warnings only show up here.
 6. Go through the test list at the bottom.
-7. Play a mission with the mod off. Some patches touch every unit, so check a vanilla T-80B and Leopard 2A3 still behave.
+7. With the mod on, play a mission that has a vanilla T-80B and a Leopard 2A3 in it and check they still behave. Some
+   patches touch every unit. Off, the mod patches nothing at all.
 
 ## What it looks like in the log
 
 - `Game field X.y not found: a game update may have changed it, ...` comes from `Reflect`. The word after "Game" can
   also be `method`, `property` or `property setter`. Once per session per member. `can't be read as bool (...)` means
   the field is still there but its type changed. `can't be looked up (...)` usually means a method gained an overload.
-- A Harmony error at startup naming a patch class, with `Undefined target method` or similar: the patch target went.
+- `<patch class> could not be patched (a game update?), so that part of the mod is off: ...`, an error at startup:
+  the patch target went, and only that class is missing.
 - `<feature> failed (the game carries on without it this time; 1 of 3 logged)` is `PatchGuard`. The patch ran and the
   code inside threw. The stack trace has the line. It goes quiet after three.
 - `Unity exception in our code: ...` (or `error`) is `UnityErrors`, an exception in one of the mod's behaviours or
@@ -40,6 +42,9 @@ Then, in this order:
 - `Leclerc SXXI <step> failed (<what you get instead>): ...` is one row of the conversion table throwing. The rest of the
   spawn went on. `Leclerc SXXI <step>: <unit> was converted after it spawned` means the spawn patch missed that unit and
   the sweep caught it, which leaves out the steps that only work at spawn.
+- The sights and the conveyor catch their own errors and say so in other words: `HL 120 emergency view failed`, `HL 120
+  emergency view not added to Cycle View`, `commander's free-look eye not raised` and `conveyor animation could not be
+  fitted`. A warning from a spawn comes once a session, from the first Leclerc that hits it, not from every one.
 - `Leclerc SXXI modules: ...` and `Leclerc SXXI ammunition self-check ...` list what they couldn't find. The ammo one
   ends by asking for the log, ignore that bit.
 - `donor prefab 'T80B' not in the unit registry` or `vanilla material '...' not found`: a borrowed part couldn't be
@@ -99,8 +104,11 @@ holds the reload rules. `GunShotSound.cs` and `GunShotRules.cs` put the Leopard 
 `ReloadSound.cs` plays the reload mix on the game's reload clock. Broken: the T-80B's reload time, every T-80B named
 after the Leclerc's gun, the wrong shot sound, or a reload sound that ends before or after the gun is loaded.
 
-**Crew voice.** `CrewVoices.cs` sets `CrewVoiceHandler._chassis` and `_reloadType` on the copied M1IP voice and points
-`Unit._crewVoiceHandler` at it. Broken: Russian crew, or an American crew that doesn't react to driving.
+**Crew voice.** `LeclercSXXI\Conversion.Voices.cs` keeps the T-80B's own `CrewVoiceHandler` and gives it the M1IP's
+American lines. It sets `_voiceProtocolLineData`, `_assignedAmmoPrefs` and `_reloadType`, and where `_voiceRoutine`
+shows the voices were already picked it calls `SetupAmmoPrefs`, `SetupComponentsForProtocol` and `SelectVoiceActors`
+again. `CrewVoices.cs` in `Common\` is a different voice swap that nothing here calls. Broken: Russian crew, or Russian
+actors reading the American lines.
 
 **Gunner's sight, fire control and the HL 120.** `GunnerFcs.cs` patches `FireControlSystem` (`AdjustAimByRatio`,
 `Update`, `FiringBlocked`, `UpdateLaserAim`, `DoLase`). Its `Resync` rewrites the fields the FCS caches in Awake and
@@ -148,9 +156,9 @@ logs `RepairKit found, but not its repair method`. Nothing to do with GHPC updat
 These don't go through `Reflect`, so a rename gives no warning of that shape.
 
 `tools\check-game.ps1` reads the literal names in `Reflect.*`, `AccessTools.Method`, `Traverse.Create(x).Field`,
-`Type.GetField` / `GetMethod` and the hit-zone table of `ModuleBuilder`. It cannot check a field enumeration (`GetFields`
-in `PortAmmo.MakeClip` and `DonorParts.Scrub`) or a lookup whose name is a variable: after a game update read those
-against the class by hand. The script lists where they are.
+`Type.GetField` / `GetMethod` and the hit-zone table of `ModuleBuilder`. It cannot check a field enumeration (`GetFields`,
+as in `PortAmmo.MakeClip`, `DonorParts.Scrub` or `FragmentCone`) or a lookup whose name is a variable: after a game
+update read those against the class by hand. The script's summary lists every one of them.
 
 The rest, which no script reads:
 

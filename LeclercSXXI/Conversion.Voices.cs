@@ -36,8 +36,15 @@ namespace LeclercSXXI
 		internal static void Apply(Vehicle vehicle)
 		{
 			WarmDonor();
+			if (_american == null)
+			{
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName} voices: no M1IP crew voice to copy; the crew keeps its Russian voices.");
+				return;
+			}
 			var voice = vehicle.CrewVoiceHandler;
-			if (voice == null || _american == null || Protocol == null || ReloadType == null || AssignedAmmo == null
+			if (voice == null || Protocol == null || ReloadType == null || AssignedAmmo == null
 				|| Routine == null || SelectProtocol == null || SelectActors == null || SelectAmmo == null) return;
 			bool initialized = Routine.GetValue(voice) != null;
 			bool awake = voice.IsInitialized && voice.IsCurrentUnit && voice.isActiveAndEnabled;

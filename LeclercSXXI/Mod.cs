@@ -4,14 +4,13 @@ using MelonLoader;
 using MelonLoader.Utils;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(LeclercSXXI.LeclercSXXIMod), "Leclerc SXXI", "0.2.2", "marsattackk")]
+[assembly: MelonInfo(typeof(LeclercSXXI.LeclercSXXIMod), "Leclerc SXXI", "0.3.0", "marsattackk")]
 [assembly: MelonGame("Radian Simulations LLC", "GHPC")]
+[assembly: HarmonyDontPatchAll]   // off means off: nothing is patched until Enabled has been read
 
 namespace LeclercSXXI
 {
-	// Loads the bundle, registers the unit on the T80B prefab and hangs the War Thunder model's HULL / TURRET / GUN on the base
-	// rig's bones (the base's visuals off, paint, real axes). Imported armour and four compartments are applied before the axes
-	// move; crew and ammunition, weapons and sights are fitted in their own stages (Conversion.Convert).
+	// The settings, the bundle and the text data, and the unit on the T80B prefab. Conversion.Convert does the converting.
 	public partial class LeclercSXXIMod : MelonMod
 	{
 		internal const string UnitKey = "LeclercSXXI";
@@ -20,7 +19,7 @@ namespace LeclercSXXI
 		internal static VanillaEdits Edits;   // the T-80B's pieces switched off or changed (Resources\vanilla_edits.txt)
 		internal static MaterialRoles Roles;   // material roles: the vanilla glass at spawn
 		internal static RigMap Rig;   // moving parts: hatches, running gear
-		internal static Vector3[] SmokePoints;   // the smoke tubes' launch points (from the bundle)
+		internal static Vector3[] SmokePoints;   // the smoke tubes' launch points (Resources\smoke_points.txt, else the bundle's)
 		internal static Vector3[] SmokeDirections;   // each tube's firing direction, same order (Resources\smoke_directions.txt)
 
 		internal const string FriendlyName = "Leclerc SXXI";
@@ -33,6 +32,10 @@ namespace LeclercSXXI
 		internal static MelonPreferences_Entry<bool> WeatheredPaint;
 		internal static MelonPreferences_Entry<string> Apfsds;
 		internal static MelonPreferences_Entry<bool> ForceApfsds;
+		internal static MelonPreferences_Entry<bool> RandomApfsds;
+		internal static MelonPreferences_Entry<string> ApfsdsPool;
+		internal static MelonPreferences_Entry<string> AmmunitionLoad;
+		internal static MelonPreferences_Entry<string> EmptyRacks;
 
 		const string Repo = "marsattackk/GHPC-LeclercSXXI";
 		// A changed default needs a rule here. MelonLoader keeps the saved one. None yet.
@@ -44,6 +47,7 @@ namespace LeclercSXXI
 			UnityErrors.Install(typeof(LeclercSXXIMod).Namespace);
 			CreateSettings();
 			if (!Enabled.Value) return;
+			PatchClasses.Apply(this);
 			PortAmmo.S = Firepower.Settings();   // the rounds' settings (the mission customizer asks for them at the menu)
 			AirBurst.S = Firepower.Fuse;
 			LoadData();
@@ -60,6 +64,10 @@ namespace LeclercSXXI
 			WeatheredPaint = PaintFinish.Create(cfg, FriendlyName);   // "Weathered paint" (PaintFinish, as the T-90s / T-80UM2)
 			Apfsds = cfg.CreateEntry("APFSDS", "OFLF2", description: SettingText.Apfsds);
 			ForceApfsds = cfg.CreateEntry("Force APFSDS", false, description: SettingText.ForceApfsds);
+			RandomApfsds = cfg.CreateEntry("Random APFSDS", false, description: SettingText.RandomApfsds);
+			ApfsdsPool = cfg.CreateEntry("APFSDS pool", "", description: SettingText.ApfsdsPool);
+			AmmunitionLoad = cfg.CreateEntry("Ammunition load", "Full", description: SettingText.AmmunitionLoad);
+			EmptyRacks = cfg.CreateEntry("Empty racks", "", description: SettingText.EmptyRacks);
 			UpdateCheck.Config(cfg, FriendlyName, Info.Version, Repo);
 			DevInit(cfg);
 			PortSettings.Finish(cfg, Info.Version, Migrations);

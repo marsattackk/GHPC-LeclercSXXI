@@ -151,11 +151,11 @@ the type changes, so when time matters, stay on the round you've got.
 
 *Above: a reload with a change of round type, through the X-ray, at its real speed.*
 
-The gun dips to -1.8° to load and comes back up to the lay, and the sight stays where you put it. The other 18 rounds are
-in a drum in the hull, front right, and the crew carry them up to the bustle one at a time, about 22 s each. Loading the
-gun comes first, so a transfer waits while the gun loads. That's 22 shots at full speed and then a trickle, and refilling
-the whole bustle takes about 8 minutes. In a long fight, watch the count, because once the bustle's dry you're down to
-one round every 22 s.
+The gun dips to -1.8° to load and comes back up to the lay, and the sight stays where you put it. Over the rear deck it
+can't get that low, so it loads as low as the deck lets it. The other 18 rounds are in a drum in the hull, front right,
+and the crew carry them up to the bustle one at a time, about 22 s each. Loading the gun comes first, so a transfer
+waits while the gun loads. That's 22 shots at full speed and then a trickle, and refilling the whole bustle takes about
+8 minutes. In a long fight, watch the count, because once the bustle's dry you're down to one round every 22 s.
 
 ## The 12.7 mm coax
 
@@ -245,6 +245,10 @@ before editing it.
 | `Weathered paint` | true / false (clean factory paint) | true |
 | `APFSDS` | `"OFLF2"` / `"OFLF1"`, where the game doesn't pick one itself | OFLF2 |
 | `Force APFSDS` | true: the campaign gives every Leclerc the `APFSDS` round instead of drawing one from its ammo supply | false |
+| `Random APFSDS` | true: each Leclerc rolls its own APFSDS from `APFSDS pool` in Instant Action and scripted missions, and the mission customizer's ammo dropdown starts on Random; the campaign keeps its own ammo supply | false |
+| `APFSDS pool` | the rounds `Random APFSDS` rolls from, as name:weight (`"OFLF2:3, OFLF1:1"`); empty: every APFSDS at its campaign weight | `""` |
+| `Ammunition load` | `"Full"` / `"Autoloader"` (only the 22 rounds of the bustle autoloader), on every Leclerc, friend and foe | Full |
+| `Empty racks` | racks to leave empty, comma separated (`"hull"`); replaces `Ammunition load`; the autoloader is always loaded | `""` |
 | `Check for updates` | true / false | true |
 
 Most of them apply to Leclercs spawned after the change. Leave the `ConfigVersion` line at the end alone. It's how the
@@ -304,9 +308,12 @@ This README follows `main`, which can be ahead of the latest release.
 
 ## Where the model comes from, and the licence
 
-The 3D model, its textures and the shapes of its armour plates are War Thunder's Leclerc SXXI, taken from War Thunder's
-game files. They belong to Gaijin Entertainment and they're not covered by this repository's licence. Everything else
-(the armour values, the autoloader, the sights and their reticles, the ammo, the interior) was built for GHPC, from
-French sources and, where those ran out, my own best guesses.
+The 3D model, its textures, the shapes of its armour plates and the x-ray shapes of its interior modules (in
+`Resources\modules_built.json`) are War Thunder's Leclerc SXXI, taken from War Thunder's game files. They belong to
+Gaijin Entertainment and they're not covered by this repository's licence. Neither are the bits of GHPC itself in
+`Resources\`: the round textures and meshes are the game's Leopard 2 rounds repainted and reshaped, and the reload
+sounds are put together from the game's own sounds. Those belong to Radian Simulations. Everything else (the armour
+values, the autoloader, the sights and their reticles, the ammo, the interior) was built for GHPC, from French sources
+and, where those ran out, my own best guesses.
 
 The source code is under the [GNU General Public License v3.0](LICENSE).

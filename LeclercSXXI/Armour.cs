@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using GHPC.Vehicle;
 using LeclercSXXI.Common;
-using MelonLoader;
 using UnityEngine;
 
 namespace LeclercSXXI
 {
-	// Loads the armour pieces and their numbers from the bundle and fits them: the Leclerc's own pieces and compartments in
-	// place of the T-80B's.
+	// The Leclerc's own armour pieces and compartments in place of the T-80B's. The pieces are the bundle's prefab, their
+	// numbers Resources\dm_armour.txt (the bundle's copy only when the DLL has none).
 	internal static partial class Armour
 	{
 		internal static GameObject Prefab;
@@ -35,7 +34,9 @@ namespace LeclercSXXI
 		{
 			if (Values == null || LeclercSXXIMod.Edits == null || Prefab == null)
 			{
-				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: armour is incomplete; keeping the donor armour.");
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: armour is incomplete; keeping the donor armour.");
 				return;
 			}
 			var problems = new List<string>();
@@ -48,7 +49,8 @@ namespace LeclercSXXI
 			var result = DmArmourApply.Install(vehicle, Prefab, Values, LeclercSXXIMod.Edits, LeclercSXXIMod.FriendlyName, problems);
 			DmArmourApply.EmptyVolumes(vehicle, Prefab, problems);
 			if (result.count == 0) problems.Add("none of the Leclerc's armour pieces fitted, so it has next to no armour");
-			if (problems.Count > 0) MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName} armour: " + string.Join("; ", problems));
+			if (problems.Count > 0)
+				DonorParts.WarnOnce(LeclercSXXIMod.FriendlyName, $"{LeclercSXXIMod.FriendlyName} armour: " + string.Join("; ", problems));
 			DevApplied(vehicle, Values, null, problems);
 		}
 

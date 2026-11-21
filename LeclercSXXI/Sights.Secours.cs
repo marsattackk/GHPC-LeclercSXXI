@@ -5,7 +5,6 @@ using GHPC.Equipment.Optics;
 using GHPC.Vehicle;
 using GHPC.Weapons;
 using LeclercSXXI.Common;
-using MelonLoader;
 using Reticle;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
@@ -15,8 +14,8 @@ namespace LeclercSXXI
 	internal static partial class Sights
 	{
 		// The HL 120 emergency gun-laying view: a backup sight working like the Abrams' one. The real Leclerc has none for the
-		// gunner, the commander takes over through his sight head (armedconflicts.com, topic 11932). The head stays a static
-		// prop facing forward (the turret carries the gun's azimuth); its mirror follows the gun (Boresight on the fire
+		// gunner: the commander takes over through his sight head (armedconflicts.com, topic 11932). The head stays a static
+		// prop facing forward (the turret carries the gun's azimuth), but its mirror follows the gun (Boresight on the fire
 		// control's aim, no range angle or lead while in use: EmergencySight), so the reticle's hand scales give the lay. Day
 		// channel only, the HL 120 narrow field as the emergency one (x10 borrowed), the wide one kept. Always in the gunner's
 		// view cycle. Inferred: no convergence (the window is ~0.5 m left of and ~0.6 m above the bore, like the Abrams' 0.28 m).
@@ -31,7 +30,7 @@ namespace LeclercSXXI
 				.Select(info => info.Weapon).Where(weapon => weapon != null).ToArray();
 			var holder = new GameObject("HL 120 secours setup");
 			holder.SetActive(false);
-			// The T-80B's day camera lives on the FCS, outside its GPS optic; the night optic carries its own: the host.
+			// The T-80B's day camera lives on the FCS, outside its GPS optic. The night optic carries its own camera, so it is the host.
 			var copy = UnityEngine.Object.Instantiate(gunnerNight.gameObject, holder.transform, false);
 			copy.name = "HL 120 secours";
 			DonorParts.Scrub(copy, root);
@@ -39,7 +38,7 @@ namespace LeclercSXXI
 			var optic = copy.GetComponent<UsableOptic>();
 			if (optic?.slot == null || !optic.slot.transform.IsChildOf(copy.transform))
 			{
-				MelonLogger.Warning($"{Tag}: the base night optic's view is not inside it; no HL 120 emergency view.");
+				DonorParts.WarnOnce(Tag, $"{Tag}: the base night optic's view is not inside it; no HL 120 emergency view.");
 				UnityEngine.Object.Destroy(holder);
 				return;
 			}

@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!-- Tests for the parts of Common\ that don't need the game: the reticle language, MiniJson, dm_armour, the bundle
-       text numbers, the settings versions and the fire control and Shtora maths. The files are compiled in from
-       ..\Common, with Stubs\MelonLoader.cs in place of MelonLoader, so no game DLL is referenced and the
-       LeclercSXXI.dll build is untouched. -->
+       text numbers, the settings versions and the fire control maths. The Shtora-1 jammer's sector comes along because
+       the shared fire control test covers it, though this tank has no Shtora. The files are compiled in from ..\Common,
+       with Stubs\MelonLoader.cs in place of MelonLoader, so no game DLL is referenced and the LeclercSXXI.dll build is
+       untouched. -->
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>10</LangVersion>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
     <RootNamespace>LeclercSXXI.Tests</RootNamespace>

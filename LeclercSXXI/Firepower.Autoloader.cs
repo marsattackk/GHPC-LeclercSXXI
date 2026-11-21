@@ -6,7 +6,6 @@ using GHPC.Vehicle;
 using GHPC.Weapons;
 using LeclercSXXI.Common;
 using HarmonyLib;
-using MelonLoader;
 using UnityEngine;
 
 namespace LeclercSXXI
@@ -16,6 +15,7 @@ namespace LeclercSXXI
 	{
 		static readonly System.Reflection.FieldInfo Clock = Reflect.Field(typeof(AmmoFeed), "_clipFeedTime");
 		static readonly System.Reflection.FieldInfo Duration = Reflect.Field(typeof(AmmoFeed.ReloadStage), "Duration");
+		const int RunCells = LoaderMotion.Capacity / 2;   // each run of the chain, upper and lower
 		sealed class Cell
 		{
 			internal int SlotIndex, Rank;
@@ -77,7 +77,9 @@ namespace LeclercSXXI
 			var turret = main.FCS?.TurretPlatform?.Transform;
 			if (turret == null || rack?.VisualSlots?.Count != LoaderMotion.Capacity || feed.Carousel == null || Clock == null)
 			{
-				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: conveyor animation could not find its 22 cells and gun feed.");
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: conveyor animation could not find its 22 cells and gun feed.");
 				return;
 			}
 			var loader = feed.gameObject.AddComponent<ConveyorLoader>();
@@ -87,7 +89,7 @@ namespace LeclercSXXI
 			feed.gameObject.AddComponent<StorageLoadSound>().Watch(feed);
 		}
 
-		// The animation built on this feed; when that fails the breech's own drawing comes back and none of it shows.
+		// The animation built on this feed. When that fails the breech's own drawing comes back and none of it shows.
 		bool Fit(Vehicle vehicle, AmmoFeed feed, Transform turret)
 		{
 			_feed = feed;
@@ -102,7 +104,9 @@ namespace LeclercSXXI
 				enabled = false;
 				if (_sourceBreech != null) _sourceBreech.Hidden = false;
 				foreach (var part in _parts) if (part != null) part.gameObject.SetActive(false);
-				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: conveyor animation could not be fitted: " + exception.Message);
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: conveyor animation could not be fitted: " + exception.Message);
 				return false;
 			}
 		}
@@ -119,11 +123,11 @@ namespace LeclercSXXI
 			float midY = _cells.Average(cell => cell.Home.y);
 			var ordered = _cells.Where(cell => cell.Home.y > midY).OrderByDescending(cell => cell.Home.x)
 				.Concat(_cells.Where(cell => cell.Home.y <= midY).OrderBy(cell => cell.Home.x)).ToArray();
-			if (ordered.Take(11).Any(cell => cell.Home.y <= midY) || ordered.Skip(11).Any(cell => cell.Home.y > midY))
+			if (ordered.Take(RunCells).Any(cell => cell.Home.y <= midY) || ordered.Skip(RunCells).Any(cell => cell.Home.y > midY))
 				throw new InvalidOperationException("The conveyor must have two runs of eleven cells.");
 			_nodes = ordered.Select(cell => cell.Home).ToArray();
 			for (int index = 0; index < ordered.Length; index++) ordered[index].Rank = index;
-			_loadingRank = Enumerable.Range(0, 11).OrderBy(i => Mathf.Abs(_nodes[i].x)).First();
+			_loadingRank = Enumerable.Range(0, RunCells).OrderBy(i => Mathf.Abs(_nodes[i].x)).First();
 			_loading = _nodes[_loadingRank];
 			_direction = Quaternion.Euler(-ReloadDip.LoadAngle, 0, 0) * Vector3.forward;
 			// Imported modules live in follower groups at scene root. Resolve by their module identity, not display name.
@@ -151,16 +155,16 @@ namespace LeclercSXXI
 			}
 			var gunBone = RigBones.Gun(vehicle.transform);
 			// Use the chamber's hit-zone rear plane: the drawing also includes a lever extending aft below the chamber.
-			var axis = vehicle.transform.InverseTransformPoint(mainMuzzle(vehicle));
+			var axis = vehicle.transform.InverseTransformPoint(MainMuzzle(vehicle));
 			var rear = _turret.InverseTransformPoint(vehicle.transform.TransformPoint(new Vector3(axis.x, axis.y, breech.m.Bounds.min.z)));
 			var casing = ApertureMesh(breech.m.XrayVerts, breech.m.XrayTris, vehicle.transform, gunBone, axis.x, axis.y);
 			_ownedMeshes.Add(casing);
 			Part("CN120 breech casing (visual aperture)", gunBone, casing, template.AarMaterial);
-			template.Hidden = true;   // drawing replaced; its report zone and every functional gun hit zone stay intact
+			template.Hidden = true;   // drawing replaced, but its report zone and every working gun hit zone stay
 			// The stored model's origin is the case base. End the stroke just inside the breech's rear plane.
 			_stroke = Mathf.Max(0.5f, rear.z + 0.12f - _loading.z);
 			// The sizes and travels of the door, the gutter, the rammer and the breechblock below are my estimates, drawn to
-			// fit the cell and the breech; no drawing of the real loader gives them.
+			// fit the cell and the breech, because no drawing of the real loader gives them.
 			float doorZ = _loading.z + 1.04f;
 			_doorRest = new Vector3(_loading.x, _loading.y, doorZ);
 			_door = Box("loading door", _root, _doorRest, new Vector3(0.25f, 0.27f, 0.035f), _light);
@@ -188,7 +192,7 @@ namespace LeclercSXXI
 			Pose(0);
 		}
 
-		static Vector3 mainMuzzle(Vehicle vehicle) => vehicle.GetComponent<WeaponsManager>().Weapons[0].Weapon.MuzzleIdentity.position;
+		static Vector3 MainMuzzle(Vehicle vehicle) => vehicle.GetComponent<WeaponsManager>().Weapons[0].Weapon.MuzzleIdentity.position;
 
 		internal Vector3 Sample(float phase)
 		{
@@ -197,11 +201,13 @@ namespace LeclercSXXI
 			float fraction = wrapped - node;
 			var start = _nodes[node];
 			var end = _nodes[next];
-			if (node != 10 && node != 21) return Vector3.Lerp(start, end, fraction);
+			if (node != RunCells - 1 && node != LoaderMotion.Capacity - 1) return Vector3.Lerp(start, end, fraction);
 			// Semicircular end turns. Shells stay nose-forward while their carriers follow the chain.
 			float radius = Mathf.Abs(start.y - end.y) * 0.5f;
-			return new Vector3(Mathf.Lerp(start.x, end.x, fraction) + (node == 10 ? -1 : 1) * radius * Mathf.Sin(fraction * Mathf.PI),
-				(start.y + end.y) * 0.5f + (start.y - end.y) * 0.5f * Mathf.Cos(fraction * Mathf.PI), Mathf.Lerp(start.z, end.z, fraction));
+			return new Vector3(
+				Mathf.Lerp(start.x, end.x, fraction) + (node == RunCells - 1 ? -1 : 1) * radius * Mathf.Sin(fraction * Mathf.PI),
+				(start.y + end.y) * 0.5f + (start.y - end.y) * 0.5f * Mathf.Cos(fraction * Mathf.PI),
+				Mathf.Lerp(start.z, end.z, fraction));
 		}
 
 		bool PickCell(AmmoType.AmmoClip clip)
@@ -218,8 +224,12 @@ namespace LeclercSXXI
 
 		void Stage(int stage)
 		{
-			if (stage != 0 || _running) return;
-			var cell = _cells.FirstOrDefault(candidate => candidate.SlotIndex == _target);
+			if (stage != 0) return;
+			// Used once. A load with no seek before it (another mod's, from the hull racks) must not replay the last cell.
+			int target = _target;
+			_target = -1;
+			if (_running) return;
+			var cell = _cells.FirstOrDefault(candidate => candidate.SlotIndex == target);
 			if (cell == null) return;
 			_startPhase = _phase;
 			_goalPhase = _phase + (float)LoaderMotion.Advance(cell.Rank, _phase, _loadingRank);
@@ -235,7 +245,7 @@ namespace LeclercSXXI
 				Pose(Mathf.Clamp01((float)Clock.GetValue(_feed) / Mathf.Max(0.01f, _feed.TotalReloadTime)));
 			else
 			{
-				// Complete only a successful load. A cancelled reload retains the conveyor's actual position.
+				// Complete only a successful load. A cancelled reload leaves the conveyor where it actually is.
 				if (_feed.AmmoTypeInBreech != null) Pose(1);
 				if (_round != null) _round.localPosition = _roundRest;
 				_round = null;
@@ -302,7 +312,7 @@ namespace LeclercSXXI
 			foreach (var mesh in _ownedMeshes) if (mesh != null) Destroy(mesh);
 		}
 
-		// Only this port's carousel is intercepted; vanilla carousels and other ports retain their own search.
+		// Only this port's carousel is intercepted. Vanilla carousels and other ports keep their own search.
 		[HarmonyPatch(typeof(AmmoCarousel), nameof(AmmoCarousel.SeekSlotWithClipType))]
 		static class Seek
 		{
@@ -367,31 +377,34 @@ namespace LeclercSXXI
 			return part;
 		}
 		// Subtract a 15 cm square visual bore from a private copy of the imported casing. Damage geometry is untouched.
-		// Each triangle is partitioned by four half-planes; retain only the fragments outside the aperture.
+		// Each triangle is cut by four half-planes and only the pieces outside the aperture are kept.
 		static Mesh ApertureMesh(Vector3[] vertices, int[] triangles, Transform prefab, Transform gun, float axisX, float axisY)
 		{
 			var output = new List<Vector3>();
 			var indices = new List<int>();
 			var planes = new[]
 			{
-				new Vector4(1,0,0,-axisX+.075f),
-				new Vector4(-1,0,0,axisX+.075f),
-				new Vector4(0,1,0,-axisY+.075f),
-				new Vector4(0,-1,0,axisY+.075f)
+				new Vector4(1, 0, 0, -axisX + 0.075f),
+				new Vector4(-1, 0, 0, axisX + 0.075f),
+				new Vector4(0, 1, 0, -axisY + 0.075f),
+				new Vector4(0, -1, 0, axisY + 0.075f)
 			};
-			void Emit(List<Vector3> polygon) {
+			void Emit(List<Vector3> polygon)
+			{
 				int start = output.Count;
 				output.AddRange(polygon.Select(vertex => gun.InverseTransformPoint(prefab.TransformPoint(vertex))));
 				for (int corner = 1; corner < polygon.Count - 1; corner++)
 					indices.AddRange(new[] { start, start + corner, start + corner + 1 });
 			}
-			List<Vector3> Clip(List<Vector3> polygon, Vector4 plane, bool inside) {
+			List<Vector3> Clip(List<Vector3> polygon, Vector4 plane, bool inside)
+			{
 				var result = new List<Vector3>();
 				if (polygon.Count == 0) return result;
 				float Distance(Vector3 point) => point.x * plane.x + point.y * plane.y + plane.w;
 				var previous = polygon[polygon.Count - 1];
 				float previousDistance = Distance(previous);
-				foreach (var current in polygon) {
+				foreach (var current in polygon)
+				{
 					float currentDistance = Distance(current);
 					bool keepPrevious = inside ? previousDistance >= 0 : previousDistance <= 0;
 					bool keepCurrent = inside ? currentDistance >= 0 : currentDistance <= 0;
@@ -403,7 +416,8 @@ namespace LeclercSXXI
 				}
 				return result;
 			}
-			for (int index = 0; index < triangles.Length; index += 3) {
+			for (int index = 0; index < triangles.Length; index += 3)
+			{
 				var polygon = new List<Vector3>
 				{
 					vertices[triangles[index]],
@@ -458,7 +472,7 @@ namespace LeclercSXXI
 		{
 			var verts = new List<Vector3>();
 			var tris = new List<int>();
-			// Open U-section cradle, radius 8 cm, thin walls, 97 cm fore-aft; illustrative geometry from pictures of the real loader.
+			// Open U-section cradle, radius 8 cm, thin walls, 97 cm fore-aft. Shaped roughly after pictures of the real loader.
 			for (int step = 0; step <= 12; step++)
 			{
 				float angle = (180f + step * 15f) * Mathf.Deg2Rad;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GHPC.Vehicle;
 using LeclercSXXI.Common;
 
@@ -6,17 +7,17 @@ namespace LeclercSXXI
 	// The Leclerc's French 120 mm rounds. GHPC draws no French round: the stored models are the Leopard 2's NATO 120 x 570
 	// one-piece rounds (it is a NATO tank), repainted and reshaped as the French rounds. Every round has a name of its own
 	// (GHPC compares rounds by name: a vanilla name would join that round's lists).
-	//   OFL 120 F2   APFSDS, depleted uranium, the usual dart: the DM23 (120) cloned, its values ours
+	//   OFL 120 F2   APFSDS, depleted uranium, the usual dart: the DM23 (120) cloned, its values mine
 	//   OFL 120 F1   APFSDS, tungsten (the DM43 rod), the second choice in the APFSDS list
 	//   OECC 120 F1  HEAT multipurpose: the DM12A1 cloned (its 560 mm borrowed), the French round's mass and speed
 	//   120 EXPL F1  HE: the T-80B's 3OF26 HE behaviour (fragments, impact fuse) on the DM12A1's NATO model, the EXPL's
-	//                mass, speed and charge; the vanilla HE's game penetration
+	//                mass, speed and charge, the vanilla HE's game penetration
 	// APFSDS penetration (on the T-90A 3BM60's 60 deg footing): GHPC muzzle RhaPenetration = LOS at 2 km / f, f = (v2000 /
 	// v0)^2, the drag Coeff set so the round loses its 100 m/s by 2 000 m (with the DM23's sectional area 0.00062 m2, air 1.25).
 	internal static partial class Firepower
 	{
 		// 40 = 22 in the bustle + 18 in the drum (French army: «40 obus dont 22 coups prêts à l'emploi»). Only the 22 + 18 is
-		// sourced; the split by round (APFSDS, HEAT, HE) is a gameplay default of mine: 18 / 14 / 8.
+		// sourced. The split by round (APFSDS, HEAT, HE) is a gameplay default of mine: 18 / 14 / 8.
 		static readonly PortAmmo.Mix BustleCounts = new PortAmmo.Mix { Apfsds = 12, Heat = 6, Extra = new[] { 4 } };   // HE: the EXPL
 		static readonly PortAmmo.Mix DrumCounts = new PortAmmo.Mix { Apfsds = 6, Heat = 8, Extra = new[] { 4 } };
 		static readonly PortAmmo.Mix Counts = new PortAmmo.Mix
@@ -31,7 +32,7 @@ namespace LeclercSXXI
 
 		const string Leo2 = "LEO2";   // registry key of the vanilla LEO2A0 (its list: clip_DM23(120), clip_DM12A1(120))
 		// The stored rounds' look: each round's copy of the DM23 / DM12A1 atlas, repainted as the French photos show them
-		// (white cases with black bands, French stencils); the OFL's longer dart and the EXPL's ogive as reshaped meshes.
+		// (white cases with black bands, French stencils), the OFL's longer dart and the EXPL's ogive as reshaped meshes.
 		// A NATO port's rounds come from NATO donors: the EXPL's look is the DM12A1's, never the T-80B's 3OF26.
 		const string Atlas120 = "120mm_de_co";
 		const string ExplName = "120 EXPL F1 HE";
@@ -70,7 +71,7 @@ namespace LeclercSXXI
 					Set = ammo =>
 					{
 						// ~800 = the F1's 696 + 15 %. Jane's 1999-2000 has the F2 at 640 mm at 2 km against the F1's 560 (about 14 %
-						// better, as the English Wikipedia's 120x570 article quotes it); inferred, no trial figure published.
+						// better, as the English Wikipedia's 120x570 article quotes it). Inferred: no trial figure published.
 						ammo.RhaPenetration = 800f;
 						ammo.MuzzleVelocity = 1740f;   // «1 740 m/s» (French Wikipedia, CN120-26)
 						ammo.Mass = 4.5f;              // the dart (French Wikipedia, CN120-26)
@@ -89,8 +90,8 @@ namespace LeclercSXXI
 					Atlas = Atlas120,
 					Set = ammo =>
 					{
-						// Lanz-Odermatt on the DM43 rod (574 x 20.3 mm W, Kotsch) 621 mm LOS at 60 deg at 2 km, / f 0.891 = 696 at
-						// the muzzle; derived.
+						// Derived: Lanz-Odermatt on the DM43 rod (574 x 20.3 mm W, Kotsch) gives 621 mm LOS at 60 deg
+						// at 2 km, / f 0.891 = 696 at the muzzle.
 						ammo.RhaPenetration = 696f;
 						ammo.MuzzleVelocity = 1790f;   // maker «1 790 m/s (obus flèche)» (GIAT, Supériorité opérationnelle)
 						ammo.Mass = 4.0f;              // the dart (French Wikipedia, CN120-26)
@@ -102,6 +103,10 @@ namespace LeclercSXXI
 			},
 			DefaultApfsds = () => LeclercSXXIMod.Apfsds?.Value,
 			ForceApfsds = () => LeclercSXXIMod.ForceApfsds?.Value == true,
+			RandomApfsds = () => LeclercSXXIMod.RandomApfsds?.Value == true,
+			ApfsdsPool = () => LeclercSXXIMod.ApfsdsPool?.Value,
+			LoadPreset = () => LeclercSXXIMod.AmmunitionLoad?.Value,
+			EmptyRacks = () => LeclercSXXIMod.EmptyRacks?.Value,
 			ApfsdsListName = "120mm APFSDS (Leclerc SXXI)",
 			MenuSuffix = " (Leclerc SXXI)",
 			Heat = new PortAmmo.Round
@@ -114,12 +119,12 @@ namespace LeclercSXXI
 				Set = ammo =>
 				{
 					// 560 mm: GHPC's DM12A1 as it is (borrowed: the French figure «480» has no known origin, French Wikipedia,
-					// CN120-26); constant with range (shaped charge). Filler: the DM12A1's 2.21 kg TNT, no source.
+					// CN120-26). Constant with range (shaped charge). Filler: the DM12A1's 2.21 kg TNT, no source.
 					ammo.MuzzleVelocity = 1100f;   // «vitesse initiale de 1 100 m/s» (French Wikipedia, Leclerc)
-					ammo.Mass = 14.4f;             // the projectile (French Wikipedia, Leclerc; leclerc.fr's ammunition page)
+					ammo.Mass = 14.4f;             // the projectile (French Wikipedia, Leclerc, and leclerc.fr's ammunition page)
 				},
 			},
-			NoBaseHe = true,   // the T-80B's Soviet 3OF26 out of the list; the EXPL takes the HE key
+			NoBaseHe = true,   // the T-80B's Soviet 3OF26 out of the list, so the EXPL takes the HE key
 			Extra = new[]
 			{
 				new PortAmmo.Round
@@ -137,9 +142,9 @@ namespace LeclercSXXI
 						// The 3OF26's game penetration (80 mm), fragments, impact fuse and drag Coeff kept (game convention).
 						// AirBurst adds the optional timed burst per shot using these HE effects.
 						ammo.MuzzleVelocity = 1050f;   // maker (Nexter catalogue 2018, p. 34)
-						ammo.Mass = 16.8f;             // the projectile, maker (Nexter catalogue 2018, p. 34; Cavalerie 2016: 16 kg)
-						// 3 kg Compo B (Cavalerie 2016) x 1.17 (the vanilla 3OF26's own TNT to filler ratio, 3.97 / 3.4; inferred)
-						// = 3.5 kg TNT.
+						ammo.Mass = 16.8f;             // the projectile, maker (Nexter catalogue 2018, p. 34) (Cavalerie 2016: 16 kg)
+						// 3 kg Compo B (Cavalerie 2016) x 1.17 = 3.5 kg TNT.
+						// The 1.17 is inferred from the vanilla 3OF26's own TNT to filler ratio (3.97 / 3.4).
 						ammo.TntEquivalentKg = 3.5f;
 						ammo.Caliber = 120f;
 						ammo.SectionalArea = 0.01131f;   // derived: a 120 mm circle (the 3OF26's was its 125 mm one)
@@ -151,11 +156,14 @@ namespace LeclercSXXI
 			Racks = new[]
 			{
 				// The T-80B carousel, now the bustle conveyor (Conversion.Interior.cs).
-				new PortAmmo.Rack { Index = 0, Counts = BustleCounts },
+				new PortAmmo.Rack { Index = 0, Name = "autoloader", Counts = BustleCounts },
 				// The T-80B hull wet rack, now the drum.
-				new PortAmmo.Rack { Index = 1, Counts = DrumCounts },
+				new PortAmmo.Rack { Index = 1, Name = "hull", Counts = DrumCounts },
 			},
 			DropOtherRacks = true,
+			// The racks' names are the words the player types in Empty racks. "Autoloader" keeps only the bustle autoloader,
+			// so the hull drum is the rack it empties.
+			LoadPresets = new Dictionary<string, string[]> { { "Autoloader", new[] { "hull" } } },
 		};
 
 		// At spawn, after the interior (its racks placed), before LoadoutManager.Start fills them.

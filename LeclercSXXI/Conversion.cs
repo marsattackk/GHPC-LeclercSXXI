@@ -12,7 +12,7 @@ namespace LeclercSXXI
 	// LateSteps, which need the components' Start to have run.
 	internal static partial class Conversion
 	{
-		// The T80B rig's bones; the bundle's group meshes are built relative to them.
+		// The T80B rig's bones: the bundle's group meshes are built relative to them.
 		static readonly (string group, string path)[] Bones =
 		{
 			("HULL", "T80B_rig/HULL"),
@@ -56,6 +56,7 @@ namespace LeclercSXXI
 				Otherwise = "the hidden T-80B Luna lights the ground in night sights",
 				Run = p => BaseStrip.TakeOutLuna(p.Vehicle, LeclercSXXIMod.FriendlyName),
 				SpawnOnly = true,
+				Late = LateText("T-80B Luna out", "the hidden T-80B Luna still lights the ground in night sights"),
 			},
 			new ConversionStep<Parts> { What = "visuals", Otherwise = "no Leclerc model is drawn", Run = AttachVisuals },
 			// After the armour and the visuals (the box's blow-off lids are visual parts, looked up by name), before the racks fill.
@@ -149,7 +150,7 @@ namespace LeclercSXXI
 				Run = Countermeasures.RefreshCrew,
 			},
 			new ConversionStep<Vehicle> { What = "voices", Otherwise = "the crew keeps its Russian voices", Run = ConversionVoices.Apply },
-			// The views, once the base optics have started; the laser window was placed at spawn ("sight setup").
+			// The views, once the base optics have started. The laser window was placed at spawn ("sight setup").
 			new ConversionStep<Vehicle>
 			{
 				What = "sight fitting",
@@ -204,8 +205,8 @@ namespace LeclercSXXI
 			Armour.Apply(parts.Vehicle);
 		}
 
-		// The T-80B's own hull / turret / gun / skirts / stowage / lamps off (BaseRigT80B).
-		// The Leclerc's own wheels and track are drawn (GearFollow, from HatchRig.Apply below): the T-80B's go, its bones and physics stay.
+		// The T-80B's own hull / turret / gun / skirts / stowage / lamps off (BaseRigT80B). The Leclerc's own wheels and track
+		// are drawn (GearFollow, from HatchRig.Apply below): the T-80B's go but its bones and physics stay.
 		static void HideBase(Parts parts)
 		{
 			BaseRigT80B.HideBaseVisuals(parts.Root, "LeclercSXXI_");
@@ -252,7 +253,8 @@ namespace LeclercSXXI
 				if (part.parent == null || !part.parent.name.StartsWith("LeclercSXXI_"))
 					VehiclePaint.ApplyPaint(part.gameObject, template, flir, Painted);
 			if (template == null)
-				MelonLogger.Warning(
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
 					$"{LeclercSXXIMod.FriendlyName}: no T-80B paint template found; the hull stays on the bundle's material.");
 		}
 
@@ -293,15 +295,16 @@ namespace LeclercSXXI
 			HatchRig.Apply(parts.Root, LeclercSXXIMod.Rig, "LeclercSXXI_", LeclercSXXIMod.FriendlyName);
 		}
 
-		// The real turret ring, trunnion and muzzle (the rig map's axes, from the War Thunder skeleton; PortAxes): the
+		// The real turret ring, trunnion and muzzle (PortAxes, the rig map's axes from the War Thunder skeleton): the
 		// T-80B pivots moved there, the muzzle point onto the levelled barrel, the turret turned about its tilted ring.
 		static void MoveAxes(Parts parts)
 		{
 			var axes = PortAxes.FromRig(LeclercSXXIMod.Rig, BaseRigT80B.TurretPivot, BaseRigT80B.GunPivot, LeclercSXXIMod.FriendlyName);
 			if (axes != null) PortAxes.Apply(parts.Vehicle, axes);
 			else
-				MelonLogger.Warning(
-					$"{LeclercSXXIMod.FriendlyName}: bundle's rig map has no axes; the turret turns on the T-80B's pivots.");
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: the rig map has no axes; the turret turns on the T-80B's pivots.");
 		}
 
 		// The barrel onto the T-80B's recoil bone, 400 mm stroke (after the axes moved).

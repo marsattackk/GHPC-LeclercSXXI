@@ -68,7 +68,7 @@ straight-on lines, taken from the mod's armour table for the Leclerc and from th
 Against the best darts, DM23 at 520 mm, M833 at 480 mm and the T-90A's 3BM60 at about 690 mm, none of them gets through
 the left cheek, though the 3BM60 is only 10 mm short of it. Its own OFL 120 F2 at about 800 mm is about 30 mm short of the
 T-90A's turret front with Kontakt-5 (about 830). Margins that small are inside my error, so it's a close match and I
-wouldn't call a winner. The T-90A's figures are those of release 0.5.0.
+wouldn't call a winner. I took the T-90A's figures in November 2026, and they may have moved since.
 
 ## Test firing
 

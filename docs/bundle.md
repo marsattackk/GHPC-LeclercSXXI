@@ -9,7 +9,8 @@ Built with Unity **2022.3.62f2**, the same as GHPC. A bundle has to match the ga
 
 ## What gets loaded
 
-`LeclercSXXI\Mod.cs` opens the bundle through `BundleAssets` and loads two prefabs by name:
+`LeclercSXXI\Mod.cs` opens the bundle through `BundleAssets` and loads the model, and `LeclercSXXI\Armour.cs` the armour,
+each prefab by name:
 
 | Asset | Needed | If missing |
 |---|---|---|
@@ -19,7 +20,7 @@ Built with Unity **2022.3.62f2**, the same as GHPC. A bundle has to match the ga
 The text data is in `Resources\` as `<name>.txt` and goes into the DLL. `PortText` reads the DLL's copy first and only
 falls back to a `TextAsset` of the same name in the bundle. The bundle the releases ship still carries a copy of
 each, because the versions before 0.2.0 read them from there. Five of the six are in `Resources\` as well (there is no
-`era_links.txt` there). Where both exist they are the same text. Edit the one in `Resources\` and rebuild the DLL, no
+`era_links.txt` there). Where both exist they hold the same data. Edit the one in `Resources\` and rebuild the DLL, no
 Unity involved:
 
 | File | Needed | If missing |
@@ -176,6 +177,7 @@ SHA-256 of `Mods/LeclercSXXI/leclercsxxi` in each release zip. When a release ch
 | 0.2.0 | `1b9e8a91b64ccdddc2794e035e0c089294d2eaba2b2ac270d9aa50fd985486ea` |
 | 0.2.1 | `1b9e8a91b64ccdddc2794e035e0c089294d2eaba2b2ac270d9aa50fd985486ea` |
 | 0.2.2 | `7a97a5fdd670663b19523032618a23ecf2bcd481db97af8f188a96ddce771772` |
+| 0.3.0 | `b23ccc841f324c59a229dbbb1203c5a83aee4e2c36cbdb211e9938e027a5e6c1` |
 
 0.2.0 and 0.2.1 ship the same bundle file as 0.1.2, byte for byte (191,848,931 bytes). What changed in 0.2.0 is the DLL,
 which now also carries the five text tables, `dm_armour`, `vanilla_edits`, `material_roles`, `rig_map` and
@@ -185,6 +187,6 @@ which now also carries the five text tables, `dm_armour`, `vanilla_edits`, `mate
 bytes differ, so a 0.2.1 bundle works with the 0.2.2 DLL.
 
 ```
-Expand-Archive LeclercSXXI_0.2.2.zip -DestinationPath check
+Expand-Archive LeclercSXXI_<version>.zip -DestinationPath check
 (Get-FileHash check\Mods\LeclercSXXI\leclercsxxi -Algorithm SHA256).Hash.ToLower()
 ```

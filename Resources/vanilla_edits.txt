@@ -37,6 +37,8 @@ off|sight armour
 off|night sight armour
 off|Luna
 off|Firewall
+# Editing these two changes nothing. Armour.cs takes them off this list and switches their colliders off itself,
+# because they sit outside the armour collider groups.
 off|TurretRingNotSureAboutTheCrossection
 off|Commander_Cupola_Ring
 off|Driver_Periscope_TNPO-160_001

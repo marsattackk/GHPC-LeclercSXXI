@@ -30,21 +30,21 @@ namespace LeclercSXXI
 		const float HeadTopFallback = 2.902f;     // HL 120 top from its damage box (modules_built.json) when no mesh is found
 		const float DayWide = 17.5f, DayNarrow = 5.5f;   // French Wikipedia, Leclerc
 		const float CommanderWide = 20f, CommanderNarrow = 5f;   // the HL 70 day fields borrowed for the HL 120
-		const float ThermalWide = 6f, ThermalNarrow = 2f, ThermalZoom = 1f;   // vertical angles; x20 is inferred
+		const float ThermalWide = 6f, ThermalNarrow = 2f, ThermalZoom = 1f;   // vertical angles, and x20 is inferred
 		// Iris: 576 lines. Render at 16:9 with the M1IP's scope and the shared clean thermal image.
 		const int ThermalWidth = 1024, ThermalHeight = 576;
-		// The HL 130's displays (from pictures of the real sight, HlDisplay): the day box's green seven segments (02, 06), the thermal row.
+		// The HL 130's displays (from pictures of the real sight, HlDisplay): the day box's green seven segments, the thermal row.
 		const string DayDisplay = "hl130_day.jsonc", ThermalDisplay = "hl130_thermal.jsonc";
-		// The green of the pictures' seven segments; the exact shade is my choice.
+		// The green of the pictures' seven segments, the exact shade my choice.
 		static readonly Color DayLit = new Color(0.42f, 1f, 0.38f);
-		static readonly Vector2 CommanderPitch = new Vector2(-10f, 25f);   // inferred; HL 120 mirror travel not sourced
+		static readonly Vector2 CommanderPitch = new Vector2(-10f, 25f);   // inferred: no source for the HL 120 mirror travel
 		static readonly GunnerFcs.Settings Settings = new GunnerFcs.Settings
 		{
 			Tag = Tag,
 			LaserMax = 6000f,                  // my choice: no source gives the HL 130's laser range
 			// Relative to the turret (MountOnTurret), inferred: the gun's -8 / +20 with room below.
 			LineOfSightLimits = new Vector2(-10f, 20f),
-			LineOfSightAzimuth = 5f,           // inferred; keep the lead and laser within the forward window
+			LineOfSightAzimuth = 5f,           // inferred, to keep the lead and laser within the forward window
 			ViewStopsAtAzimuth = true,
 			LeadLimit = 5f,
 			LeadLikeM1 = true,                 // the vanilla M1's lead: Smooth Aim held at the lase, dropped when let go
@@ -113,7 +113,7 @@ namespace LeclercSXXI
 			var main = vehicle.GetComponent<WeaponsManager>()?.Weapons?.FirstOrDefault(info => info?.Role == WeaponSystemRole.MainGun)?.FCS;
 			if (turret == null || main == null)
 			{
-				MelonLogger.Warning($"{Tag}: no turret or main gun fire control; sights left as they were.");
+				DonorParts.WarnOnce(Tag, $"{Tag}: no turret or main gun fire control; sights left as they were.");
 				return;
 			}
 			if (vehicle.GetComponentInChildren<Fitted>(true) != null) return;
@@ -158,7 +158,7 @@ namespace LeclercSXXI
 			var night = optics.FirstOrDefault(optic => day != null && optic.slot == day.slot.LinkedNightSight);
 			if (day == null || night == null || !LoadMarks())
 			{
-				MelonLogger.Warning($"{Tag}: no gunner optic pair or M1IP reticles; sight conversion skipped.");
+				DonorParts.WarnOnce(Tag, $"{Tag}: no gunner optic pair or M1IP reticles; sight conversion skipped.");
 				return;
 			}
 
@@ -184,9 +184,9 @@ namespace LeclercSXXI
 			GunnerFcs.MountOnTurret(Tag, vehicle.transform, turret, day.slot.transform, night.slot.transform);
 			GunnerFcs.LaserAim.Register(fcs, day, Settings);
 			GunnerFcs.Parallax.Register(fcs);
-			// Clone the base night optic before replacing its image chain and attaching the gunner's thermal components.
+			// All that's left of the commander's sight: the free-look eye raised over the HL 120 head.
 			try { FitCommander(vehicle, turret, fitted, day, night, laser); }
-			catch (Exception exception) { MelonLogger.Error($"{Tag}: commander sight setup failed: {exception}"); }
+			catch (Exception exception) { MelonLogger.Error($"{Tag}: commander's free-look eye not raised: {exception}"); }
 			if (ConfigureThermal(day, night, "HL 130", day.LocalElevationLimits, turret))
 			{
 				fitted.GunnerThermal = night;

@@ -2,9 +2,8 @@ using LeclercSXXI.Common;
 
 namespace LeclercSXXI
 {
-	// The handles on the reticle files. The other tanks have one cache (All, Build, Spec); here each class that builds from
-	// the files keeps the cache of its own, as before the move, so the three stay apart: the day reticle and the display
-	// read the same file through different caches.
+	// The handles on the reticle files. The other tanks have one cache (All, Build, Spec). Here each class that builds from
+	// the files keeps a cache of its own, so the day reticle and the display read the same file without sharing one.
 	internal static class Reticles
 	{
 		internal static readonly PortReticles Hl130Day = new PortReticles(typeof(Reticles).Assembly, LeclercSXXIMod.FriendlyName);

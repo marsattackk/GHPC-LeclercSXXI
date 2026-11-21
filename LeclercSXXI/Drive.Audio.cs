@@ -3,20 +3,19 @@ using FMOD.Studio;
 using GHPC.Audio;
 using GHPC.Vehicle;
 using LeclercSXXI.Common;
-using MelonLoader;
 using UnityEngine;
 
 namespace LeclercSXXI
 {
 	// GHPC selects the engine and track recordings by the FMOD Vehicle parameter.
-	// The native diesel event (Leopard 2A3) owns audibility and position. The TM 307B turbine of the Hyperbar is a second
-	// engine event: the game's T-80 gas turbine, high-passed so only its whine is left (its own rumble would fight the
-	// diesel), laid about 14 dB under the diesel. Chosen by ear from offline mock-ups; the turbine's sound has no written
-	// source, so the layer is inferred.
+	// The native diesel event (Leopard 2A3) decides how loud the engine is and where. The TM 307B turbine of the Hyperbar is
+	// a second engine event: the game's T-80 gas turbine, high-passed so only its whine is left (its own rumble would fight
+	// the diesel), laid about 20 dB under the diesel. Chosen by ear from offline mock-ups. The turbine's sound has no
+	// written source, so the layer is inferred.
 	internal sealed partial class EngineAudio : MonoBehaviour
 	{
 		// Volume that puts the high-passed whine about 20 dB under the diesel. The renders gave 0.9 outside / 1.8 inside
-		// for 14 dB under (outside: 1.00 at idle, 0.84 flat out; inside: 2.00 / 1.68); in game that was too loud, inside and
+		// for 14 dB under (outside 1.00 at idle and 0.84 flat out, inside 2.00 / 1.68). In game that was too loud, inside and
 		// outside, so it is half (-6 dB). FMOD volume above 1 amplifies.
 		const float TurbineGainOutside = 0.45f;
 		const float TurbineGainInside = 0.9f;
@@ -49,7 +48,9 @@ namespace LeclercSXXI
 			var audio = vehicle.GetComponent<VehicleAudioController>();
 			if (audio == null || Label == null)
 			{
-				MelonLogger.Warning($"{LeclercSXXIMod.FriendlyName}: could not set the Leopard engine and track sounds.");
+				DonorParts.WarnOnce(
+					LeclercSXXIMod.FriendlyName,
+					$"{LeclercSXXIMod.FriendlyName}: could not set the Leopard engine and track sounds.");
 				return;
 			}
 			Label(audio) = FmodParameters.VehicleLabel.LEO2;

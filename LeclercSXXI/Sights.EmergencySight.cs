@@ -13,8 +13,8 @@ namespace LeclercSXXI
 {
 	// The HL 120 emergency gun-laying view (Sights.FitSecours): the commander's head slaved to the gun, laid by hand on a
 	// French emergency reticle (Resources\hl120_secours.jsonc) with one range scale per round, as the Abrams' backup sight.
-	// While it is the view the fire control puts no range angle and no lead into the gun (the scale does that by eye);
-	// the reticle follows the round selected.
+	// While it is the view, the fire control puts no range angle and no lead into the gun (the scale does that by eye).
+	// The reticle follows the round selected.
 	internal sealed class EmergencySight : MonoBehaviour
 	{
 		const string File = "hl120_secours.jsonc";

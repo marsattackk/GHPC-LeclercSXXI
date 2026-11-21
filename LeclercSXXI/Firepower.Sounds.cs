@@ -12,7 +12,7 @@ namespace LeclercSXXI
 				What = "autoloader sound",
 				InteriorResource = $"reload_{seconds}_interior.wav",
 				ExteriorResource = $"reload_{seconds}_exterior.wav",
-				// Outside: the T-80 event's own falloff (full to 3 m, silent at 6 m); the WAVs carry its levels and hull filter.
+				// Outside: the T-80 event's own falloff (full to 3 m, silent at 6 m), and the WAVs carry its levels and hull filter.
 				MinDistance = 3f,
 				MaxDistance = 6f,
 				BusPath = "bus:/InteriorExterior/Effects",

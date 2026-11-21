@@ -1,6 +1,5 @@
 using GHPC.Vehicle;
 using LeclercSXXI.Common;
-using MelonLoader;
 using NWH.VehiclePhysics;
 
 namespace LeclercSXXI
@@ -16,7 +15,7 @@ namespace LeclercSXXI
 			MaxRpm = 2500f,
 			MinRpm = 900f,
 			// The T-80B turbine's 1000 rpm/s held each low gear flat for ~1 s and 0-32 km/h took 6-7 s against the maker's
-			// < 6 s. The Leopard 2A3 diesel's 1500 rpm/s (GHPC's own; also the engine-sound donor).
+			// < 6 s. The Leopard 2A3 diesel's 1500 rpm/s (GHPC's own, and the engine-sound donor too).
 			MaxRpmChange = 1500f,
 			FinalDrive = 5.5125f,
 			// 0.95 x MaxRpm: NWH clamps the up-shift there, so a higher value would never shift up.
@@ -39,7 +38,7 @@ namespace LeclercSXXI
 			var controller = vehicle.GetComponent<VehicleController>();
 			if (controller == null)
 			{
-				MelonLogger.Warning($"{Settings.Tag}: vehicle controller missing.");
+				DonorParts.WarnOnce(Settings.Tag, $"{Settings.Tag}: vehicle controller missing.");
 				return;
 			}
 			// NWH reverses the source list in place each time it rebuilds its combined gear table.

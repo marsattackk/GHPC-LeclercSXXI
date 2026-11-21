@@ -25,8 +25,8 @@ namespace LeclercSXXI
 			UsableOptic gunnerNight,
 			Transform gunnerLaser)
 		{
-			// The HL 120 head is a static prop. No views, no fire-control link, no head drive. The mesh stays in the bundle; with
-			// no CommanderCupola nothing turns it. The free-look commander view sat too low; raised so the eyes clear the roof.
+			// The HL 120 head is a static prop. No views, no fire-control link, no head drive. The mesh stays in the bundle, and with
+			// no CommanderCupola nothing turns it. The free-look commander view sat too low: raised so the eyes clear the roof.
 			var lookSlot = vehicle.GetComponentsInChildren<CameraSlot>(true).FirstOrDefault(slot => slot.name == "commander head");
 			if (lookSlot != null)
 			{
@@ -67,7 +67,7 @@ namespace LeclercSXXI
 			window.position = root.TransformPoint(CommanderEye);
 			fitted.Head = head;
 
-			// The commander's fire-control views share the main gun's computer. The free-look commander view retains
+			// The commander's fire-control views share the main gun's computer. The free-look commander view keeps
 			// independent observation and Aim Override designates its line to the gun.
 			var weapons = vehicle.GetComponent<WeaponsManager>().Weapons.Where(info => info.Role == WeaponSystemRole.MainGun
 				|| info.Role == WeaponSystemRole.Coaxial)
@@ -160,18 +160,19 @@ namespace LeclercSXXI
 				Bone = head,
 				Pivot = mount.Pivot,
 				Axis = mount.Axis,
-				Speed = 90f,   // inferred; only the head, no hatch or collar
+				Speed = 90f,   // inferred (only the head, no hatch or collar)
 				Look = new[] { free, nods, day.slot, fitted.CommanderThermal?.slot, fitted.ObserveDay, fitted.ObserveThermal }
 					.Where(slot => slot != null)
 					.ToArray(),
 				Cu = link,
 			});
 			RemoteMg.LateSetup(vehicle);
+#pragma warning restore CS0162
 		}
 
 		// Not in play: FitCommander returns before it, so the HL 120 has no views.
 		// The HL 120's own observation (two extra views, the gun-laying HL 120 views kept): the commander
-		// scans through the head's day and Iris channels while the gun stays where the gunner has it; Aim Override hands the
+		// scans through the head's day and Iris channels while the gun stays where the gunner has it. Aim Override hands the
 		// line to the gun (hunter-killer, «le viseur du tireur s'aligne sur l'objectif pendant que le chef de char continue son
 		// observation» (French Wikipedia, Leclerc)). GHPC lets the player look around only in a free-look view, so these
 		// are free-look views (the commander's own view cycle, beside "commander head") on the head's window: the head follows
@@ -191,7 +192,7 @@ namespace LeclercSXXI
 				viewObject.transform.SetParent(window, false);
 				var view = viewObject.AddComponent<CameraSlot>();
 				view.AllowFreeLook = true;
-				view.AllowFreeZoom = false;   // the field steps; a free zoom brings GHPC's binoculars
+				view.AllowFreeZoom = false;   // the field steps only: a free zoom brings GHPC's binoculars
 				view.DefaultFov = fov;
 				view.OtherFovs = others ?? Array.Empty<float>();
 				view.fovAspect = like.fovAspect;

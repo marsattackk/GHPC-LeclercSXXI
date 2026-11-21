@@ -3,8 +3,7 @@ using System;
 namespace LeclercSXXI
 {
 	// The endless conveyor: upper run travels left, lower run travels right. Phase is in cells.
-	// Phase timings within the agreed 6 / 8 s cycle are illustrative, not measured Leclerc timings: the windows below
-	// (fractions of the reload) are my estimate, no timing of the real loader is published.
+	// The windows below (fractions of the 6 / 8 s reload) are my estimate, not measured: no timing of the real loader is published.
 	internal static class LoaderMotion
 	{
 		internal const int Capacity = 22;

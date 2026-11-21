@@ -11,12 +11,12 @@ namespace LeclercSXXI
 	// The crew, ammunition and fuel layout. At spawn, after the armour (whose bustle compartment it takes over) and before
 	// LoadoutManager.Start fills the racks:
 	// - the interior map (Resources\interior_map.txt): the T-80B's crew onto the model's seats (commander left, gunner
-	//   right, driver front left), their seats with them; the T-80B carousel as the bustle conveyor's 22 cells (the rack
-	//   frame stays fixed; ConveyorLoader moves its slots along the endless chain), the hull wet rack as the 18-round drum
-	//   at the front right; the T-80B's fuel tank pieces reshaped onto the Leclerc's 10 tanks;
-	// - the T-80B carousel's own armour and basket off (no carousel on a Leclerc);
-	// - the bustle as its own compartment vented by two blow-off panels (BlowoutRack, GHPC's M1 bustle);
-	// - the T-80B's fixed missile slots cleared (the rounds and rack counts: Firepower.cs);
+	//   right, driver front left), their seats with them. The T-80B carousel becomes the bustle conveyor's 22 cells (the
+	//   rack frame stays fixed while ConveyorLoader moves its slots along the endless chain), the hull wet rack the
+	//   18-round drum at the front right. The T-80B's fuel tank pieces are reshaped onto the Leclerc's 10 tanks.
+	// - the T-80B carousel's own armour and basket off (no carousel on a Leclerc)
+	// - the bustle as its own compartment vented by two blow-off panels (BlowoutRack, GHPC's M1 bustle)
+	// - the T-80B's fixed missile slots cleared (the rounds and rack counts: Firepower.cs)
 	// - the modules (PortModules): the rammer and the conveyor drive in the bustle, the fuel tanks' hit report.
 	internal static partial class ConversionInterior
 	{
@@ -35,7 +35,7 @@ namespace LeclercSXXI
 
 		// The bustle: «l'explosion éventuelle des munitions est dirigée vers le haut grâce à deux panneaux détachables libérés
 		// par l'explosion» (French Wikipedia, Leclerc). The armour stage's empty "Leclerc bustle compartment" becomes the box
-		// (ReplaceCompartment); the panels are the two halves of the left bustle-roof plate (the rig map's detachables
+		// (ReplaceCompartment). The panels are the two halves of the left bustle-roof plate (the rig map's detachables
 		// BUSTLE_LID_F / _R).
 		static readonly BlowoutRack.Settings Bustle = new BlowoutRack.Settings
 		{
@@ -44,8 +44,8 @@ namespace LeclercSXXI
 			RackPath = Conveyor,
 			RackName = "bustle conveyor",
 			// Restock from the drum: ~22 s a round in all, the drum's retrieval (the T-80B wet rack's 15 s) and this rack's
-			// storage 7 s. 8 min for the 22 cells, a low-confidence source (a French wiki mirror and a 2009 blog); the split is inferred.
-			// RestockPriority pauses the transfer while the gun reloads.
+			// storage 7 s. 8 min for the 22 cells, a low-confidence source (a French wiki mirror and a 2009 blog), and the
+			// split is inferred. RestockPriority pauses the transfer while the gun reloads.
 			RetrievalDelay = 15f,
 			StorageDelay = 7f,
 			CompartmentName = "turret bustle",   // GHPC's M1 name
@@ -86,7 +86,7 @@ namespace LeclercSXXI
 
 		static bool _logged;
 
-		// Each row runs on its own: one that throws leaves the rest of the interior fitted (ConversionSteps, the main table's
+		// Each row runs on its own: one that throws leaves the rest of the interior fitted (ConversionSteps: the main table's
 		// "interior" row runs this at spawn).
 		static readonly ConversionStep<Vehicle>[] Steps =
 		{
@@ -131,15 +131,13 @@ namespace LeclercSXXI
 				"Turret_ManualDrive",
 				"Autoloader_MZ",
 				"Gun_2A46-2",
-				"Gun_Breach_Gun_Breach_BitsThatRecoil",
-				"autoloader rammer",
-				"conveyor drive" };
+				"Gun_Breach_Gun_Breach_BitsThatRecoil" };
 			foreach (var part in vehicle.GetComponentsInChildren<Transform>(true).Where(candidate => names.Contains(candidate.name)))
 				foreach (var visual in part.GetComponentsInChildren<GHPC.AarVisual>(true)) visual.Hidden = true;
 		}
 
-		// The base carousel's own hit zones that the Leclerc has no use for: its basket (armour, 3 mm) off; its cassette armour
-		// (colliders on the rack object itself, which must stay: it is the conveyor's rack) off.
+		// The base carousel's own hit zones that the Leclerc has no use for: its basket (armour, 3 mm) off, and its cassette armour
+		// (colliders on the rack object itself, which must stay because it is the conveyor's rack) off.
 		static void BaseCarouselOff(Vehicle vehicle)
 		{
 			foreach (var child in vehicle.GetComponentsInChildren<Transform>(true))
@@ -151,7 +149,7 @@ namespace LeclercSXXI
 		}
 
 		// The T-80B's two 9M112 missiles sit at fixed carousel slots 26 / 27 (LoadoutManager FixedChoices): gone with the slots
-		// and the missile (the Leclerc has none; the rounds are Firepower.cs').
+		// and the missile, as the Leclerc has none (its rounds are in Firepower.cs).
 		static void NoMissileSlots(Vehicle vehicle)
 		{
 			var loadout = vehicle.GetComponent<LoadoutManager>();
@@ -159,7 +157,7 @@ namespace LeclercSXXI
 			foreach (var rack in loadout.RackLoadouts) rack.FixedChoices = new LoadoutManager.RackLoadoutFixedChoice[0];
 		}
 
-		// The bustle box (Bustle); what it could not find is said once a session, by the first tank that has a problem.
+		// The bustle box (Bustle). What it could not find is said once a session, by the first tank that has a problem.
 		static void FitBustle(Vehicle vehicle)
 		{
 			var problems = new List<string>();
