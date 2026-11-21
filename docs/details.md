@@ -60,8 +60,8 @@ redrawn from pictures of the real sight, one of them a French diagram with the e
   in the gun. Next to them are the stadiametric curves for a 6 m target at 10, 20 and 30, the mil scale and the
   boresight scale, and the emergency mark under the cross.
 - The display box under the cross has «HF» (the range in metres, or HF when you haven't lased), the letter of the
-  round, F or C, a ready mark and a hull symbol that turns with the hull. The thermal has the cross with hollow bars
-  and dots and the same readout without the box.
+  round, F, C or E (blank with the coax selected), a ready mark and a hull symbol that turns with the hull. The
+  thermal has the cross with hollow bars and dots and the same readout without the box.
 - The units are French millièmes. 6400 to a turn, the same as NATO mils.
 - The pictures show the plate 7.6 to 23.6 mils above the cross and once 10 to its side, while the cross and the box stay
   put, so I read it as the plate showing where the gun is laid. That's my reading, not something a source says.
@@ -218,6 +218,10 @@ like to see it.
   1740 m/s and 4.5 kg, and the depleted-uranium density and the loss of 100 m/s at 2 km are my guesses.
 - The OECC's 560 mm is GHPC's DM12A1 borrowed, because the French figure of 480 has no known origin. 1100 m/s and 14.4 kg
   are sourced and the filler of 2.21 kg of TNT is not.
+- GHPC narrows a jet's fragment cone the more penetration the jet has to spare, so a strong shaped charge holes the near
+  wall cleanly and sprays almost nothing at the far one. The OECC gets a cone of up to 80° (all of it on 50 mm or
+  more) off the first hull or turret plate it holes instead, so its fragments fill the compartment it enters. That is
+  a gameplay fix of mine, not a figure from a source.
 - The 120 EXPL F1 uses the vanilla HE penetration, with 3.5 kg of TNT, which is 3 kg of Composite B times the vanilla
   ratio of 1.17. The speed of 1050 m/s and the 16.8 kg are the maker's. The impact or overhead burst setting is a
   gameplay approximation.

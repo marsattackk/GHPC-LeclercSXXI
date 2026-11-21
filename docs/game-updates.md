@@ -139,7 +139,10 @@ bustle doesn't vent through its panels, a fire in it stops the engine, or the co
 
 **Armour and rounds.** `DmArmourApply.cs` patches `LiveRound.penCheck` and sets `UniformArmor._armorType` and friends and
 `VariableArmor._armorType`. Broken: every piece takes the game's default armour material, which is the biggest effect of
-anything on this page.
+anything on this page. `BehindArmour.cs` patches `LiveRound.getSpallMaxAngle` to widen the OECC's fragment cone off
+the first hull or turret plate it holes (up to 80°, full on 50 mm or more). Broken: the OECC holes a tank cleanly and
+its fragments fly out the far side instead of filling the compartment. Its patch on `penCheck` serves split-charge
+rounds, which the Leclerc has none of.
 
 **Rig, modules and heat.** `Followers.cs`, `PivotMove.cs`, `TiltedRing.cs`, `TraverseLimits.cs` and `GearFollow.cs` use
 `LateFollow` shifts and `AimablePlatform._originalLocalRotation`. `ModuleBuilder.cs` sets `DestructibleComponent` and

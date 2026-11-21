@@ -222,7 +222,8 @@ Nose on and hull down, it's a very hard tank to kill. These are the places that 
 | 120 EXPL F1 | HE | 1050 m/s | 3.5 kg of TNT equivalent |
 
 The mission's ammo menu picks which dart you carry, F2 by default. The dart is the round for anything with a gun. The OECC is for carriers, lorries and anything you'd rather blow apart
-than hole. The EXPL is for infantry, missile teams and soft targets.
+than hole. When it does hole a tank, the fragments go all round the inside rather than out the far side. The EXPL
+is for infantry, missile teams and soft targets.
 
 **The EXPL fuze** is in the vehicle menu ("120 EXPL F1 fuze"): impact, or a burst about 3 m above the lased point for
 infantry in trenches or behind a wall. The burst is worked out from the range when the round goes into the gun, so lase

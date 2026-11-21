@@ -99,7 +99,8 @@ which way each points and the one volley.
 `Sights.HlDisplay.cs` (`HlDisplay`: its display), `Sights.Secours.cs` (the emergency view), `Sights.EmergencySight.cs`
 (`EmergencySight`: its reticle by round) and `Sights.Hl120.cs` (the commander's end). There the HL 120 head is a still
 prop: `FitCommander` only raises the free-look eye over it and returns, and the observation views written below that
-return never run. `Reticles.cs` is the shared reticle handle. There's no `Commander.cs`: nothing turns the cupola.
+return never run. `Reticles.cs` holds the three handles on the reticle files. There's no `Commander.cs`: nothing turns
+the cupola.
 
 `tools\verify-release.ps1` rebuilds a tag and compares it with a release DLL or zip (the last step of Releasing).
 [docs/shared-features.md](docs/shared-features.md) lists the features in `Common\` and whether the tank switches each
